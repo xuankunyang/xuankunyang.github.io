@@ -105,12 +105,12 @@ body {
 
 .info-columns-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem 1.5rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
     grid-column: 1 / -1;
     align-items: stretch;
     height: 100%;
-    margin-top: -5rem; /* 将整体向上移动 */
+    margin-top: -5rem;
 }
 
 .info-column {
@@ -120,11 +120,11 @@ body {
     justify-content: start;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 640px) {
     .info-columns-container {
         grid-template-columns: 1fr;
-        gap: 0.8rem;
-        margin-top: -5rem; /* 调整移动端上移间距 */
+        gap: 1rem;
+        margin-top: -3rem;
     }
 }
 
