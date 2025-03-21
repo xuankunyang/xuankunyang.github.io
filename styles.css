@@ -112,3 +112,37 @@ footer {
 .social-links a:hover {
     color: #007bff;
 }
+
+/* About section styles */
+.about-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.about-column {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.icon-list {
+    list-style: none;
+    line-height: 2.5rem;
+}
+
+.icon-list li i {
+    margin-right: 1rem;
+    color: #007bff;
+}
+
+@media (max-width: 768px) {
+    .about-container {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+    }
+}
