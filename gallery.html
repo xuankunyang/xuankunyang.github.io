@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Gallery</title>
+    <style>
+        .gallery-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .category-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+
+        .tab-button {
+            background: #2d2d2d;
+            color: #fff;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-button.active {
+            background: #4a4a4a;
+            transform: scale(1.05);
+        }
+
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+            margin: 2rem auto;
+            max-width: 1200px;
+        }
+
+        .carousel {
+            width: 100%;
+            white-space: nowrap;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .grid-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            scroll-snap-type: x mandatory;
+            scroll-padding: 0 1rem;
+            scrollbar-width: none;
+        }
+
+        .grid-container::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .grid-container::-webkit-scrollbar-thumb {
+            background: #4a4a4a;
+            border-radius: 2px;
+        }
+
+        .grid-container::-webkit-scrollbar-track {
+            background: #2d2d2d;
+        }
+
+        .grid-item {
+            flex: 0 0 80px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            scroll-snap-align: start;
+        }
+
+        .grid-item img {
+            width: 100%;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 2px;
+            transition: transform 0.2s;
+        }
+
+        .grid-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .grid-item.active {
+            border-color: #007bff;
+            transform: scale(1.1);
+        }
+.grid-item
+{
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .grid-item img {
+            width: 100%;
+            min-height: 200px;
+            aspect-ratio: 1/1;
+            object-fit: contain;
+            max-width: 100%;
+        }
+
+        .carousel-item {
+            width: 100%;
+            display: inline-block;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 600px;
+            object-fit: contain;
+            max-width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .carousel-item img {
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .grid-item img {
+                min-height: 150px;
+            }
+            .carousel-item img {
+                height: 300px;
+            }
+        }
+
+        .caption {
+            position: absolute;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            width: 100%;
+            padding: 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header id="main-nav">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="news.html">Updates</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </header>
+
+    <section class="gallery-container">
+        <h1>Photo Gallery</h1>
+        <div class="category-tabs">
+            <button class="tab-button active" data-category="scenery">Scenery</button>
+            <button class="tab-button" data-category="exhibition">Exhibitions</button>
+            <button class="tab-button" data-category="funny">Funny</button>
+            <button class="tab-button" data-category="myself">Myself</button>
+        </div>
+
+        <div class="carousel-container">
+            <button class="nav-button prev">❮</button>
+            <button class="nav-button next">❯</button>
+            <div class="carousel" id="scenery-carousel">
+                <!-- 动态加载风景类图片 -->
+            </div>
+            <div class="carousel" id="exhibition-carousel" style="display:none">
+                <!-- 动态加载展览类图片 -->
+            </div>
+            <div class="carousel" id="funny-carousel" style="display:none">
+                <!-- 动态加载搞笑类图片 -->
+            </div>
+            <div class="carousel" id="myself-carousel" style="display:none">
+                <!-- 动态加载个人类图片 -->
+            </div>
+        </div>
+    </section>
+
+    <div class="grid-container" id="scenery-grid">
+        <div class="grid-item">
+            <img src="imgs/scenery/Jianchuan Lake.JPG" alt="Scenery photo: Jianchuan Lake">
+        </div>
+    </div>
+
+    <div class="grid-container" id="exhibition-grid" style="display:none">
+        <div class="grid-item">
+            <img src="imgs/exhibition/Golden fingers.JPG" alt="Exhibition item: Golden fingers sculpture">
+        </div>
+    </div>
+
+    <div class="grid-container" id="funny-grid" style="display:none">
+        <div class="grid-item">
+            <img src="imgs/funny/cactus.JPG" alt="Funny photo: Cactus character">
+        </div>
+    </div>
+
+    <div class="grid-container" id="myself-grid" style="display:none">
+        <div class="grid-item">
+            <img src="imgs/myself/In Egypt exhibition.JPG" alt="Personal photo: Visiting Egypt exhibition">
+        </div>
+    </div>
+    </section>
+
+    <script>
+        // 初始化轮播数据
+        const categories = ['scenery', 'exhibition', 'funny', 'myself'];
+        let currentCategory = 'scenery';
+        let currentIndex = 0;
+        const imageFiles = {
+            scenery: ['Jianchuan Lake.JPG'],
+            exhibition: ['Golden fingers.JPG', 'sculpture.JPG'],
+            funny: ['Nobel.png', 'cactus.JPG'],
+            myself: ['Big Eyes.jpg', 'In Egypt exhibition.JPG']
+        };
+
+        const imageCounts = {
+            scenery: 1,
+            exhibition: 2,
+            funny: 2,
+            myself: 2
+        };
+
+        // 动态生成轮播项
+        function initCarousel(category) {
+            const carousel = document.querySelector(`#${category}-carousel`);
+            carousel.innerHTML = imageFiles[category].map((file, index) => `
+                <div class="carousel-item">
+                    <img src="imgs/${category}/${file}" alt="${category} photo ${index + 1}">
+                    <div class="caption">${category.charAt(0).toUpperCase() + category.slice(1)} Photo ${index + 1}</div>
+                </div>
+            `).join('');
+        }
+
+        function initGrid(category) {
+            const grid = document.querySelector(`#${category}-grid`);
+            grid.innerHTML = imageFiles[category].map((file, index) => `
+                <div class="grid-item">
+                    <img src="imgs/${category}/${file}" alt="${category} photo ${index + 1}">
+                </div>
+            `).join('');
+        }
+
+        function initAll() {
+            categories.forEach(category => {
+                initCarousel(category);
+                initGrid(category);
+            });
+            switchCategory('scenery');
+        }
+
+        document.addEventListener('DOMContentLoaded', initAll);
+
+        // 显示指定分类的轮播
+        function showCategory(category) {
+            document.querySelectorAll('.carousel').forEach(carousel => {
+                carousel.style.display = 'none';
+            });
+            const activeCarousel = document.querySelector(`#${category}-carousel`);
+            activeCarousel.style.display = 'block';
+            currentIndex = 0;
+            updateCarousel();
+        }
+
+        // 切换分类
+        function switchCategory(category) {
+    document.querySelectorAll('.category-tabs button').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`button[data-category='${category}']`).classList.add('active');
+            currentCategory = category;
+            currentIndex = 0;
+            showCategory(category);
+            updateCarousel();
+        }
+
+        // 更新轮播位置
+        function updateCarousel() {
+            document.querySelector(`#${currentCategory}-carousel`).style.transform = `translateX(-${currentIndex * 100}%)`;
+        }
+
+        // 导航控制
+        function navigate(direction) {
+            const items = document.querySelectorAll(`#${currentCategory}-carousel .carousel-item`);
+            currentIndex = Math.abs((currentIndex + direction) % items.length);
+            updateCarousel();
+        }
+
+        // 事件监听
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const category = button.dataset.category;
+                document.querySelectorAll('.grid-container').forEach(grid => {
+                    grid.style.display = 'none';
+                });
+                document.querySelector(`#${category}-grid`).style.display = 'grid';
+                switchCategory(category);
+            });
+        });
+
+        document.querySelectorAll('.nav-button').forEach(button => {
+            button.addEventListener('click', () => {
+                navigate(button.classList.contains('prev') ? -1 : 1);
+            });
+        });
+
+        // 初始化所有轮播
+        categories.forEach(category => {
+            initCarousel(category);
+            document.querySelector(`#${category}-carousel`).style.transition = 'transform 0.5s ease-in-out';
+        });
+        showCategory('scenery');
+
+        // 在初始化轮播后添加点击事件
+        categories.forEach(category => {
+            document.querySelectorAll(`#${category}-grid .grid-item`).forEach((item, index) => {
+                item.addEventListener('click', () => {
+                    currentIndex = index;
+                    showImage(currentIndex);
+                    // 移除所有激活状态
+                    document.querySelectorAll(`#${category}-grid .grid-item`).forEach(el => el.classList.remove('active'));
+                    // 添加当前激活状态
+                    item.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

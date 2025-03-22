@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Projects</title>
+</head>
+<body>
+    <header id="main-nav">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="news.html">Updates</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </header>
+
+    <section class="projects-section">
+        <h1>My Projects</h1>
+        <div class="project-list">
+            <div class="project-card">
+                <div class="project-header">
+                    <i class="fas fa-project-diagram project-icon"></i>
+                    <h2>Clustering Algorithms</h2>
+                </div>
+                <p>Implement multiple clustering algorithms and visualize analysis results<br><br>
+                    • This project implements two types of clustering algorithms, K-means and GMM.<br>
+                    • Data description: Four sets of data are given. The first two sets are simple low-dimensional data that can be directly visualized, and the last two sets are 128-dimensional high-dimensional data.<br>
+                    • In this project, I discussed and analyzed various situations such as the initialization mode of GMM, whether high-dimensional data needs dimensionality reduction and dimensionality reduction methods, and K-means convergence judgment, and conducted corresponding comparative experiments.<br>
+                    • The shortcoming of this project is that I did not give a comparative analysis with the results of directly calling the sk-learn library. If I have time later, I will make up for it.<br>
+                    • Last Update: May 2024 <br><br>
+<hr class="lang-divider">
+<br>
+<span class="lang-en">
+</span></p>
+                <div class="tech-tags">
+                    <span class="tech-tag">Machine Learning</span>
+                    <span class="tech-tag">Unsupervised Learning</span>
+                    <span class="tech-tag">Python</span>
+                </div>
+                <br>
+                <div class="project-links">
+                    <a href="https://github.com/xuankunyang/Clustering" target="_blank">
+                        <i class="fab fa-github"></i> GitHub Repo
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-header">
+                    <i class="fas fa-chart-line project-icon"></i>
+                    <h2>Water-filling Problem</h2>
+                </div>
+                <p>Establishment and solution of mathematical optimization model<br><br>
+                    • This project is a lab of the course "Linear Optimization and Convex Optimization". It discusses a classic optimization problem, the Water filling problem. Please refer to the project description file for details.<br>
+                    • In this project, I transformed the original problem into a classic optimization problem according to the mathematical derivation in the description file, and implemented two optimization algorithms, the gradient descent method and the Newton method, and proposed a Binary-search algorithm for the original problem. <br>
+                    • At the same time, I built two linear search modes and did a lot of comparative experiments. Please refer to the report file for details. <br>
+                    • In this project, I also compared my algorithm with Monkey-search as required. As the saying goes, 1xxxxx monkeys can't write Shakespeare's works. <br>
+                    • I am currently working on model optimization and convergence analysis. If you are interested in this, please come and communicate with me!<br>
+                    • Last Update: Jan 2025 <br><br>
+<hr class="lang-divider">
+<span class="lang-en">
+<br>
+</span></p>
+                <div class="tech-tags">
+                    <span class="tech-tag">Optimization algorithm</span>
+                    <span class="tech-tag">Mathematical modeling</span>
+                    <span class="tech-tag">Python</span>
+                </div>
+                <br>
+                <div class="project-links">
+                    <a href="https://github.com/xuankunyang/Optimization" target="_blank">
+                        <i class="fab fa-github"></i> GitHub Repo
+                    </a>
+                </div>
+            </div>
+            <div class="project-card">
+                <div class="project-header">
+                    <i class="fas fa-code project-icon"></i>
+                    <h2>C++ Learning</h2>
+                </div>
+                <p>C++ language features learning and modern C++ programming practice<br><br>
+                    • This repository is my cpp learning repository. Most of the questions in it are algorithm questions I have practiced. Most of them are from Luogu, and some are from ACM OJ.<br> 
+                    • I am a newbie in algorithm. If you are also interested in programming and algorithms, welcome to communicate with me!<br>
+                    • The defect of this repository is that I did not give the specific address of the questions. Most of them are named after the date of the day, making it difficult to trace the source of the questions.<br> 
+                    • Fortunately, the submission records should be saved on OJ.<br>
+                    • Last Update: Jan 2025 <br><br>
+<hr class="lang-divider">
+<br>
+<span class="lang-en">
+</span></p>
+                <div class="tech-tags">
+                    <span class="tech-tag">Algorithms</span>
+                    <span class="tech-tag">STL</span>
+                    <span class="tech-tag">C++</span>
+                </div>
+                <br>
+                <div class="project-links">
+                    <a href="https://github.com/xuankunyang/cpp_learning" target="_blank">
+                        <i class="fab fa-github"></i> GitHub Repo
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-header">
+                    <i class="fas fa-brain project-icon"></i>
+                    <h2>OOD on MNIST</h2>
+                </div>
+                <p>Research on anomaly detection and out-of-distribution detection based on MNIST dataset<br><br>
+                    • In this project, I explored some solutions to the OOD (out-of-distribution) problem with my partner. For an introduction to the OOD problem, please see <a href="https://blog.csdn.net/weixin_40056577/article/details/115668904" target="_blank">this blog</a>. <br>
+                    • In this project, we used the simplest image recognition convolutional neural network LeNet. For the detailed structure, please refer to the LeNet.svg file in the warehouse. The basic data set we used is also very simple, which is the most primitive handwritten digit recognition: MNIST. <br>
+                    • I am mainly responsible for the construction, parameter adjustment, training and deployment of the neural network, and my partner is mainly responsible for the data augmentation part.<br>
+                    • At the same time, we referred to some cutting-edge methods for solving OOD problems, such as <a href="https://arxiv.org/abs/1907.02893" target="_blank" class="paper-btn">IRM</a>, for a detailed introduction, please refer to <a href="https://zhuanlan.zhihu.com/p/567666715" target="_blank" class="zhihu-btn">Zhihu article</a>.<br>
+                    • Moreover, we also referred to the implementation of the IRM algorithm and did some analysis. The implementation of IRM has also been attached to the warehouse. <br>
+                    • Last but not least, in listening to the collective report of the project, we also gained some good ideas for OOD problems given by many other groups. If you are also interested in this issue, welcome to discuss with me!<br>
+                    • Last Update: Jul 2024 <br><br>
+</p>
+<hr class="lang-divider">
+<br>
+<span class="lang-en">
+</span>
+                <div class="tech-tags">
+                    <span class="tech-tag">OOD Detection</span>
+                    <span class="tech-tag">Neural Networks</span>
+                    <span class="tech-tag">PyTorch</span>
+                </div>
+                <br>
+                <div class="project-links">
+                    <a href="https://github.com/xuankunyang/OOD-on-MNIST" target="_blank" class="github-btn">
+                        <i class="fab fa-github"></i> GitHub Repo
+                    </a>
+                    <a href="https://arxiv.org/abs/1907.02893" target="_blank" class="paper-btn">
+                        <i class="fas fa-file-alt"></i> Research Paper
+                    </a>
+                </div>
+            </div>
+            <!-- Add more projects as needed -->
+        </div>
+    </section>
+</body>
+</html>
