@@ -94,12 +94,18 @@
             border-color: #007bff;
             transform: scale(1.1);
         }
-.grid-item
-{
-            border-radius: 8px;
-            transition: transform 0.3s ease;
-        }
+@media (min-width: 1025px) {
+    .grid-item {
+        border-radius: 8px;
+    }
+}
 
+@media (max-width: 1024px) {
+    .grid-item {
+        border-radius: 8px;
+        transition: transform 0.3s ease;
+    }
+}
         .grid-item img {
             width: 100%;
             min-height: 200px;
@@ -329,6 +335,16 @@
                 });
             });
         });
-    </script>
+</script>
+<script src="scripts.js"></script>
 </body>
+        
+        <script src="scripts.js"></script>
+    }
+</style>
+</head>
+<body>
+    <!-- 页面内容 -->
+</body>
+    }
 </html>
