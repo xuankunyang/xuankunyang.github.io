@@ -96,3 +96,39 @@ window.addEventListener('resize', () => {
         page.style.minHeight = window.innerHeight + 'px';
     });
 });
+
+
+// Gallery image modal functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const images = document.querySelectorAll('.gallery-container img');
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    
+    const modalContent = document.createElement('img');
+    modalContent.className = 'modal-content';
+    
+    const closeSpan = document.createElement('span');
+    closeSpan.className = 'close';
+    closeSpan.innerHTML = '&times;';
+    
+    modal.appendChild(closeSpan);
+    modal.appendChild(modalContent);
+    document.body.appendChild(modal);
+
+    images.forEach(img => {
+        img.addEventListener('click', () => {
+            modal.style.display = 'block';
+            modalContent.src = img.src;
+        });
+    });
+
+    closeSpan.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
