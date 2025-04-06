@@ -334,6 +334,15 @@ footer {
     z-index: 1000;
 }
 
+.publications-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem;
+    z-index: 1000;
+}
+
 .projects-section {
     padding-bottom: 3rem;
 }
@@ -423,17 +432,28 @@ footer {
 }
 
 
-.profile-title, .gallery-title {
+.profile-title{
     font-size: 2.5rem;
     font-weight: 400;
     margin-bottom: 1rem;
     margin-top: 3rem;
 }
 
-
-/* Gallery specific title adjustments */
-.gallery-title {
+.gallery-title{
     font-size: 2.5rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+    margin-top: 5rem;
+}
+
+.page-title{
+    color: white;
+    width: 100%;
+    padding: 1rem;
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 2.5rem;
+    
 }
 
 .tab-button {
@@ -581,7 +601,6 @@ footer {
     min-height: 100vh;
 }
 
-
 .project-list {
     /* 缩略图横向滚动布局 */
     .grid-container {
@@ -724,17 +743,10 @@ footer {
 
 }
 
-.projects-section h1 {
-    text-align: center;
-    font-size: 2.5rem;
-    margin-bottom: 2rem;
-}
-
 
 @media (max-width: 768px) {
     .projects-section h1 {
         font-size: 2rem;
-        margin-top: 3rem;
     }
 
 }
@@ -746,22 +758,19 @@ footer {
     }
 
 }
-
 .grid-container {
     display: flex; /* 使用flex布局实现水平排列 */
     overflow-x: auto; /* 允许水平滚动 */
-    max-width: 60%; /* 限制展示空间为页面宽度的60% */
+    max-width: 100%; /* 使用整个页面宽度 */
     margin: 0 auto;
     padding: 0.5rem 1rem;
-    gap: 1rem;
+    gap: 0.5rem;
     scrollbar-width: thin; /* 设置滚动条宽度 */
 }
-
 
 .grid-container::-webkit-scrollbar {
     height: 8px; /* 设置滚动条高度 */
 }
-
 
 .grid-container::-webkit-scrollbar-thumb {
     background: #4a4a4a;

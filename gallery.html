@@ -71,7 +71,7 @@
         }
 
         .grid-item {
-            flex: 0 0 80px;
+            flex: center;
             cursor: pointer;
             transition: all 0.3s ease;
             border: 2px solid transparent;
@@ -141,15 +141,6 @@
             }
         }
 
-        .caption {
-            position: absolute;
-            bottom: 0;
-            background: rgba(0,0,0,0.7);
-            color: white;
-            width: 100%;
-            padding: 1rem;
-            text-align: center;
-        }
     </style>
 </head>
 <body>
@@ -157,14 +148,14 @@
         <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="projects.html">Projects</a></li>
+            <li><a href="publications.html">Pulications</a></li>
             <li><a href="gallery.html">Gallery</a></li>
             <li><a href="news.html">News</a></li>
-            <li><a href="contact.html">Contact</a></li>
         </ul>
     </header>
 
     <section class="gallery-container">
-        <h1 class="gallery-title" style="text-align: center">Photo Gallery</h1>
+        <h1 style="text-align: center; font-size: 2.5rem; margin-top: 4rem;">Photo Gallery</h1>
         <div class="category-tabs">
             <button class="tab-button active" data-category="scenery">Scenery</button>
             <button class="tab-button" data-category="exhibition">Exhibitions</button>
@@ -178,13 +169,13 @@
             <div class="carousel" id="scenery-carousel">
                 <!-- 动态加载风景类图片 -->
             </div>
-            <div class="carousel" id="exhibition-carousel" style="display:none">
+            <div class="carousel" id="exhibition-carousel">
                 <!-- 动态加载展览类图片 -->
             </div>
-            <div class="carousel" id="funny-carousel" style="display:none">
+            <div class="carousel" id="funny-carousel">
                 <!-- 动态加载搞笑类图片 -->
             </div>
-            <div class="carousel" id="myself-carousel" style="display:none">
+            <div class="carousel" id="myself-carousel">
                 <!-- 动态加载个人类图片 -->
             </div>
         </div>
@@ -196,24 +187,29 @@
         </div>
     </div>
 
-    <div class="grid-container" id="exhibition-grid" style="display:none">
+    <section>
+    <div class="grid-container" id="exhibition-grid">
         <div class="grid-item">
             <img src="imgs/exhibition/Golden fingers.JPG" alt="Exhibition item: Golden fingers sculpture">
         </div>
     </div>
 
-    <div class="grid-container" id="funny-grid" style="display:none">
+    <div class="grid-container" id="funny-grid">
         <div class="grid-item">
             <img src="imgs/funny/cactus.JPG" alt="Funny photo: Cactus character">
         </div>
     </div>
 
-    <div class="grid-container" id="myself-grid" style="display:none">
+    <div class="grid-container" id="myself-grid">
         <div class="grid-item">
             <img src="imgs/myself/In Egypt exhibition.JPG" alt="Personal photo: Visiting Egypt exhibition">
         </div>
     </div>
     </section>
+
+    <footer class="gallery-footer">
+        <p>© 2025 Xuankun Yang. All rights reserved</p>
+    </footer>
 
     <script>
         // 初始化轮播数据
@@ -221,17 +217,17 @@
         let currentCategory = 'scenery';
         let currentIndex = 0;
         const imageFiles = {
-            scenery: ['Jianchuan Lake.JPG'],
-            exhibition: ['Golden fingers.JPG', 'sculpture.JPG'],
+            scenery: ['Jianchuan Lake.JPG', 'Metasequoia.JPG', 'Min-Pu Bridge.JPG'],
+            exhibition: ['Golden fingers.JPG', 'sculpture.JPG', 'Adam and Eve.JPG', 'Fu Chai\'s Sword.JPG', 'Green House.JPG', 'Inca.JPG', 'Oracle.JPG', 'Picasso.JPG', 'Pit Boat.JPG'],
             funny: ['Nobel.png', 'cactus.JPG'],
-            myself: ['Big Eyes.jpg', 'In Egypt exhibition.JPG']
+            myself: ['Big Eyes.jpg', 'In Egypt exhibition.JPG', 'Snow.JPG']
         };
 
         const imageCounts = {
-            scenery: 1,
-            exhibition: 2,
+            scenery: 3,
+            exhibition: 9,
             funny: 2,
-            myself: 2
+            myself: 3
         };
 
         // 动态生成轮播项
@@ -325,8 +321,10 @@
         categories.forEach(category => {
             document.querySelectorAll(`#${category}-grid .grid-item`).forEach((item, index) => {
                 item.addEventListener('click', () => {
-                    currentIndex = index;
-                    showImage(currentIndex);
+                    currentCategory = category; // 确保当前分类正确
+                    currentIndex = index; // 更新当前轮播的索引为点击的缩略图索引
+                    showCategory(category); // 显示对应分类的轮播
+                    updateCarousel(); // 更新轮播位置
                     // 移除所有激活状态
                     document.querySelectorAll(`#${category}-grid .grid-item`).forEach(el => el.classList.remove('active'));
                     // 添加当前激活状态
@@ -339,10 +337,35 @@
 
 </style>
 </head>
-    <!-- 页面内容 -->
-    <footer class="gallery-footer">
-        <p>© 2025 Xuankun Yang. All rights reserved</p>
-    </footer>
+
+<template>
+  <div class="swiper-container">
+    <div class="header">xxxxxxxx</div>
+    <div
+      id="sliderBox"
+      class="slider-box"
+      @mouseenter="changeautoswiperstatusT"
+      @mouseleave="changeautoswiperstatusF"
+    >
+      <div id="sliderWrap" class="content-wrap">
+        <!-- 这里必须要放两个一样长度、数据的list(具体参考轮播原理) -->
+        <template v-for="(el, i) in 2">
+          <div v-for="(item, idx) in data" id="elCard" :key="`${i}${idx}`" class="swiper-card">
+            <div class="img">
+              <v-img width="240" height="100" :src="item.img" />
+            </div>
+            <div class="text-box">
+              <div class="title">{{ item.title }}</div>
+              <div class="desc">{{ item.desc }}</div>
+            </div>
+          </div>
+        </template>
+      </div>
+      <div ref="sliderBar" class="slider_bar" :style="stop ? 'display:block' : 'display:none'">
+        <div ref="scrollPoints" class="scroll_points" @mousedown="startMove"></div>
+      </div>
+    </div>
+  </div>
 
     <script src="scripts.js"></script>
 </body>
