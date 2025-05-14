@@ -1,6 +1,6 @@
 ---
 title: Clustering Algorithms
-date: 2024-5-31
+date: 2024-05-31
 external_link: https://github.com/xuankunyang/Clustering
 tags:
   - Machine Learning

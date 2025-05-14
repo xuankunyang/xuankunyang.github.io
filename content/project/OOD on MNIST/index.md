@@ -1,6 +1,6 @@
 ---
 title: OOD on MNIST
-date: 2024-7-20
+date: 2024-07-20
 external_link: https://github.com/xuankunyang/OOD-on-MNIST
 tags:
   - OOD Detection

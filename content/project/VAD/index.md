@@ -1,10 +1,10 @@
 ---
-title: Clustering Algorithms
-date: 2024-5-31
-external_link: https://github.com/xuankunyang/Clustering
+title: Voice Activity Detection
+date: 2025-05-04
+external_link: https://github.com/xuankunyang/Voice_Activity_Detection
 tags:
   - Machine Learning
-  - Unsupervised Learning
+  - Voice featured
   - Python
 ---
 
