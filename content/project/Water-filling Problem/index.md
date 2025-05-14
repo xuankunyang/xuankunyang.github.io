@@ -1,6 +1,6 @@
 ---
 title: Water-filling Problem
-date: 2025-1-12
+date: 2025-01-12
 external_link: https://github.com/xuankunyang/Optimization
 tags:
   - Optimization algorithm
