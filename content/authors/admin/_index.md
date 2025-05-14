@@ -10,7 +10,7 @@ first_name: Xuankun
 last_name: Yang
 
 # Status emoji
-status: busy recently
+status:
   icon: 😶‍🌫️
 
 # Is this the primary user of the site?
