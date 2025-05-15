@@ -142,11 +142,12 @@ skills:
         description: ''
         percent: 90
         icon: code-bracket
-        
-      - name: Basketball
-        description: ''
-        percent: 80
-        icon: basketball
+
+      # - name: Basketball
+      #   description: ''
+      #   percent: 80
+      #   icon: basketball
+      
       - name: Volleyball
         description: 'Looking up into the sky~'
         percent: 90

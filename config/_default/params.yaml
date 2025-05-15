@@ -34,18 +34,24 @@ header:
     fixed_to_top: true
     show_search: true
     show_theme_chooser: true
+    highlight_active_link: true
+    # Show a language chooser (if you have translated your site content)?
+    show_translations: true
+    # If `show_translations` is enabled, do you wish to hide the current language name?
+    hide_language_name: false
     logo:
-      text: "Your Name"
+      text: "Xuankun Yang"
 
 # Site footer
 footer:
   copyright:
-    notice: '© {year} Me. This work is licensed under {license}'
+    notice: '© {year} Xuankun Yang.'
     license:
       enable: true
       allow_derivatives: false
       share_alike: true
       allow_commercial: false
+  show_translations: true
 
 # Localization
 locale:
