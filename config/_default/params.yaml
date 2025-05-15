@@ -15,7 +15,7 @@ marketing:
     local_business_type: ''
     org_name: ''
     description: 'Xuankun Yang'
-    twitter: 'GetResearchDev'
+    twitter: ''
   analytics:
     google_analytics: ''
     baidu_tongji: ''
@@ -64,3 +64,15 @@ features:
     enable: true
   privacy_pack:
     enable: false
+  comment:
+    # Choose a provider: giscus, disqus, commento, or '' to disable commenting
+    provider: 'giscus'
+    giscus:
+      repo: 'xuankunyang/xuankunyang.github.io'
+      repo_id: 'R_kgDOOp-qaw'
+      category: 'Announcements'
+      category_id: 'DIC_kwDOOp-qa84CqL0m'
+      theme: preferred_color_scheme
+      language_code: en
+      mapping: pathname
+    
