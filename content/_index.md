@@ -1,7 +1,7 @@
 ---
 # Leave the homepage title empty to use the site title
 title: "Xuankun Yang"
-date: 2025-5-15
+date: 2025-05-15
 type: landing
 
 design:
