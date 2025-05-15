@@ -36,15 +36,15 @@ I conducted extensive experiments comparing frame division methods (frame length
 ### 1. Preprocessing
 Pre-emphasis enhances high-frequency components to reduce spectral leakage.
 
-$$
-  y[n] = x[n] - \alpha x[n-1] 
-$$ where $x[n]$ is the input signal, $y[n]$ is the output, and $\alpha$ (typically 0.95–0.97) controls emphasis strength.
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mi>y</mi><mo stretchy="false">[</mo><mi>n</mi><mo stretchy="false">]</mo><mo>=</mo><mi>x</mi><mo stretchy="false">[</mo><mi>n</mi><mo stretchy="false">]</mo><mo>−</mo><mi>α</mi><mi>x</mi><mo stretchy="false">[</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">]</mo></math>
+
+where $x[n]$ is the input signal, $y[n]$ is the output, and $\alpha$ (typically 0.95–0.97) controls emphasis strength.
 
 - **Pre-emphasis Impact**: 
 
   Effect of pre-emphasis with varying $\alpha$
 
-  ![](/vad/latex/figs/counting_on_pre_emphasis.png)
+  ![](/counting_on_pre_emphasis.png)
 
 ### 2. Framing
 The signal is divided into overlapping frames. For signal length $N$, frame length $L$, and frame shift $S$, the number of frames $n_{\text{frames}}$ is:
@@ -75,7 +75,7 @@ $$
 
   Impact of window functions (e.g., Hamming, Hanning)
 
-  ![](/vad/latex/figs/counting_on_windows.png)
+  ![](./counting_on_windows.png)
 
 ### 4. Feature Extraction
 Extracted features (total dimension: 69) include:
@@ -90,7 +90,7 @@ Extracted features (total dimension: 69) include:
 
   Frame-level energy plots
 
-  ![](/vad/latex/figs/energies.png)
+  ![](./energies.png)
 
 - **Short-Time Zero-Crossing Rate** (dimension: 1):
 
@@ -102,7 +102,7 @@ Extracted features (total dimension: 69) include:
 
   Visualizing zero-crossing patterns
 
-  ![](/vad/latex/figs/ZCR.png)
+  ![](./ZCR.png)
 
 - **Fundamental Frequency (Pitch)** (dimension: 1):
 
@@ -118,7 +118,7 @@ Extracted features (total dimension: 69) include:
 
   Indicates the spectral "center of mass"
 
-  ![](/vad/latex/figs/spectral_mean.png)
+  ![](./spectral_mean.png)
 
 - **Sub-band Energies** (dimension: 6):
 
