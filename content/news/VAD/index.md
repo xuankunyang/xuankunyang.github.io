@@ -1,20 +1,20 @@
 ---
 title: 🎙️ I have opensourced my VAD project recently
 summary: I conducted extensive experiments comparing frame division methods and model performances, with rich visualizations.
-date: 2025-05-15
+date: 2025-05-05
 authors:
   - admin
 tags:
   - Machine Learning
+  - Voice
   - Python
-  - 
 image:
   caption: 'GitHub Repo: [VAD](https://github.com/xuankunyang/Voice-Activity-Detection)'
 ---
 
 ## Voice Activity Detection (VAD) Project
 
-#### Summary
+### Summary
 
 🎯 **Voice Activity Detection (VAD)**, or voice endpoint detection, identifies time segments in an audio signal containing speech. This is a critical preprocessing step for automatic speech recognition (ASR) and voice wake-up systems. This project lays the groundwork for my upcoming ASR project 🤭.
 
