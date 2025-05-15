@@ -15,7 +15,7 @@ commentable: true
 
 ---
 
-## Voice Activity Detection (VAD) Project
+## Voice Activity Detection(VAD)
 
 ### Summary
 
