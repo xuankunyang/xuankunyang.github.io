@@ -13,7 +13,8 @@ sections:
   - block: resume-experience
     content:
       username: admin
-    # Show a call-to-action button under your biography? (optional)
+      text: ""
+      # Show a call-to-action button under your biography? (optional)
       button:
         text: Download CV
         url: uploads/pesudoresume.pdf
