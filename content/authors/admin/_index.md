@@ -40,7 +40,7 @@ profiles:
   - icon: brands/github
     url: https://github.com/xuankunyang
   - icon: brands/weixin
-    url: static/uploads/wechat.jpg
+    url: uploads/wechat.jpg
   - icon: brands/linkedin
     url: https://www.linkedin.com/in/%E7%82%AB%E9%94%9F-%E6%9D%A8-5bb877365/
   - icon: brands/xhs
