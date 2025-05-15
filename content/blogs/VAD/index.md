@@ -30,38 +30,36 @@ The VAD pipeline processes a speech signal as follows:
 🍻 **Project Highlights**:
 I conducted extensive experiments comparing frame division methods (frame length and shift) and model performances, with rich visualizations. For details, see the report in `vad/latex/`. If you're interested in voice technologies, let's connect!
 
-
 ### Methodology
 
 #### 1. Preprocessing
 Pre-emphasis enhances high-frequency components to reduce spectral leakage.
 
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mi>y</mi><mo stretchy="false">[</mo><mi>n</mi><mo stretchy="false">]</mo><mo>=</mo><mi>x</mi><mo stretchy="false">[</mo><mi>n</mi><mo stretchy="false">]</mo><mo>−</mo><mi>α</mi><mi>x</mi><mo stretchy="false">[</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">]</mo></math>
+$$ y[n] = x[n] - \alpha x[n-1] $$ 
 
-where <math xmlns="http://www.w3.org/1998/Math/MathML" display=""><mi>x</mi><mo stretchy="false">[</mo><mi>n</mi><mo stretchy="false">]</mo></math> is the input signal, <math xmlns="http://www.w3.org/1998/Math/MathML" display=""><mi>y</mi><mo stretchy="false">[</mo><mi>n</mi><mo stretchy="false">]</mo></math> is the output, and <math xmlns="http://www.w3.org/1998/Math/MathML" display=""><mi>α</mi></math> (typically 0.95–0.97) controls emphasis strength.
+where $x[n]$ is the input signal, $y[n]$ is the output, and $\alpha$ (typically 0.95–0.97) controls emphasis strength.
 
 - **Pre-emphasis Impact**: 
 
-  Effect of pre-emphasis with varying <math xmlns="http://www.w3.org/1998/Math/MathML" display=""><mi>α</mi></math>
+  Effect of pre-emphasis with varying $\alpha$
 
   ![](/counting_on_pre_emphasis.png)
 
 #### 2. Framing
-The signal is divided into overlapping frames. For signal length <math xmlns="http://www.w3.org/1998/Math/MathML" display=""><mi>N</mi></math>, frame length <math xmlns="http://www.w3.org/1998/Math/MathML" display=""><mi>L</mi></math>, and frame shift <math xmlns="http://www.w3.org/1998/Math/MathML" display=""><mi>S</mi></math>, the number of frames <math xmlns="http://www.w3.org/1998/Math/MathML" display=""><msub><mi>n</mi><mrow><mtext>frames</mtext></mrow></msub></math> is:
+The signal is divided into overlapping frames. For signal length $N$, frame length $L$, and frame shift $S$, the number of frames $n_{\text{frames}}$ is:
 
 - Without zero-padding (floor): 
-    <math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msub><mi>n</mi><mrow><mtext>frames</mtext></mrow></msub><mo>=</mo><mrow data-mjx-texclass="INNER"><mo data-mjx-texclass="OPEN">⌊</mo><mfrac><mrow><mi>N</mi><mo>−</mo><mi>L</mi></mrow><mi>S</mi></mfrac><mo data-mjx-texclass="CLOSE">⌋</mo></mrow><mo>+</mo><mn>1</mn></math>
+    $$ n_{\text{frames}} = \left\lfloor \frac{N - L}{S} \right\rfloor + 1 $$
 
 
 
 - With zero-padding (ceiling): 
-    <math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msub><mi>n</mi><mrow><mtext>frames</mtext></mrow></msub><mo>=</mo><mrow data-mjx-texclass="INNER"><mo data-mjx-texclass="OPEN">⌈</mo><mfrac><mrow><mi>N</mi><mo>−</mo><mi>L</mi></mrow><mi>S</mi></mfrac><mo data-mjx-texclass="CLOSE">⌉</mo></mrow><mo>+</mo><mn>1</mn></math>
-  Zero-padding length: 
-    <math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msub><mi>n</mi><mrow><mtext>paddle</mtext></mrow></msub><mo>=</mo><mo stretchy="false">(</mo><msub><mi>n</mi><mrow><mtext>frames</mtext></mrow></msub><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mo>⋅</mo><mi>S</mi><mo>+</mo><mi>L</mi><mo>−</mo><mi>N</mi></math>
+    $$ n_{\text{frames}} = \left\lceil \frac{N - L}{S} \right\rceil + 1 $$ 
+    Zero-padding length: $$ n_{\text{paddle}} = (n_{\text{frames}} - 1) \cdot S + L - N $$
 
 #### 3. Windowing
 A window function (e.g., Hamming) is applied to each frame.
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msubsup><mi>x</mi><mi>i</mi><mrow><mtext>windowed</mtext></mrow></msubsup><mo stretchy="false">[</mo><mi>n</mi><mo stretchy="false">]</mo><mo>=</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false">[</mo><mi>n</mi><mo stretchy="false">]</mo><mo>⋅</mo><mi>w</mi><mo stretchy="false">[</mo><mi>n</mi><mo stretchy="false">]</mo><mo>,</mo><mstyle scriptlevel="0"><mspace width="2em" height="2em"></mspace></mstyle><mrow><mstyle mathsize="2.49em"></mstyle></mrow><mn>0</mn><mo>≤</mo><mi>n</mi><mo>&lt;</mo><mi>L</mi><mrow><mstyle mathsize="1.73em"></mstyle></mrow></math>
+ $$ x_i^{\text{windowed}}[n] = x_i[n] \cdot w[n], \quad 0 \leq n < L $$
 
 - **Window Type Comparison**: 
 
@@ -76,8 +74,8 @@ Extracted features (total dimension: 69) include:
 
   Measures frame energy, indicating loudness:
 
-  <math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mi>E</mi><mo>=</mo><munderover><mo data-mjx-texclass="OP">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>L</mi><mo>−</mo><mn>1</mn></mrow></munderover><msubsup><mi>s</mi><mi>i</mi><mn>2</mn></msubsup></math> 
-  where <math xmlns="http://www.w3.org/1998/Math/MathML" display=""><msub><mi>s</mi><mi>i</mi></msub></math> is the <math xmlns="http://www.w3.org/1998/Math/MathML" display=""><mi>i</mi></math>-th sample in the frame, and <math xmlns="http://www.w3.org/1998/Math/MathML" display=""><mi>L</mi></math> is the frame length.
+  $$ E = \sum_{i=0}^{L-1} s_i^2 $$ 
+  where $s_i$ is the $i$-th sample in the frame, and $L$ is the frame length.
 
   Frame-level energy plots:
 
@@ -85,9 +83,7 @@ Extracted features (total dimension: 69) include:
 
 - **Short-Time Zero-Crossing Rate** (dimension: 1):
 
-  Counts zero crossings to distinguish voiced/unvoiced speech.
-
-  <math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mi>Z</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><munderover><mo data-mjx-texclass="OP">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>L</mi><mo>−</mo><mn>1</mn></mrow></munderover><mrow data-mjx-texclass="INNER"><mo data-mjx-texclass="OPEN">|</mo><mtext>sgn</mtext><mo stretchy="false">(</mo><msub><mi>s</mi><mi>i</mi></msub><mo stretchy="false">)</mo><mo>−</mo><mtext>sgn</mtext><mo stretchy="false">(</mo><msub><mi>s</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="false">)</mo><mo data-mjx-texclass="CLOSE">|</mo></mrow><mo>,</mo><mstyle scriptlevel="0"><mspace width="1em"></mspace></mstyle><mtext>sgn</mtext><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><mrow data-mjx-texclass="INNER"><mo data-mjx-texclass="OPEN">{</mo><mtable columnalign="left left" columnspacing="1em" rowspacing=".2em"><mtr><mtd><mn>1</mn><mo>,</mo></mtd><mtd><mi>x</mi><mo>≥</mo><mn>0</mn></mtd></mtr><mtr><mtd><mn>0</mn><mo>,</mo></mtd><mtd><mi>x</mi><mo>&lt;</mo><mn>0</mn></mtd></mtr></mtable><mo data-mjx-texclass="CLOSE" fence="true" stretchy="true" symmetric="true"></mo></mrow></math>
+  Counts zero crossings to distinguish voiced/unvoiced speech: $$ Z = \frac{1}{2} \sum_{i=0}^{L-1} \left| \text{sgn}(s_i) - \text{sgn}(s_{i-1}) \right|, \quad \text{sgn}(x) = \begin{cases} 1, & x \geq 0 \\ 0, & x < 0 \end{cases} $$
 
   Visualizing zero-crossing patterns:
 
@@ -95,24 +91,26 @@ Extracted features (total dimension: 69) include:
 
 - **Fundamental Frequency (Pitch)** (dimension: 1):
 
-  Estimated via autocorrelation, representing the fundamental frequency. 
+  Estimated via autocorrelation, representing the fundamental frequency: 
   
-  <math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mi>R</mi><mo stretchy="false">(</mo><mi>τ</mi><mo stretchy="false">)</mo><mo>=</mo><munderover><mo data-mjx-texclass="OP">∑</mo><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>L</mi><mo>−</mo><mn>1</mn><mo>−</mo><mi>τ</mi></mrow></munderover><mi>s</mi><mo stretchy="false">[</mo><mi>n</mi><mo stretchy="false">]</mo><mi>s</mi><mo stretchy="false">[</mo><mi>n</mi><mo>+</mo><mi>τ</mi><mo stretchy="false">]</mo><mo>,</mo><mstyle scriptlevel="0"><mspace width="1em"></mspace></mstyle><msub><mi>f</mi><mn>0</mn></msub><mo>=</mo><mfrac><msub><mi>f</mi><mi>s</mi></msub><msub><mi>τ</mi><mrow><mtext>max</mtext></mrow></msub></mfrac></math>
-
-  where <math xmlns="http://www.w3.org/1998/Math/MathML" display=""><mi>R</mi><mo stretchy="false">(</mo><mi>τ</mi><mo stretchy="false">)</mo></math> is the autocorrelation, <math xmlns="http://www.w3.org/1998/Math/MathML" display=""><msub><mi>τ</mi><mrow><mtext>max</mtext></mrow></msub></math> is the lag maximizing <math xmlns="http://www.w3.org/1998/Math/MathML" display=""><mi>R</mi><mo stretchy="false">(</mo><mi>τ</mi><mo stretchy="false">)</mo></math>, <math xmlns="http://www.w3.org/1998/Math/MathML" display=""><msub><mi>f</mi><mi>s</mi></msub></math> is the sampling frequency (16 kHz), and <math xmlns="http://www.w3.org/1998/Math/MathML" display=""><mi>s</mi><mo stretchy="false">[</mo><mi>n</mi><mo stretchy="false">]</mo></math> is the frame signal.
+  $$ R(\tau) = \sum_{n=0}^{L-1-\tau} s[n] s[n+\tau], \quad f_0 = \frac{f_s}{\tau_{\text{max}}} $$ 
+  where $R(\tau)$ is the autocorrelation, $\tau_{\text{max}}$ is the lag maximizing $R(\tau)$, $f_s$ is the sampling frequency (16 kHz), and $s[n]$ is the frame signal.
   
   And I have tried many smooth methods, see it in my report.
 
-- **Spectral Centroid** (dimension: 1):
+- **Spectral Mean** (dimension: 1):
 
   Indicates the spectral "center of mass"
+
+  $$ \mu_n = \frac{1}{K}\mid X(n, k)\mid $$ 
+  where $X(n, k)$ is the Fourier transform magnitude at bin $k$ in $n-$th frame, and $K$ is the number of bins.
 
   ![](./spectral_mean.png)
 
 - **Sub-band Energies** (dimension: 6):
 
-  <math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msub><mi>E</mi><mi>m</mi></msub><mo>=</mo><munder><mo data-mjx-texclass="OP">∑</mo><mrow><mi>k</mi><mo>∈</mo><msub><mi>B</mi><mi>m</mi></msub></mrow></munder><mrow><mo stretchy="false">|</mo></mrow><mi>S</mi><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo><msup><mrow><mo stretchy="false">|</mo></mrow><mn>2</mn></msup><mo>,</mo><mstyle scriptlevel="0"><mspace width="1em"></mspace></mstyle><mi>m</mi><mo>=</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mo>…</mo><mo>,</mo><mn>6</mn></math>
-  where <math xmlns="http://www.w3.org/1998/Math/MathML" display=""><msub><mi>B</mi><mi>m</mi></msub></math> is the set of frequency bins in the <math xmlns="http://www.w3.org/1998/Math/MathML" display=""><mi>m</mi></math>-th sub-band.
+  $$ E_m = \sum_{k \in B_m} |S(k)|^2, \quad m = 1, 2, \ldots, 6 $$ 
+  where $B_m$ is the set of frequency bins in the $m$-th sub-band.
 
   Energy in 6 frequency sub-bands
 
@@ -120,11 +118,9 @@ Extracted features (total dimension: 69) include:
 
 - **Filter Banks (FBanks)** (dimension: 23):
 
-  <math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msub><mi>E</mi><mi>m</mi></msub><mo>=</mo><munderover><mo data-mjx-texclass="OP">∑</mo><mrow><mi>k</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>K</mi><mo>−</mo><mn>1</mn></mrow></munderover><mrow><mo stretchy="false">|</mo></mrow><mi>S</mi><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo><msup><mrow><mo stretchy="false">|</mo></mrow><mn>2</mn></msup><msub><mi>H</mi><mi>m</mi></msub><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo><mo>,</mo><mstyle scriptlevel="0"><mspace width="1em"></mspace></mstyle><mi>m</mi><mo>=</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mo>…</mo><mo>,</mo><mn>23</mn></math>
-
-  where <math xmlns="http://www.w3.org/1998/Math/MathML" display=""><msub><mi>H</mi><mi>m</mi></msub><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></math> is the <math xmlns="http://www.w3.org/1998/Math/MathML" display=""><mi>m</mi></math>-th mel filter’s frequency response, and the mel scale is: 
-
-  <math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mtext>mel</mtext><mo stretchy="false">(</mo><mi>f</mi><mo stretchy="false">)</mo><mo>=</mo><mn>2595</mn><msub><mi>log</mi><mrow><mn>10</mn></mrow></msub><mo data-mjx-texclass="NONE">⁡</mo><mrow data-mjx-texclass="INNER"><mo data-mjx-texclass="OPEN">(</mo><mn>1</mn><mo>+</mo><mfrac><mi>f</mi><mn>700</mn></mfrac><mo data-mjx-texclass="CLOSE">)</mo></mrow></math>
+  $$ E_m = \sum_{k=0}^{K-1} |S(k)|^2 H_m(k), \quad m = 1, 2, \ldots, 23 $$ 
+  where $H_m(k)$ is the $m$-th mel filter’s frequency response, and the mel scale is: 
+  $$ \text{mel}(f) = 2595 \log_{10}\left(1 + \frac{f}{700}\right) $$
 
   Mel-scale filter bank energies
 
@@ -132,28 +128,24 @@ Extracted features (total dimension: 69) include:
 
 - **Mel-Frequency Cepstral Coefficients (MFCCs)** (dimension: 12):
 
-  <math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msub><mi>c</mi><mi>n</mi></msub><mo>=</mo><munderover><mo data-mjx-texclass="OP">∑</mo><mrow><mi>m</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>M</mi></mrow></munderover><mi>log</mi><mo data-mjx-texclass="NONE">⁡</mo><msub><mi>E</mi><mi>m</mi></msub><mi>cos</mi><mo data-mjx-texclass="NONE">⁡</mo><mrow data-mjx-texclass="INNER"><mo data-mjx-texclass="OPEN">(</mo><mi>n</mi><mrow data-mjx-texclass="INNER"><mo data-mjx-texclass="OPEN">(</mo><mi>m</mi><mo>−</mo><mn>0.5</mn><mo data-mjx-texclass="CLOSE">)</mo></mrow><mfrac><mi>π</mi><mi>M</mi></mfrac><mo data-mjx-texclass="CLOSE">)</mo></mrow><mo>,</mo><mstyle scriptlevel="0"><mspace width="1em"></mspace></mstyle><mi>n</mi><mo>=</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mo>…</mo><mo>,</mo><mn>12</mn></math>
-  
-  where <math xmlns="http://www.w3.org/1998/Math/MathML" display=""><msub><mi>E</mi><mi>m</mi></msub><mo>=</mo><munderover><mo data-mjx-texclass="OP">∑</mo><mrow><mi>k</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>K</mi><mo>−</mo><mn>1</mn></mrow></munderover><mrow><mo stretchy="false">|</mo></mrow><mi>S</mi><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo><msup><mrow><mo stretchy="false">|</mo></mrow><mn>2</mn></msup><msub><mi>H</mi><mi>m</mi></msub><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></math> is the <math xmlns="http://www.w3.org/1998/Math/MathML" display=""><mi>m</mi></math>-th filter bank energy, and <math xmlns="http://www.w3.org/1998/Math/MathML" display=""><mi>M</mi><mo>=</mo><mn>23</mn></math>.
-
-  Cepstral coefficients from mel filter banks
+   Cepstral coefficients from mel filter banks: 
+   $$ c_n = \sum_{m=1}^{M} \log E_m \cos\left( n \left(m - 0.5\right) \frac{\pi}{M} \right), \quad n = 1, 2, \ldots, 12 $$ 
+   where $E_m = \sum_{k=0}^{K-1} |S(k)|^2 H_m(k)$ is the $m$-th filter bank energy, and $M = 23$.
 
   ![](visualize_MFCC.png)
 
 - **Delta MFCCs** (dimension: 12):
   First-order differences of MFCCs:
 
-  <math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mi mathvariant="normal">Δ</mi><msub><mi>c</mi><mi>n</mi></msub><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><mrow><munderover><mo data-mjx-texclass="OP">∑</mo><mrow><mi>d</mi><mo>=</mo><mn>1</mn></mrow><mi>D</mi></munderover><mi>d</mi><mrow data-mjx-texclass="INNER"><mo data-mjx-texclass="OPEN">(</mo><msub><mi>c</mi><mi>n</mi></msub><mo stretchy="false">(</mo><mi>t</mi><mi>s</mi><mi>h</mi><mi>a</mi><mi>p</mi><mo>−</mo><mi>d</mi><mo stretchy="false">)</mo><mo>−</mo><msub><mi>c</mi><mi>n</mi></msub><mo stretchy="false">(</mo><mi>t</mi><mo>−</mo><mi>d</mi><mo stretchy="false">)</mo><mo data-mjx-texclass="CLOSE">)</mo></mrow></mrow><mrow><mn>2</mn><munderover><mo data-mjx-texclass="OP">∑</mo><mrow><mi>d</mi><mo>=</mo><mn>1</mn></mrow><mi>D</mi></munderover><msup><mi>d</mi><mn>2</mn></msup></mrow></mfrac><mo>,</mo><mstyle scriptlevel="0"><mspace width="1em"></mspace></mstyle><mi>n</mi><mo>=</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mo>…</mo><mo>,</mo><mn>12</mn></math>
-  
-  where <math xmlns="http://www.w3.org/1998/Math/MathML" display=""><msub><mi>c</mi><mi>n</mi></msub><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></math> is the <math xmlns="http://www.w3.org/1998/Math/MathML" display=""><mi>n</mi></math>-th MFCC at frame <math xmlns="http://www.w3.org/1998/Math/MathML" display=""><mi>t</mi></math>, and <math xmlns="http://www.w3.org/1998/Math/MathML" display=""><mi>D</mi></math> is the window size (typically 2–3).
+  $$ \Delta c_n(t) = \frac{\sum_{d=1}^D d \left( c_n(t shap-d) - c_n(t-d) \right)}{2 \sum_{d=1}^D d^2}, \quad n = 1, 2, \ldots, 12 $$ 
+  where $c_n(t)$ is the $n$-th MFCC at frame $t$, and $D$ is the window size (typically 2–3).
 
   ![](visualize_Delta_MFCC.png)
 
 - **Delta-Delta MFCCs** (dimension: 12):
 
-  Second-order differences:
-
-  <math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msup><mi mathvariant="normal">Δ</mi><mn>2</mn></msup><msub><mi>c</mi><mi>n</mi></msub><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><mrow><munderover><mo data-mjx-texclass="OP">∑</mo><mrow><mi>d</mi><mo>=</mo><mn>1</mn></mrow><mi>D</mi></munderover><mi>d</mi><mrow data-mjx-texclass="INNER"><mo data-mjx-texclass="OPEN">(</mo><mi mathvariant="normal">Δ</mi><msub><mi>c</mi><mi>n</mi></msub><mo stretchy="false">(</mo><mi>t</mi><mo>+</mo><mi>d</mi><mo stretchy="false">)</mo><mo>−</mo><mi mathvariant="normal">Δ</mi><msub><mi>c</mi><mi>n</mi></msub><mo stretchy="false">(</mo><mi>t</mi><mo>−</mo><mi>d</mi><mo stretchy="false">)</mo><mo data-mjx-texclass="CLOSE">)</mo></mrow></mrow><mrow><mn>2</mn><munderover><mo data-mjx-texclass="OP">∑</mo><mrow><mi>d</mi><mo>=</mo><mn>1</mn></mrow><mi>D</mi></munderover><msup><mi>d</mi><mn>2</mn></msup></mrow></mfrac><mo>,</mo><mstyle scriptlevel="0"><mspace width="1em"></mspace></mstyle><mi>n</mi><mo>=</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mo>…</mo><mo>,</mo><mn>12</mn></math>
+  Second-order differences: 
+  $$ \Delta^2 c_n(t) = \frac{\sum_{d=1}^D d \left( \Delta c_n(t+d) - \Delta c_n(t-d) \right)}{2 \sum_{d=1}^D d^2}, \quad n = 1, 2, \ldots, 12 $$
 
   ![](visualize_Delta_of_Delta_MFCC.png)
 
