@@ -10,6 +10,8 @@ tags:
   - Python
 image:
   caption: 'GitHub Repo: [VAD](https://github.com/xuankunyang/Voice-Activity-Detection)'
+
+commentable: true
 ---
 
 ## Voice Activity Detection (VAD) Project
