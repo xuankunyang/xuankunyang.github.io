@@ -13,4 +13,6 @@ tags:
 - 📈 Workflow Overview: The VAD pipeline processes a speech signal as follows:Preprocessing, Framing, Windowing, Feature Extraction, Binary Classification, Time-Domain Restoration
 - 🍻 Project Highlights: I conducted extensive experiments comparing frame division methods (frame length and shift) and model performances, with rich visualizations. For details, see the report in 'vad/latex/'. If you're interested in voice technologies, let's connect!
 
+- 🔗 For more details, please visit my blog [VAD](https://xuankunyang.github.io/post/vad/)
+
 <!--more-->

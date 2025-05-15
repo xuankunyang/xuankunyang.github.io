@@ -26,7 +26,7 @@ sections:
           # Add your image background to `assets/media/`.
           filename: background.JPG
           filters:
-            brightness: 1.0
+            brightness: 0.75
           size: cover
           position: center
           parallax: false
@@ -78,7 +78,7 @@ sections:
       subtitle: ''
       text: ''
       # Page type to display. E.g. post, talk, publication...
-      page_type: post
+      page_type: news
       # Choose how many pages you would like to display (0 = all pages)
       count: 1
       # Filter on criteria
