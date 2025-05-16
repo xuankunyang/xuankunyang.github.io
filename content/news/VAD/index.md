@@ -1,6 +1,6 @@
 ---
-title: 🎙️ I have opensourced my VAD project recently
-summary: I conducted extensive experiments comparing frame division methods and model performances, with rich visualizations.
+title: 🎉 I have opensourced my VAD project recently
+summary: 📈 I conducted extensive experiments comparing frame division methods and model performances, with rich visualizations.
 date: 2025-05-05
 authors:
   - admin

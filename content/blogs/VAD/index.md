@@ -1,5 +1,5 @@
 ---
-title: 🎙️ I have opensourced my VAD project recently
+title: 🎙️ Voice Activity Detection
 summary: I conducted extensive experiments comparing frame division methods and model performances, with rich visualizations.
 date: 2025-05-15
 authors:
@@ -15,9 +15,7 @@ commentable: true
 
 ---
 
-## Voice Activity Detection(VAD)
-
-### Summary
+## Summary
 
 🎯 **Voice Activity Detection (VAD)**, or voice endpoint detection, identifies time segments in an audio signal containing speech. This is a critical preprocessing step for automatic speech recognition (ASR) and voice wake-up systems. This project lays the groundwork for my upcoming ASR project 🤭.
 
@@ -33,9 +31,9 @@ The VAD pipeline processes a speech signal as follows:
 🍻 **Project Highlights**:
 I conducted extensive experiments comparing frame division methods (frame length and shift) and model performances, with rich visualizations. For details, see the report in `vad/latex/`. If you're interested in voice technologies, let's connect!
 
-### Methodology
+## Methodology
 
-#### 1. Preprocessing
+### 1. Preprocessing
 Pre-emphasis enhances high-frequency components to reduce spectral leakage.
 
 $$ y[n] = x[n] - \alpha x[n-1] $$ 
@@ -48,7 +46,7 @@ where $x[n]$ is the input signal, $y[n]$ is the output, and $\alpha$ (typically 
 
   ![](/counting_on_pre_emphasis.png)
 
-#### 2. Framing
+### 2. Framing
 The signal is divided into overlapping frames. For signal length $N$, frame length $L$, and frame shift $S$, the number of frames $n_{\text{frames}}$ is:
 
 - Without zero-padding (floor): 
@@ -60,7 +58,7 @@ The signal is divided into overlapping frames. For signal length $N$, frame leng
     $$ n_{\text{frames}} = \left\lceil \frac{N - L}{S} \right\rceil + 1 $$ 
     Zero-padding length: $$ n_{\text{paddle}} = (n_{\text{frames}} - 1) \cdot S + L - N $$
 
-#### 3. Windowing
+### 3. Windowing
 A window function (e.g., Hamming) is applied to each frame.
  $$ x_i^{\text{windowed}}[n] = x_i[n] \cdot w[n], \quad 0 \leq n < L $$
 
@@ -70,7 +68,7 @@ A window function (e.g., Hamming) is applied to each frame.
 
   ![](./counting_on_windows.png)
 
-#### 4. Feature Extraction
+### 4. Feature Extraction
 Extracted features (total dimension: 69) include:
 
 - **Short-Time Energy** (dimension: 1):
@@ -152,7 +150,7 @@ Extracted features (total dimension: 69) include:
 
   ![](visualize_Delta_of_Delta_MFCC.png)
 
-#### 5. Classification Models
+### 5. Classification Models
 models I trained trained:
 - **Deep Neural Network (DNN)**:
   - **Architecture**: Input (69) → 64 (ReLU, Dropout 0.5) → 32 (ReLU, Dropout 0.5) → 16 (ReLU, Dropout 0.5) → 1 (Sigmoid).
@@ -171,7 +169,7 @@ models I trained trained:
   - Trained with Expectation-Maximization.
   - Its performance is not so good, I will spare some time to figure it out.
 
-#### 6. Experimental Results
+### 6. Experimental Results
 Models were tested with frame lengths (320–4096) and shifts (80–2048). DNN outperformed others (frame length 4096, shift 1024):
 
 | Model              | AUC    | EER    | Accuracy | Precision | Recall | F1 Score |
@@ -180,11 +178,11 @@ Models were tested with frame lengths (320–4096) and shifts (80–2048). DNN o
 | Logistic Regression | 0.9457 | 0.1134 | 0.9432   | 0.9347    | 0.9389 | 0.9368   |
 | Linear SVM | 0.8937| 0.9413| 0.1170| 0.9349| 0.9352 |0.9350|
 
-#### 7. Visualization on time domain division
+### 7. Visualization on time domain division
 I restored the framed labels back to the time domain and visualized them as follows:
 ![](visualize_results_DNN.png)
 
-### Usage
+## Usage
 1. Clone the repository:
    ```bash
    git clone https://github.com/xuankunyang/Voice-Activity-Detection.git
@@ -197,13 +195,13 @@ I restored the framed labels back to the time domain and visualized them as foll
 Considering the space limit, **I couldn't put my pre-trained models here**, but its not difficult to implement all above using this framework.
 4. Explore visualizations in `vad/latex/figs/` and the report.
 
-### Contributing
+## Contributing
 Fork the repository, create a branch, and submit pull requests. For major changes, open an issue.
 
-### License
+## License
 Licensed under the MIT License. See [LICENSE](https://mit-license.org/).
 
-### Contact
+## Contact
 Reach out via [email](kk-dao@sjtu.edu.cn) or GitHub issues.
 
 
