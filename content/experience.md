@@ -31,6 +31,6 @@ sections:
   #     username: admin
   - block: resume-languages
     content:
-      title: Languages
+      title: Hobbies
       username: admin
 ---

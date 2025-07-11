@@ -129,7 +129,7 @@ skills:
       - name: LaTex
         description: ''
         percent: 70
-        icon: code-bracket
+        icon: academicons/latex
   - name: Languages
     color: '#eeac02'
     color_border: '#f0bf23'
