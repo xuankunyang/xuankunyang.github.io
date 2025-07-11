@@ -20,44 +20,15 @@ sections:
       is_education_first: false
   - block: resume-skills
     content:
-      title: Technical Skills
+      title: Skills
       username: admin
-      items:
-        - name: Python
-          description: ''
-          percent: 80
-          icon: code-bracket
-        - name: C++
-          description: ''
-          percent: 70
-          icon: code-bracket
-        - name: LaTeX
-          description: ''
-          percent: 70
-          icon: code-bracket
     design:
       show_skill_percentage: true
       align: "center"
-  - block: resume-skills
-    content:
-      title: Hobbies
-      username: admin
-      items:
-        - name: Hiking
-          description: 'Hiking really ease me a lot~'
-          percent: 70
-          icon: person-simple-walk
-        - name: Open Source Projects
-          description: ''
-          percent: 90
-          icon: code-bracket
-        - name: Volleyball
-          description: 'Looking up into the sky~'
-          percent: 90
-          icon: volleyball
-    design:
-      show_skill_percentage: true
-      align: "center"
+  # - block: resume-awards
+  #   content:
+  #     title: Awards
+  #     username: admin
   - block: resume-languages
     content:
       title: Languages

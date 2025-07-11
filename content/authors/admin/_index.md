@@ -116,50 +116,64 @@ education:
 # Skills
 # Add your own SVG icons to `assets/media/icons/`
 skills:
-  # - name: Technical Skills
-  #   items:
-  #     - name: Python
-  #       description: ''
-  #       percent: 80
-  #       icon: code-bracket
-  #     - name: cpp
-  #       description: ''
-  #       percent: 70
-  #       icon: code-bracket
-  #     - name: LaTex
-  #       description: ''
-  #       percent: 70
-  #       icon: code-bracket
-  # - name: Hobbies
-  #   color: '#eeac02'
-  #   color_border: '#f0bf23'
-  #   items:
-  #     - name: Hiking
-  #       description: 'Hiking really ease me a lot~'
-  #       percent: 70
-  #       icon: person-simple-walk
-  #     - name: Open Source Projects
-  #       description: ''
-  #       percent: 90
-  #       icon: code-bracket
-
-  #     # - name: Basketball
-  #     #   description: ''
-  #     #   percent: 80
-  #     #   icon: basketball
+  - name: Technical Skills
+    items:
+      - name: Python
+        description: ''
+        percent: 80
+        icon: code-bracket
+      - name: cpp
+        description: ''
+        percent: 70
+        icon: code-bracket
+      - name: LaTex
+        description: ''
+        percent: 70
+        icon: code-bracket
+  - name: Languages
+    color: '#eeac02'
+    color_border: '#f0bf23'
+    items:
+      - name: English
+        description: ''
+        percent: 70
+        icon: hero/language
+      - name: Chinese
+        description: ''
+        percent: 95
+        icon: hero/language
+      - name: Bai Dialect
+        description: ''
+        percent: 100
+        icon: hero/language
       
-  #     - name: Volleyball
-  #       description: 'Looking up into the sky~'
-  #       percent: 90
-  #       icon: volleyball
 
 languages:
-  - name: English
+  - name: Hiking
+    description: 'Hiking really ease me a lot~'
     percent: 70
-  - name: Chinese
-    percent: 95
-  # - name: Portuguese
-  #   percent: 25
+    icon: person-simple-walk
+  - name: Open Source Projects
+    description: ''
+    percent: 90
+    icon: code-bracket
+  - name: Basketball
+    description: ''
+    percent: 80
+    icon: basketball
+  - name: Volleyball
+    description: 'Looking up into the sky~'
+    percent: 90
+    icon: volleyball
+  - name: Billiards
+    description: ''
+    percent: 80
+    icon: flames
+  - name: Tennis
+    description: ''
+    percent: 50
+    icon: tennis
+
 
 # Awards.
 #   Add/remove as many awards below as you like.
