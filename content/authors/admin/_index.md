@@ -62,11 +62,11 @@ education:
     institution: Shanghai Jiao Tong University
     date_start: 2023-09-01
     date_end: 2027-06-30
-    # summary: |
-    #   Thesis on _Why LLMs are awesome_. Supervised by [Prof Joe Smith](https://example.com). Presented papers at 5 IEEE conferences with the contributions being published in 2 Springer journals.
-    # button:
-    #   text: 'Read Thesis'
-    #   url: 'https://example.com'
+    summary: |
+      Focused on basic courses, continued to expand my interests and hobbies, read widely, and conducted scientific research that I was interested in.
+    button:
+      text: Download CV
+      url: static/uploads/pesudoresume.pdf
   # - area: MEng Artificial Intelligence
   #   institution: Massachusetts Institute of Technology
   #   date_start: 2016-01-01
@@ -118,18 +118,20 @@ education:
 skills:
   - name: Technical Skills
     items:
-      - name: PyTorch
-        description: ''
-        percent: 60
-        icon: code-bracket
-      - name: cpp
+      - name: Python
         description: ''
         percent: 80
         icon: code-bracket
-      - name: Python
+      - name: cpp
         description: ''
-        percent: 60
+        percent: 70
         icon: code-bracket
+      - name: LaTex
+        description: ''
+        percent: 80
+        icon: code-bracket
+        
+hobbies:
   - name: Hobbies
     color: '#eeac02'
     color_border: '#f0bf23'
