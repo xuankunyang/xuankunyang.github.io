@@ -116,42 +116,42 @@ education:
 # Skills
 # Add your own SVG icons to `assets/media/icons/`
 skills:
-  - name: Technical Skills
-    items:
-      - name: Python
-        description: ''
-        percent: 80
-        icon: code-bracket
-      - name: cpp
-        description: ''
-        percent: 70
-        icon: code-bracket
-      - name: LaTex
-        description: ''
-        percent: 70
-        icon: code-bracket
-  - name: Hobbies
-    color: '#eeac02'
-    color_border: '#f0bf23'
-    items:
-      - name: Hiking
-        description: 'Hiking really ease me a lot~'
-        percent: 70
-        icon: person-simple-walk
-      - name: Open Source Projects
-        description: ''
-        percent: 90
-        icon: code-bracket
+  # - name: Technical Skills
+  #   items:
+  #     - name: Python
+  #       description: ''
+  #       percent: 80
+  #       icon: code-bracket
+  #     - name: cpp
+  #       description: ''
+  #       percent: 70
+  #       icon: code-bracket
+  #     - name: LaTex
+  #       description: ''
+  #       percent: 70
+  #       icon: code-bracket
+  # - name: Hobbies
+  #   color: '#eeac02'
+  #   color_border: '#f0bf23'
+  #   items:
+  #     - name: Hiking
+  #       description: 'Hiking really ease me a lot~'
+  #       percent: 70
+  #       icon: person-simple-walk
+  #     - name: Open Source Projects
+  #       description: ''
+  #       percent: 90
+  #       icon: code-bracket
 
-      # - name: Basketball
-      #   description: ''
-      #   percent: 80
-      #   icon: basketball
+  #     # - name: Basketball
+  #     #   description: ''
+  #     #   percent: 80
+  #     #   icon: basketball
       
-      - name: Volleyball
-        description: 'Looking up into the sky~'
-        percent: 90
-        icon: volleyball
+  #     - name: Volleyball
+  #       description: 'Looking up into the sky~'
+  #       percent: 90
+  #       icon: volleyball
 
 languages:
   - name: English
