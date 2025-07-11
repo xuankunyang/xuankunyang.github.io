@@ -116,7 +116,7 @@ education:
 # Skills
 # Add your own SVG icons to `assets/media/icons/`
 skills:
-  - name: Hobbies
+  - name: ''
     items:
       - name: Open Source Projects
         description: ''
@@ -130,6 +130,8 @@ skills:
         description: ''
         percent: 80
         icon: basketball
+  - name: ''
+    items
       - name: Billiards
         description: ''
         percent: 80
@@ -141,7 +143,7 @@ skills:
       - name: Tennis
         description: ''
         percent: 50
-        icon: tennis      
+        icon: tennis
 
 languages:
   - name: Python
