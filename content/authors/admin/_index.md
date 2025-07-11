@@ -122,24 +122,24 @@ skills:
         description: ''
         percent: 90
         icon: code-bracket
-      - name: Volleyball
-        description: 'Looking up into the sky~'
-        percent: 90
-        icon: volleyball
       - name: Basketball
         description: ''
         percent: 80
         icon: basketball
-  - name: ''
-    items:
-      - name: Billiards
-        description: ''
-        percent: 80
-        icon: flames
       - name: Hiking
         description: 'Hiking really eases me a lot~'
         percent: 70
         icon: person-simple-walk
+  - name: ''
+    items:
+      - name: Volleyball
+        description: 'Looking up into the sky~'
+        percent: 90
+        icon: volleyball
+      - name: Snooker
+        description: ''
+        percent: 80
+        icon: snooker
       - name: Tennis
         description: ''
         percent: 50
