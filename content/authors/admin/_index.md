@@ -116,64 +116,40 @@ education:
 # Skills
 # Add your own SVG icons to `assets/media/icons/`
 skills:
-  - name: Technical Skills
+  - name: Hobbies
     items:
-      - name: Python
+      - name: Open Source Projects
+        description: ''
+        percent: 90
+        icon: code-bracket
+      - name: Volleyball
+        description: 'Looking up into the sky~'
+        percent: 90
+        icon: volleyball
+      - name: Basketball
         description: ''
         percent: 80
-        icon: code-bracket
-      - name: cpp
+        icon: basketball
+      - name: Billiards
         description: ''
+        percent: 80
+        icon: flames
+      - name: Hiking
+        description: 'Hiking really ease me a lot~'
         percent: 70
-        icon: code-bracket
-      - name: LaTex
+        icon: person-simple-walk
+      - name: Tennis
         description: ''
-        percent: 70
-        icon: academicons/latex
-  - name: Languages
-    color: '#eeac02'
-    color_border: '#f0bf23'
-    items:
-      - name: English
-        description: ''
-        percent: 70
-        icon: hero/language
-      - name: Chinese
-        description: ''
-        percent: 95
-        icon: hero/language
-      - name: Bai Dialect
-        description: ''
-        percent: 100
-        icon: hero/language
-      
+        percent: 50
+        icon: tennis      
 
 languages:
-  - name: Hiking
-    description: 'Hiking really ease me a lot~'
+  - name: Python
+    percent: 80
+  - name: cpp
     percent: 70
-    icon: person-simple-walk
-  - name: Open Source Projects
-    description: ''
-    percent: 90
-    icon: code-bracket
-  - name: Basketball
-    description: ''
-    percent: 80
-    icon: basketball
-  - name: Volleyball
-    description: 'Looking up into the sky~'
-    percent: 90
-    icon: volleyball
-  - name: Billiards
-    description: ''
-    percent: 80
-    icon: flames
-  - name: Tennis
-    description: ''
-    percent: 50
-    icon: tennis
-
+  - name: LaTex
+    percent: 70
 
 # Awards.
 #   Add/remove as many awards below as you like.
