@@ -131,13 +131,13 @@ skills:
         percent: 80
         icon: basketball
   - name: ''
-    items
+    items:
       - name: Billiards
         description: ''
         percent: 80
         icon: flames
       - name: Hiking
-        description: 'Hiking really ease me a lot~'
+        description: 'Hiking really eases me a lot~'
         percent: 70
         icon: person-simple-walk
       - name: Tennis
