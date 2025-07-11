@@ -127,13 +127,13 @@ skills:
         percent: 80
         icon: basketball
       - name: Hiking
-        description: 'Hiking really eases me a lot~'
+        description: ''
         percent: 70
         icon: person-simple-walk
   - name: ''
     items:
       - name: Volleyball
-        description: 'Looking up into the sky~'
+        description: ''
         percent: 90
         icon: volleyball
       - name: Snooker
