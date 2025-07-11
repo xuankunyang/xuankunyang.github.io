@@ -128,10 +128,8 @@ skills:
         icon: code-bracket
       - name: LaTex
         description: ''
-        percent: 80
+        percent: 70
         icon: code-bracket
-        
-hobbies:
   - name: Hobbies
     color: '#eeac02'
     color_border: '#f0bf23'
