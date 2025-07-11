@@ -20,18 +20,11 @@ sections:
       is_education_first: false
   - block: resume-skills
     content:
-      title: Skills
+      title: Skills & Hobbies
       username: admin
     design:
       show_skill_percentage: true
-      align: "center"
-  - block: resume-hobbies
-    content:
-      title: Hobbies
-      username: admin
-    design:
-      show_skill_percentage: true
-      align: "center"
+      align: "vertical"
   # - block: resume-awards
   #   content:
   #     title: Awards
