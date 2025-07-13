@@ -60,8 +60,8 @@ interests:
 education:
   - area: BEng Artificial Intelligence
     institution: Shanghai Jiao Tong University
-    date_start: 2023-09-01
-    date_end: 2027-06-30
+    date_start: 2023-09
+    date_end: 2027-06
     summary: |
       Focused on basic courses, continued to expand my interests and hobbies, read widely, and conducted scientific research that I was interested in.
     button:
@@ -89,29 +89,27 @@ education:
   #     - lorem ipsum dolor sit amet, consectetur adipiscing elit
   #     - lorem ipsum dolor sit amet, consectetur adipiscing elit
   #     - lorem ipsum dolor sit amet, consectetur adipiscing elit
-# work:
-#   - position: Director of Cloud Infrastructure
-#     company_name: GenCoin
-#     company_url: ''
-#     company_logo: ''
-#     date_start: 2021-01-01
-#     date_end: ''
-#     summary: |2-
-#       Responsibilities include:
-#       - lorem ipsum dolor sit amet, consectetur adipiscing elit
-#       - lorem ipsum dolor sit amet, consectetur adipiscing elit
-#       - lorem ipsum dolor sit amet, consectetur adipiscing elit
-#   - position: Backend Software Engineer
-#     company_name: X
-#     company_url: ''
-#     company_logo: ''
-#     date_start: 2016-01-01
-#     date_end: 2020-12-31
-#     summary: |
-#       Responsibilities include:
-#       - Migrated infrastructure to a new data center
-#       - lorem ipsum dolor sit amet, consectetur adipiscing elit
-#       - lorem ipsum dolor sit amet, consectetur adipiscing elit
+work:
+  - position: Summer Research Internship
+    company_name: SJTU-Artificial Intelligence Institute DeepVision Lab
+    company_url: ''
+    company_logo: ''
+    date_start: 2024-07
+    date_end: 2024-09
+    summary: |
+      Responsibilities include:
+      - Computer Vision
+      - Learned to read papers and reproduced basic computer vision algorithms
+  - position: Research Internship
+    company_name: SJTU-Artificial Intelligence Institute DeepVision Lab
+    company_url: ''
+    company_logo: ''
+    date_start: 2024-10
+    date_end: 'present'
+    summary: |
+      Responsibilities include:
+      - PEFT(Parameter-Efficient-Fine-Tuning) Research
+      - Model Merging Related Research
 
 # Skills
 # Add your own SVG icons to `assets/media/icons/`
