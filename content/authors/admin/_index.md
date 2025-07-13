@@ -66,7 +66,7 @@ education:
       Focused on basic courses, continued to expand my interests and hobbies, read widely, and conducted scientific research that I was interested in.
     button:
       text: Download CV
-      url: static/uploads/pesudoresume.pdf
+      url: static/uploads/Xuankun Yang's CV.pdf
   # - area: MEng Artificial Intelligence
   #   institution: Massachusetts Institute of Technology
   #   date_start: 2016-01-01
