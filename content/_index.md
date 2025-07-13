@@ -35,7 +35,11 @@ sections:
       title: '📚 My Research'
       subtitle: ''
       text: |-
-        I am currently working on PEFT-related work. Maybe I will dive into the difussion models and CV in the near feature.
+        I have done research related to PEFT. 
+        
+        I am currently working on Model Merging. 
+        
+        Maybe I will dive into the difussion models and CV in the near feature.
         
         Please reach out to collaborate! 😃
     design:

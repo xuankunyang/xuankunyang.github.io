@@ -60,8 +60,8 @@ interests:
 education:
   - area: BEng Artificial Intelligence
     institution: Shanghai Jiao Tong University
-    date_start: 2023-09
-    date_end: 2027-06
+    date_start: 2023-09-01
+    date_end: ''
     summary: |
       Focused on basic courses, continued to expand my interests and hobbies, read widely, and conducted scientific research that I was interested in.
     button:
@@ -94,8 +94,8 @@ work:
     company_name: SJTU-Artificial Intelligence Institute DeepVision Lab
     company_url: ''
     company_logo: ''
-    date_start: 2024-07
-    date_end: 2024-09
+    date_start: 2024-07-01
+    date_end: 2024-09-01
     summary: |
       Responsibilities include:
       - Computer Vision
@@ -104,8 +104,8 @@ work:
     company_name: SJTU-Artificial Intelligence Institute DeepVision Lab
     company_url: ''
     company_logo: ''
-    date_start: 2024-10
-    date_end: 'present'
+    date_start: 2024-10-01
+    date_end: ''
     summary: |
       Responsibilities include:
       - PEFT(Parameter-Efficient-Fine-Tuning) Research
@@ -186,5 +186,5 @@ languages:
 ## About Me
 
 I am currently studying for my undergraduate degree in Shanghai Jiao Tong University, majoring in artificial intelligence.
-I am very interested in many existing large model technologies and have some practical experience. My areas of interest are: computer vision and ML. I am currently working on PEFT-related work.
+I am very interested in many existing large model technologies and have some practical experience. My areas of interest are: computer vision and ML. I am currently working on Model Merging.
 If you have the same interests or hobbies, let's be friends!
