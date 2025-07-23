@@ -140,7 +140,7 @@ skills:
         icon: snooker
       - name: Tennis
         description: ''
-        percent: 50
+        percent: 80
         icon: tennis
 
 languages:
