@@ -23,15 +23,17 @@ abstract: |
   deeply understaning the correlation between different model merging
   methods, which can enlighten the research in the field of model
   merging.
-author:
-- |
-  \
-  Xuankun Yang Shanghai Jiao Tong University\
-  Shanghai, China\
-  `kk-dao@sjtu.edu.cn`\
-bibliography:
-- content/blogs/Model_Merging_Overview/overview.bib
+authors:
+  - admin
+date: 2025-08-23
 title: Model Merging Overview
+tags:
+  - Model Merging
+  - Machine Learning
+image:
+  caption: 'AdaMerging~'
+
+commentable: true
 ---
 
 
