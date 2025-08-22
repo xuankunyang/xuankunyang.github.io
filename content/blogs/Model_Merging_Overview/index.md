@@ -37,4 +37,4 @@ commentable: true
 ---
 
 
-Please refer to [this](content/blogs/Model_Merging_Overview/overview.pdf) ariticle for details.
+Please refer to [this](/overview.pdf) ariticle for details.
