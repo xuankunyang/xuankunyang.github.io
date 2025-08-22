@@ -25,7 +25,7 @@ abstract: |
   merging.
 authors:
   - admin
-date: 2025-08-23
+date: 2025-08-22
 title: Model Merging Overview
 tags:
   - Model Merging
