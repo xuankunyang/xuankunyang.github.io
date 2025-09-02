@@ -1,4 +1,4 @@
 ---
 title: Blogs
-view: showcase
+view: article-grid
 ---
