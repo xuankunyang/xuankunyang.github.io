@@ -1,7 +1,7 @@
 ---
 title: Voice Activity Detection
 date: 2025-05-04
-external_link: https://github.com/xuankunyang/Voice_Activity_Detection
+external_link: https://github.com/xuankunyang/Voice-Activity-Detection
 tags:
   - Machine Learning
   - Voice featured
