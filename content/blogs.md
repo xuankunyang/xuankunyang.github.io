@@ -17,7 +17,7 @@ sections:
         folders:
           - blogs
     design:
-      view: article-grid
+      view: showcase
       fill_image: false
       columns: 1
 ---
