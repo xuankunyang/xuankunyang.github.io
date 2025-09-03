@@ -31,6 +31,8 @@ The VAD pipeline processes a speech signal as follows:
 🍻 **Project Highlights**:
 I conducted extensive experiments comparing frame division methods (frame length and shift) and model performances, with rich visualizations. For details, see the report in `vad/latex/`. If you're interested in voice technologies, let's connect!
 
+For Chinese report, please see [this](/uploads/VAD.pdf) article.
+
 ## Methodology
 
 ### 1. Preprocessing
