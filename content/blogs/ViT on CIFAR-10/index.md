@@ -288,6 +288,8 @@ Overall, our ViT approaches or surpasses some classic CNNs on small datasets lik
 
 #### A. Hyperparameters and Ablation Experiment Table
 
+<div style="overflow-x: auto;">
+
  **No.** | **LearningRate** | **WeightDecay** | **DropoutRate** | **AttentionDO** | **Prob_pass** | **RAUG** | **AUG** | **MixUp** | **CutMix** | **RandomCropPaste** | **Res** | **#Block** | **#Head** | **Hidden_size** | **MLP_dim** | **Patch_size** | **Area** | **Top-1** | **Top-5**|**Parameter(MB)**
 ------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------
  **0** |1e-3|5e-5|0.0|0.0|1e-3|False|**None**|0.2|0.8|(1.0, 0.5)|2|8|12|384|384|   xx   | **AUG** |89.23|99.56|9.18
@@ -334,7 +336,11 @@ Overall, our ViT approaches or surpasses some classic CNNs on small datasets lik
  **41** |1e-3|5e-5|0.0|0.0|1e-3|False|mixup|2.5(strong)|0.8|(1.0, 0.5)|0|8|12|384|384|  xx  | **MU** |91.43|99.59|9.18
  **Best_0** |1e-3|5e-5|1e-2|1e-2|1e-2|False|cutmix|0.2|0.8|(1.0, 0.5)|0|8|12|384|384|  xx  | **Find_Best** |
 
+</div>
+
 #### B. Parameter Tuning Table
+
+<div style="overflow-x: auto;">
 
 **NO.** | **aug_type** | **cutmix** | **mixup** | **random_crop** | **rand_aug** |**(HL,MLP)**| **top_1** | **top_5** 
 ------|------|------|------|------|------|------|------|------
@@ -349,6 +355,8 @@ Overall, our ViT approaches or surpasses some classic CNNs on small datasets lik
 **Test_9**| **Cutmix** | 0.8 | xx | xx | **(4,15)** |**(288,768)**|0.9244|0.9978
 **Test_10**| **Cutmix** | 0.8 | xx | xx | **(2,15)** |xx|0.9228|0.9974
 **Test_11**| **Cutmix** | 0.8 | xx | xx | False |**(288,768)**|0.9229|0.9968
+
+</div>
 
 #### C. Symbols and Abbreviations
 
