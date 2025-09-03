@@ -22,11 +22,16 @@ design:
 
 ---
 
-# Exploring the Performance of Vision Transformer on Small Datasets: A Study on CIFAR-10
+## Exploring the Performance of Vision Transformer on Small Datasets: A Study on CIFAR-10
 
 ---
 
-## Project Overview
+### Preface
+
+I must admit that this was a difficult task with a huge workload, but fortunately I had my partner [JunjieYu28](https://github.com/JunjieYu28). I would like to thank him for his contributions in data augmentation, parameter tuning, and report cooperation. 🎉
+For Chinese reports, please see [this](/ViT_cleared.pdf) article.
+
+### Project Overview
 
 This study focuses on the application of **Vision Transformer (ViT)** in image classification tasks, particularly its performance on the **CIFAR-10** dataset. Image classification is a core task in computer vision, where traditional convolutional neural networks (like **ResNet**) have excelled. The success of **Transformer** models in natural language processing has inspired their exploration in visual tasks [Dosovitskiy et al., 2021]. ViT processes images by dividing them into patches and feeding them into a Transformer encoder for feature extraction. However, on small datasets, ViT's performance can be unstable due to the lack of local inductive biases.
 
@@ -34,7 +39,7 @@ The goals of this project include: reproducing ViT and evaluating its performanc
 
 To date, we have implemented the basic ViT model and hybrid models, conducted hyperparameter tuning, data augmentation experiments, and visualization analyses. The experimental results show that the optimal model achieves a **Top-1 Accuracy** of 92.54% and a **Top-5 Accuracy** of 99.57%. Further optimization of hybrid model parameter combinations and training efficiency is still needed.
 
-## Background
+### Background
 
 Image classification is a foundational task in computer vision, with traditional **CNNs** (such as ResNet) achieving remarkable success. In recent years, the breakthroughs of Transformer models in natural language processing have led to their application in vision tasks [Dosovitskiy et al., 2021]. However, vision models based on Transformer architectures, like ViT, are highly sensitive to the amount of training data and lack inductive biases for local features, resulting in unstable performance on small datasets (e.g., CIFAR-10).
 
@@ -44,7 +49,7 @@ Therefore, the research objectives of this experiment include:
 - Conducting ablation experiments to analyze the impact of key parameters (e.g., patch size, embedding dimension, number of layers) and perform hyperparameter tuning.
 - Introducing data augmentation strategies and comparing their effects on model accuracy and robustness.
 
-## Basic ViT Model Performance
+### Basic ViT Model Performance
 
 We reproduced the basic ViT architecture and trained it on CIFAR-10 without any hyperparameter tuning, regularization, or data augmentation. The initial performance is shown in the figure below:
 
@@ -52,9 +57,9 @@ We reproduced the basic ViT architecture and trained it on CIFAR-10 without any 
 
 The results indicate that the basic model's performance is suboptimal, necessitating improvements through model architecture enhancements, hyperparameter tuning, or data augmentation strategies to optimize ViT's performance.
 
-## Model Architecture
+### Model Architecture
 
-### Basic ViT Model Architecture
+#### Basic ViT Model Architecture
 
 In the original paper, the authors used images of size 224x224 and a patch size of 16x16. Since we are using the CIFAR-10 dataset, where each image is 32x32, we did not resize the images but used the original size and set the patch size to 4x4.
 
@@ -62,7 +67,7 @@ In the original paper, the authors used images of size 224x224 and a patch size 
 
 We named this model setting **ViT-Basic**.
 
-### Hybrid Model Architecture
+#### Hybrid Model Architecture
 
 Referencing the integration of ViT and ResNet in the original paper, we proposed hybrid models tailored to the CIFAR-10 dataset, divided into two hyperparameter settings:
 - Three downsampling operations, resulting in a feature map size of 4x4 with 256 channels, and setting ViT's patch size to 1x1.
@@ -72,11 +77,11 @@ We named these settings **ViT-Hybrid-1** and **ViT-Hybrid-2**, respectively.
 
 ![Hybrid ViT Model Architecture](Figs/Hybrid_ViT.png)
 
-## Model Architecture Research
+### Model Architecture Research
 
 In this section, we explored several model settings. Specific parameter configurations and model parameter counts can be found in Appendix A.
 
-### Impact of Number of Self-Attention Heads in Transformer
+#### Impact of Number of Self-Attention Heads in Transformer
 
 Using **ViT-Hybrid-2**, we explored the impact of the number of self-attention heads on model performance, yielding the results in the figure below.
 
@@ -84,7 +89,7 @@ Using **ViT-Hybrid-2**, we explored the impact of the number of self-attention h
 
 Focusing on **Top-1 Accuracy**, with other parameters at default settings, the model's performance improves as the number of heads increases. This can be understood as more heads allowing for finer understanding of input images. The performance gain from 12 to 16 heads is smaller than from 8 to 12. Thus, 12 heads is the optimal choice, balancing performance and efficiency, while 16 heads offer marginal additional benefits.
 
-### Impact of Number of Transformer Blocks
+#### Impact of Number of Transformer Blocks
 
 Still using **ViT-Hybrid-2**, we explored the impact of the number of Transformer blocks on performance, as shown below.
 
@@ -92,7 +97,7 @@ Still using **ViT-Hybrid-2**, we explored the impact of the number of Transforme
 
 Observing **Top-1 Accuracy**, with default settings for other parameters, performance first increases and then decreases as layers increase. With 4 layers, the model may be too simple; with 12 layers, it may be too complex, leading to optimization difficulties under fixed iterations. Thus, 8 layers is optimal under the same iteration count.
 
-### Impact of Patch Size
+#### Impact of Patch Size
 
 Using **ViT-Basic**, we explored the impact of patch size on performance.
 
@@ -100,7 +105,7 @@ Using **ViT-Basic**, we explored the impact of patch size on performance.
 
 For **Top-1 Accuracy**, a patch size of 4 performs best, indicating that a moderate size effectively captures features. Sizes of 2 and 8 show significant drops, possibly due to insufficient information (too small) or loss of details (too large).
 
-### Comparison of Hybrid and Original Models
+#### Comparison of Hybrid and Original Models
 
 We compared the performance of different hybrid models and the original model.
 
@@ -108,7 +113,7 @@ We compared the performance of different hybrid models and the original model.
 
 **Top-1 Accuracy** shows that both **ViT-Hybrid-1** and **ViT-Hybrid-2** outperform **ViT-Basic**, indicating that hybrid structures enhance feature extraction. The performance difference between 4x4 and 8x8 feature maps is minimal, suggesting limited impact from feature map size, possibly due to consistent channels or small original image size.
 
-### Impact of Hidden Size and MLP Dimension
+#### Impact of Hidden Size and MLP Dimension
 
 In ViT, hidden size and MLP dimension are crucial parameters. We kept MLP dim >= hidden size and conducted 5 experiments.
 
@@ -116,11 +121,11 @@ In ViT, hidden size and MLP dimension are crucial parameters. We kept MLP dim >=
 
 The optimal performance is at hidden size 288 and MLP dim 768. Larger values increase capacity but may cause optimization issues or overfitting on small datasets like ours.
 
-## Regularization Exploration
+### Regularization Exploration
 
 Using **ViT-Hybrid-2**, we explored three basic regularization methods and the more advanced stochastic depth.
 
-### Basic Regularization Methods
+#### Basic Regularization Methods
 
 We examined **Weight Decay**, **Attention Dropout**, and **Dropout** with varying parameters.
 
@@ -128,7 +133,7 @@ We examined **Weight Decay**, **Attention Dropout**, and **Dropout** with varyin
 
 For **Weight Decay**, performance improves as λ decreases, stabilizing after 5e-4, matching no-decay levels. Large λ may over-penalize weights, leading to underfitting. The model shows strong robustness across different attention and dropout rates.
 
-### Stochastic Depth Method
+#### Stochastic Depth Method
 
 Our stochastic depth method skips blocks with probability p, as shown below. The expected number of updated blocks is:
 
@@ -143,9 +148,9 @@ We experimented with different p values.
 
 Large p slightly degrades performance due to fewer and unstable updates. Moderate p (e.g., 1e-2) improves performance, possibly aiding generalization by randomly skipping blocks.
 
-## Data Augmentation
+### Data Augmentation
 
-### Data Augmentation Methods
+#### Data Augmentation Methods
 
 We combined official augmentation libraries with custom methods and used ablation studies to find optimal combinations:
 - **AutoAugment**: Proposed by Google Brain in 2019, using 25 optimal sub-policies for CIFAR-10 [Cubuk et al., 2019].
@@ -165,7 +170,7 @@ Here are some images before and after augmentation:
 ![Mixup1](Figs/mixup1.png) ![Mixup2](Figs/mixup2.png)  
 ![Cutmix1](Figs/cutmix1.png) ![Cutmix2](Figs/cutmix2.png)
 
-### RandAugment Effects
+#### RandAugment Effects
 
 Ablation experiments controlling custom augmentations:
 
@@ -173,7 +178,7 @@ Ablation experiments controlling custom augmentations:
 
 RandAugment shows good properties: it achieves solid results without complex augmentations and uses less memory (~7000 MiB vs. ~14000 MiB for CutMix/Batch Random).
 
-### Custom Augmentation Effects
+#### Custom Augmentation Effects
 
 Ablation without RandAugment:
 
@@ -181,11 +186,11 @@ Ablation without RandAugment:
 
 CutMix or batch-random custom augmentations yield the best training effects.
 
-## Visualization
+### Visualization
 
 Following the original ViT paper, we conducted the following visualizations.
 
-### Attention Maps
+#### Attention Maps
 
 Using our optimal model, we visualized attention following [Abnar et al., 2020].
 
@@ -195,7 +200,7 @@ Left: Layers 1-4 from top to bottom; attention shifts with depth but focuses on 
 
 ![Attention Map Gif](Figs/attention_maps_1.gif)
 
-### Feature Maps
+#### Feature Maps
 
 To understand ResNet's contribution, we extracted features from **ViT-Hybrid-2** on the original image.
 
@@ -203,7 +208,7 @@ To understand ResNet's contribution, we extracted features from **ViT-Hybrid-2**
 
 256 channels show redundancy but include maps representing contours and depth. For 32x32 images, 256 channels may be excessive, warranting further study.
 
-### Patch Embedding Visualization
+#### Patch Embedding Visualization
 
 We visualized the first 28 principal components of the convolution in Patch Embedding using **ViT-Basic**.
 
@@ -213,7 +218,7 @@ Our results lack strong interpretability compared to the original as follows, du
 
 ![Original Patch Embedding](Figs/Original_RGB_Embedding_Filters.png)
 
-### Attention Distance
+#### Attention Distance
 
 We observed attention distances across depths and heads.
 
@@ -221,7 +226,7 @@ We observed attention distances across depths and heads.
 
 Average distance increases and saturates with depth, showing shallow layers capture local features, deeper ones global. Head distributions concentrate with depth, possibly due to feature refinement.
 
-### Position Embedding Similarity
+#### Position Embedding Similarity
 
 The original paper compared position encodings; we used learnable ones and examined similarities.
 
@@ -229,13 +234,13 @@ The original paper compared position encodings; we used learnable ones and exami
 
 Using optimal **ViT-Basic** and **ViT-Hybrid-2**, we found off-diagonal maxima parallel to the diagonal, suggesting strong 2D spatial representation (8x8 patches). The cls_token (patch 0) has weak correlations. In hybrids, patterns weaken due to ResNet compressing spatial info.
 
-## Experimental Results
+### Experimental Results
 
-### Summary of Ablation Experiments
+#### Summary of Ablation Experiments
 
 We tuned hyperparameters via ablations on architecture, regularization, and augmentation. Details in Appendix A.
 
-### Optimal Model
+#### Optimal Model
 
 Our best from-scratch model (**Cifar_No_3**) achieves 92.54% Top-1 and 99.57% Top-5 on CIFAR-10.
 
@@ -252,7 +257,7 @@ Parameters:
 |-----|----|----|-----|-----|----|------|-------|-------|-----|
 | 2   | 8  | 12 | 384 | 384 | xx | AUG  | 92.54 | 99.57 | 9.18|
 
-## Comparison with Traditional CNNs
+### Comparison with Traditional CNNs
 
 To evaluate our ViT on CIFAR-10, we compared it with classic CNNs like ResNet [He et al., 2016].
 
@@ -269,7 +274,7 @@ To evaluate our ViT on CIFAR-10, we compared it with classic CNNs like ResNet [H
 
 Overall, our ViT approaches or surpasses some classic CNNs on small datasets like CIFAR-10.
 
-## References
+### References
 
 - Dosovitskiy et al. (2021). An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale.
 - Cubuk et al. (2019). AutoAugment: Learning Augmentation Strategies from Data.
@@ -279,9 +284,9 @@ Overall, our ViT approaches or surpasses some classic CNNs on small datasets lik
 
 ---
 
-## Appendix
+### Appendix
 
-### A. Hyperparameters and Ablation Experiment Table
+#### A. Hyperparameters and Ablation Experiment Table
 
  **No.** | **LearningRate** | **WeightDecay** | **DropoutRate** | **AttentionDO** | **Prob_pass** | **RAUG** | **AUG** | **MixUp** | **CutMix** | **RandomCropPaste** | **Res** | **#Block** | **#Head** | **Hidden_size** | **MLP_dim** | **Patch_size** | **Area** | **Top-1** | **Top-5**|**Parameter(MB)**
 ------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------
@@ -329,7 +334,7 @@ Overall, our ViT approaches or surpasses some classic CNNs on small datasets lik
  **41** |1e-3|5e-5|0.0|0.0|1e-3|False|mixup|2.5(strong)|0.8|(1.0, 0.5)|0|8|12|384|384|  xx  | **MU** |91.43|99.59|9.18
  **Best_0** |1e-3|5e-5|1e-2|1e-2|1e-2|False|cutmix|0.2|0.8|(1.0, 0.5)|0|8|12|384|384|  xx  | **Find_Best** |
 
-### B. Parameter Tuning Table
+#### B. Parameter Tuning Table
 
 **NO.** | **aug_type** | **cutmix** | **mixup** | **random_crop** | **rand_aug** |**(HL,MLP)**| **top_1** | **top_5** 
 ------|------|------|------|------|------|------|------|------
@@ -345,7 +350,7 @@ Overall, our ViT approaches or surpasses some classic CNNs on small datasets lik
 **Test_10**| **Cutmix** | 0.8 | xx | xx | **(2,15)** |xx|0.9228|0.9974
 **Test_11**| **Cutmix** | 0.8 | xx | xx | False |**(288,768)**|0.9229|0.9968
 
-### C. Symbols and Abbreviations
+#### C. Symbols and Abbreviations
 
 | Symbol/Abbrev | Meaning                  |
 |---------------|--------------------------|
@@ -370,7 +375,7 @@ Overall, our ViT approaches or surpasses some classic CNNs on small datasets lik
 | Top-5         | Top-5 Accuracy           |
 | PRM           | Parameter Count (MiB)    |
 
-### D. Experimental Hardware and Software Environment
+#### D. Experimental Hardware and Software Environment
 
 - **GPU**: NVIDIA RTX 3090 × 4 (24 GB × 4)
 - **CUDA**: 12.4  
