@@ -21,6 +21,8 @@ Hello everyone! Recently, I dove into the world of Automatic Speech Recognition 
 
 In this blog post, I'll share my journey, from data preparation to model training, the challenges I faced, and the results I achieved. If you're interested in ASR or just curious about speech tech, stick around! 🚀
 
+For Chinese report, please see [this](/uploads/ASR.pdf) article.
+
 ### Project Overview
 
 The goal was to set up an end-to-end LVCSR system capable of recognizing Mandarin speech. Kaldi is a powerful open-source toolkit for speech recognition, and the AISHELL recipe provides a solid starting point. The system follows a standard pipeline: data processing, feature extraction, acoustic modeling with Gaussian Mixture Model-Hidden Markov Models (GMM-HMM), and evaluation using Word Error Rate (WER) and Character Error Rate (CER).
