@@ -124,8 +124,7 @@ Using **ViT-Hybrid-2**, we explored three basic regularization methods and the m
 
 We examined **Weight Decay**, **Attention Dropout**, and **Dropout** with varying parameters.
 
-<iframe src="Figs/WD_DP_ADP_cropped.pdf" width="100%" height="600px" ></iframe>
-
+![WD DP ADP](Figs/WD_DP_ADP_cropped.jpg)
 
 For **Weight Decay**, performance improves as λ decreases, stabilizing after 5e-4, matching no-decay levels. Large λ may over-penalize weights, leading to underfitting. The model shows strong robustness across different attention and dropout rates.
 
@@ -137,7 +136,8 @@ $$ \mathbb{E}[N_{update}] = N_{block} \times (1 - p) $$
 
 We experimented with different p values.
 
-<iframe src="Figs/SD_cropped.pdf" width="100%" height="600px" ></iframe>
+![Stochastic Depth Illustration](Figs/SD_cropped.jpg)
+
 
 ![Stochastic Depth Results](Figs/Stochastic_Depth.png)
 
@@ -209,7 +209,9 @@ We visualized the first 28 principal components of the convolution in Patch Embe
 
 ![Patch Embedding](Figs/embedding_filters.png)
 
-Our results lack strong interpretability compared to the original, due to small patch size from using original 32x32 images.
+Our results lack strong interpretability compared to the original as follows, due to small patch size from using original 32x32 images.
+
+![Original Patch Embedding](Figs/Original_RGB_Embedding_Filters.png)
 
 ### Attention Distance
 
@@ -223,7 +225,7 @@ Average distance increases and saturates with depth, showing shallow layers capt
 
 The original paper compared position encodings; we used learnable ones and examined similarities.
 
-<iframe src="Figs/position_embedding_similarity_cropped.pdf" width="100%" height="600px" ></iframe>
+![Position Embedding Similarity](Figs/position_embedding_similarity_cropped.jpg)
 
 Using optimal **ViT-Basic** and **ViT-Hybrid-2**, we found off-diagonal maxima parallel to the diagonal, suggesting strong 2D spatial representation (8x8 patches). The cls_token (patch 0) has weak correlations. In hybrids, patterns weaken due to ResNet compressing spatial info.
 
