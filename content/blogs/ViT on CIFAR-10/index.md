@@ -117,7 +117,8 @@ Using **ViT-Hybrid-2**, we explored three basic regularization methods and the m
 
 We examined **Weight Decay**, **Attention Dropout**, and **Dropout** with varying parameters.
 
-![Basic Regularization Methods](Figs/WD_DP_ADP_cropped.pdf)
+<embed src="Figs/WD_DP_ADP_cropped.pdf" type="application/pdf" width="100%" height="600px" />
+
 
 For **Weight Decay**, performance improves as λ decreases, stabilizing after 5e-4, matching no-decay levels. Large λ may over-penalize weights, leading to underfitting. The model shows strong robustness across different attention and dropout rates.
 
@@ -129,7 +130,7 @@ $$ \mathbb{E}[N_{update}] = N_{block} \times (1 - p) $$
 
 We experimented with different p values.
 
-![Stochastic Depth Method](Figs/SD_cropped.pdf)
+<embed src="Figs/SD_cropped.pdf" type="application/pdf" width="100%" height="600px" />
 
 ![Stochastic Depth Results](Figs/Stochastic_Depth.png)
 
@@ -181,7 +182,7 @@ Following the original ViT paper, we conducted the following visualizations.
 
 Using our optimal model, we visualized attention following [Abnar et al., 2020].
 
-![Attention Map](Figs/Attention_Map.pdf)
+<embed src="Figs/Attention_Map.pdf" type="application/pdf" width="100%" height="600px" />
 
 Left: Layers 1-4 from top to bottom; attention shifts with depth but focuses on class-relevant areas. Shallow layers focus locally, deeper ones globally, akin to CNN receptive fields. Right: Gradient map shows model outlines objects well, indicating strong discrimination.
 
@@ -189,7 +190,7 @@ Left: Layers 1-4 from top to bottom; attention shifts with depth but focuses on 
 
 To understand ResNet's contribution, we extracted features from **ViT-Hybrid-2** on the original image.
 
-![Feature Map](Figs/Feature_Map_cropped.pdf)
+<embed src="Figs/Feature_Map_cropped.pdf" type="application/pdf" width="100%" height="600px" />
 
 256 channels show redundancy but include maps representing contours and depth. For 32x32 images, 256 channels may be excessive, warranting further study.
 
@@ -205,7 +206,7 @@ Our results lack strong interpretability compared to the original, due to small 
 
 We observed attention distances across depths and heads.
 
-![Attention Distance](Figs/Attention_Distance.pdf)
+<embed src="Figs/Attention_Distance.pdf" type="application/pdf" width="100%" height="600px" />
 
 Average distance increases and saturates with depth, showing shallow layers capture local features, deeper ones global. Head distributions concentrate with depth, possibly due to feature refinement.
 
@@ -213,7 +214,7 @@ Average distance increases and saturates with depth, showing shallow layers capt
 
 The original paper compared position encodings; we used learnable ones and examined similarities.
 
-![Position Embedding Similarity](Figs/position_embedding_similarity_cropped.pdf)
+<embed src="Figs/position_embedding_similarity_cropped.pdf" type="application/pdf" width="100%" height="600px" />
 
 Using optimal **ViT-Basic** and **ViT-Hybrid-2**, we found off-diagonal maxima parallel to the diagonal, suggesting strong 2D spatial representation (8x8 patches). The cls_token (patch 0) has weak correlations. In hybrids, patterns weaken due to ResNet compressing spatial info.
 
