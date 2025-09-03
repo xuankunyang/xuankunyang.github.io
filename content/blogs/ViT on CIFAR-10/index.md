@@ -32,7 +32,7 @@ I must admit that this was a difficult task with a huge workload, but fortunatel
 
 For Chinese reports, please see [this](/ViT_cleared.pdf) article.
 
-In order to see each chart clearly, please adjust the mode to **light** mode in the upper right corner.
+In order to see each chart clearly, please adjust the mode to **light** mode in the upper right corner. ↗️
 
 ### Project Overview
 
