@@ -30,7 +30,7 @@ design:
 
 I must admit that this was a difficult task with a huge workload, but fortunately I had my partner [JunjieYu28](https://github.com/JunjieYu28). I would like to thank him for his contributions in data augmentation, parameter tuning, and report cooperation. 🎉
 
-For Chinese reports, please see [this](/ViT_cleared.pdf) article.
+For Chinese reports, please see [this](/uploads/ViT_cleared.pdf) article.
 
 In order to see each chart clearly, please adjust the mode to **light** mode in the upper right corner. ↗️
 
