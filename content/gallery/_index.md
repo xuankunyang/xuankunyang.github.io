@@ -12,7 +12,7 @@ sections:
   - block: collection
     id: gallery
     content:
-      title: Selected Albums
+      title: Featured Albums
       text: I like to record interesting moments in life with my phone. Here are some silhouettes from my albums.
       filters:
         folders:
