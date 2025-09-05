@@ -5,7 +5,7 @@ type: landing
 
 design:
   # Section spacing
-  spacing: '5rem'
+  spacing: '8rem'
 
 # Page sections
 sections:
@@ -22,3 +22,4 @@ sections:
       fill_image: false
       columns: 2
 ---
+  
