@@ -1,3 +1,0 @@
----
-view: article-grid
----
