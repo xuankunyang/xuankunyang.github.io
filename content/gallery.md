@@ -11,11 +11,12 @@ sections:
   - block: collection
     id: photos
     content:
-      title: Photos
+      title: Photo Gallery
       filters:
         folders:
           - gallery
     design:
       view: article-grid
+      fill_image: true
       columns: 2
 ---
