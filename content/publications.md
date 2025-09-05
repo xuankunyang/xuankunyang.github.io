@@ -5,7 +5,7 @@ type: landing
 
 design:
   # Section spacing
-  spacing: '8rem'
+  spacing: '5rem'
 
 sections:
   - block: collection
