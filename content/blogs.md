@@ -1,5 +1,5 @@
 ---
-title: 'Projects'
+title: 'Blogs'
 date: 2025-05-15
 type: landing
 
@@ -11,7 +11,7 @@ design:
 sections:
   - block: collection
     content:
-      title: Blogs
+      title: Selected Blogs
       text: I like sharing technical details. Here are a selection of blogs I wrote over the years.
       filters:
         folders:
@@ -19,5 +19,5 @@ sections:
     design:
       view: article-grid
       fill_image: false
-      columns: 1
+      columns: 2
 ---

@@ -25,6 +25,9 @@ main:
   - name: Blogs
     url: blogs/
     weight: 30
+  - name: Photos
+    url: photos/
+    weight: 50
   # - name: Teaching
   #   url: teaching/
   #   weight: 40
