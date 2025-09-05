@@ -40,7 +40,8 @@ header:
     # If `show_translations` is enabled, do you wish to hide the current language name?
     hide_language_name: false
     logo:
-      text: "Xuankun Yang"
+      # text: "Xuankun Yang"
+      icon: Xuankun-Yang-signature.svg
 
 # Site footer
 footer:
