@@ -12,8 +12,6 @@ sections:
   - block: collection
     id: gallery
     content:
-      title: Selected Albums
-      text: I like to record interesting moments in life. Here are some silhouettes from my albums.
       filters:
         folders:
           - gallery
