@@ -18,6 +18,7 @@ sections:
         featured_only: true
     design:
       view: article-grid
+      fill_image: false
       columns: 2
 #   - block: collection
 #     content:
