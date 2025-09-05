@@ -30,6 +30,9 @@ organizations:
 # Social network links
 # Need to use another icon? Simply download the SVG icon to your `assets/media/icons/` folder.
 profiles:
+  - icon: Xuankun-Yang-signature
+    url: https://xuankunyang.github.io/
+    label: It is me!
   - icon: at-symbol
     url: 'mailto:kk-dao@sjtu.edu.cn'
     label: E-mail Me
