@@ -49,9 +49,9 @@ footer:
     notice: '© {year} Xuankun Yang.'
     license:
       enable: true
-      allow_derivatives: false
+      allow_derivatives: true
       share_alike: false
-      allow_commercial: false
+      allow_commercial: true
   show_translations: true
 
 # Localization
