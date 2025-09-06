@@ -12,7 +12,7 @@
     {{ partial $footer_section_path . }}
   
     {{/* Attribution - PLEASE DO NOT REMOVE THIS, SUPPORT OPEN SOURCE */}}
-    {{- if not (site.Params.i_am_a_sponsor | default true) -}}
+    {{- if not (site.Params.i_am_a_sponsor | default false) -}}
       {{- $base := "https://hugoblox.com" -}}
       {{- $tid  := "" -}}
       {{- $ref  := .Site.Params.affiliate_ref | default "" -}}
@@ -57,7 +57,7 @@
         {{- $ctaHref   = printf "%s&ref=%s"   $ctaHref   $ref -}}
       {{- end -}}
 
-      <p class="powered-by text-center text-sm opacity-80 py-1">
+      <!-- <p class="powered-by text-center text-sm opacity-80 py-1">
         {{ $published_with := "Made with {hugoblox}." }}
         {{ $i18n_published_with := i18n "published_with" | default $published_with }}
         {{ $defaultEnText := "Build yours →" }}
@@ -75,6 +75,6 @@
         {{ $i18n_published_with | safeHTML }}
         <a class="inline-flex items-center rounded px-2 py-0.5 border border-current ms-2 text-xs hover:opacity-100"
            href="{{ $ctaHref }}" target="_blank" rel="noopener" data-hbx="poweredby_cta">{{ $i18n_ctaText }}</a>
-      </p>
-    {{- end -}}  
+      </p> -->
+    {{- end -}} 
   </footer>
