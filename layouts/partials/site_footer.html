@@ -57,8 +57,7 @@
         {{- $brandHref = printf "%s&ref=%s" $brandHref $ref -}}
         {{- $ctaHref   = printf "%s&ref=%s"   $ctaHref   $ref -}}
       {{- end -}}
-    */}}
-    
+
       <p class="powered-by text-center text-sm opacity-80 py-1">
         {{ $published_with := "Made with {hugoblox}." }}
         {{ $i18n_published_with := i18n "published_with" | default $published_with }}
@@ -79,5 +78,5 @@
            href="{{ $ctaHref }}" target="_blank" rel="noopener" data-hbx="poweredby_cta">{{ $i18n_ctaText }}</a>
       </p>
     {{- end -}}  
-  
+    */}}
   </footer>
