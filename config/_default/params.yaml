@@ -48,10 +48,10 @@ footer:
   copyright:
     notice: '© {year} Xuankun Yang.'
     license:
-      enable: true
-      allow_derivatives: true
+      enable: false
+      allow_derivatives: false
       share_alike: false
-      allow_commercial: true
+      allow_commercial: false
   show_translations: true
 
 # Localization
