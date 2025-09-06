@@ -12,8 +12,7 @@
     {{ partial $footer_section_path . }}
   
     {{/* Attribution - PLEASE DO NOT REMOVE THIS, SUPPORT OPEN SOURCE */}}
-    {{/* 
-    {{- if not (site.Params.i_am_a_sponsor | default false) -}}
+    {{- if not (site.Params.i_am_a_sponsor | default true -}}
       {{- $base := "https://hugoblox.com" -}}
       {{- $tid  := "" -}}
       {{- $ref  := .Site.Params.affiliate_ref | default "" -}}
@@ -78,5 +77,4 @@
            href="{{ $ctaHref }}" target="_blank" rel="noopener" data-hbx="poweredby_cta">{{ $i18n_ctaText }}</a>
       </p>
     {{- end -}}  
-    */}}
   </footer>
