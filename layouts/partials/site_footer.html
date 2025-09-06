@@ -12,7 +12,8 @@
     {{ partial $footer_section_path . }}
   
     {{/* Attribution - PLEASE DO NOT REMOVE THIS, SUPPORT OPEN SOURCE */}}
-    <!-- {{- if not (site.Params.i_am_a_sponsor | default false) -}}
+    {{/* 
+    {{- if not (site.Params.i_am_a_sponsor | default false) -}}
       {{- $base := "https://hugoblox.com" -}}
       {{- $tid  := "" -}}
       {{- $ref  := .Site.Params.affiliate_ref | default "" -}}
@@ -25,7 +26,8 @@
           {{ $hugoblox_data := $hugoblox_file | transform.Unmarshal }}
           {{ $tid = $hugoblox_data.template.id | default "" }}
         {{ end }}
-      {{ end }} -->
+      {{ end }}
+    */}}
   
       {{/* Per-site variant selection */}}
       {{- $brandOptions := slice "Hugo Blox" "Hugo Blox Builder" "Hugo Blox — Open Source" -}}
