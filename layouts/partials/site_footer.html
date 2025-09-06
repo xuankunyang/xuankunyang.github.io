@@ -12,7 +12,7 @@
     {{ partial $footer_section_path . }}
   
     {{/* Attribution - PLEASE DO NOT REMOVE THIS, SUPPORT OPEN SOURCE */}}
-    {{- if not (site.Params.i_am_a_sponsor | default true -}}
+    {{- if not (site.Params.i_am_a_sponsor | default true) -}}
       {{- $base := "https://hugoblox.com" -}}
       {{- $tid  := "" -}}
       {{- $ref  := .Site.Params.affiliate_ref | default "" -}}
