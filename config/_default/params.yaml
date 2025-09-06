@@ -8,6 +8,8 @@ appearance:
   mode: system
   color: sky
 
+i_am_a_sponsor: true
+
 # SEO
 marketing:
   seo:
