@@ -37,7 +37,7 @@ sections:
       text: |-
         I have done research related to PEFT. 
         
-        I am currently working on Model Merging. 
+        I am currently working on research about Model Merging. 
         
         Maybe I will dive into the difussion models and CV in the near feature.
         
