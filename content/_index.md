@@ -22,14 +22,20 @@ sections:
       css_class: dark
       background:
         color: black
-        image:
-          # Add your image background to `assets/media/`.
-          filename: background.JPG
-          filters:
-            brightness: 0.75
-          size: cover
-          position: center
-          parallax: false
+        # image:
+        #   # Add your image background to `assets/media/`.
+        #   filename: background.JPG
+        #   filters:
+        #     brightness: 0.75
+        #   size: cover
+        #   position: center
+        #   parallax: true
+        #   text_color_light: true
+        video:
+            # Name of video in `assets/media/`.
+            filename: background_video.mp4
+            # Post-processing: flip the video horizontally?
+            flip: false
   - block: markdown
     content:
       title: '📚 My Research'
