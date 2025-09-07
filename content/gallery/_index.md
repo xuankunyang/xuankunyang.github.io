@@ -14,6 +14,7 @@ sections:
     content:
       title: Featured Albums
       text: I like to record interesting moments in life with my phone. Here are some silhouettes from my albums.
+      count: 10
       filters:
         folders:
           - gallery
