@@ -4,7 +4,7 @@ summary: We live in a concrete jungle and always feel bored. But looking at them
 date: 2025-09-06
 
 image:
-  caption: Chilling Chilling Chilling
+  caption: 
 
 authors:
   - admin
