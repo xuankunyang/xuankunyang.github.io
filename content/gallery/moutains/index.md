@@ -1,12 +1,10 @@
 ---
 title: Moutains
-summary: I like moutains
-date: 2024-11-27
+summary: I am a child of the mountains, but I seldom looked up at them before. Until I left my hometown, I began to miss them so much.
+date: 2025-09-06
 
-# Featured image
-# Place an image named `featured.jpg/png` in this page's folder and customize its options here.
 image:
-  caption: xxx
+  caption: Chilling Chilling Chilling
 
 authors:
   - admin
@@ -16,7 +14,7 @@ authors:
   match="images/*" 
   sortOrder="desc" 
   rowHeight="200" 
-  margins="10" 
+  margins="15" 
   thumbnailResizeOptions="800x800 q90 Lanczos" 
   showExif=true 
   previewType="blur" 
