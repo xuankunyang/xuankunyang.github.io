@@ -149,7 +149,7 @@ languages:
   - name: cpp
     percent: 70
   - name: LaTex
-    percent: 70
+    percent: 80
 
 # Awards.
 #   Add/remove as many awards below as you like.
