@@ -77,8 +77,17 @@
            href="{{ $ctaHref }}" target="_blank" rel="noopener" data-hbx="poweredby_cta">{{ $i18n_ctaText }}</a>
       </p>      
     {{- end -}}
-    
-    {{- if .Site.Params.busuanzi.enable -}}
-      <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    {{ if .Site.Params.busuanzi.enable -}}
+    <center>
+      <div class="busuanzi-footer">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <i class="fa fa-user"></i> 
+        Unique Visitor: <span id="busuanzi_value_site_uv"></span>
+        <span class="separator">|</span>
+        Page View: <span id="busuanzi_value_site_pv"></span>
+      </div>
+    </center>
     {{- end -}}
+
   </footer>
