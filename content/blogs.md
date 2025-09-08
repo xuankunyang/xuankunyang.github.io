@@ -17,7 +17,7 @@ sections:
       count: 4
       filters:
         folders:
-          - blogs
+          - blog
     design:
       view: article-grid
       fill_image: false
