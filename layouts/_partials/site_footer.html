@@ -77,4 +77,8 @@
            href="{{ $ctaHref }}" target="_blank" rel="noopener" data-hbx="poweredby_cta">{{ $i18n_ctaText }}</a>
       </p>      
     {{- end -}}
+    
+    {{- if .Site.Params.busuanzi.enable -}}
+      <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    {{- end -}}
   </footer>

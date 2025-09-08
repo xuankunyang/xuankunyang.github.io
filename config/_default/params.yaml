@@ -79,3 +79,5 @@ features:
       language_code: en
       mapping: pathname
     
+busuanzi:
+  enable: true

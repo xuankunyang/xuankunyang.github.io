@@ -1,0 +1,32 @@
+.jg-container .jg-image {
+    transition: all 0.3s ease-in-out;
+    /* 平滑过渡 */
+    filter: grayscale(20%);
+    /* 轻微灰度，增加艺术氛围 */
+}
+
+.jg-container .jg-image:hover {
+    filter: grayscale(0%);
+    /* hover 时恢复彩色 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* 阴影动效 */
+}
+
+.swipebox-overlay {
+    background: rgba(0, 0, 0, 0.9);
+    /* 深黑光箱背景，艺术感 */
+}
+
+.busuanzi-counter {
+    position: relative;
+    /* 确保 tooltip 相对定位 */
+}
+
+.busuanzi-counter .counter-wrapper {
+    cursor: pointer;
+    /* 鼠标悬停时变手型 */
+}
+
+.busuanzi-counter:hover .counter-tooltip {
+    display: block;
+    /* 悬停显示 tooltip */ }
