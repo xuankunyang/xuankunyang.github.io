@@ -12,8 +12,8 @@
       {{ $show_navbar := ((site.Params.header.navbar.enable | default true) | and (ne .Params.header.navbar.enable false)) | or .Params.header.navbar.enable }}
       {{ if $show_navbar }}
         {{- $header_config := .Params.header.navbar | default site.Params.header.navbar | default dict -}}
-        {{- $block_name := partial "hbx/resolve-block-param" (dict "config" $header_config "context" "header") | default "navbar" -}}
-        {{ $block_path := printf "components/headers/%s.html" $block_name }}
+        {{- $block_name := partial "_partials/hbx/resolve-block-param" (dict "config" $header_config "context" "header") | default "navbar" -}}
+        {{ $block_path := printf "_partials/components/headers/%s.html" $block_name }}
         {{ if not (templates.Exists (printf "_partials/%s" $block_path)) }}
           {{ errorf "Check your `header` config in `params.yaml` and/or front matter. Cannot find header block at `layouts/_partials/%s`" $block_path }}
         {{ else }}
@@ -25,13 +25,13 @@
       {{ block "main" . }}{{ end }}
     </div>
     <div class="page-footer">
-      {{ partial "site_footer" . }}
+      {{ partial "_partials/site_footer" . }}
     </div>
 
     {{/* Notification Container for toasts/alerts */}}
-    {{ partial "notification-container" . }}
+    {{ partial "_partials/notification-container" . }}
 
     {{/* EXTENSIBILITY HOOK: BODY-END */}}
-    {{ partial "functions/get_hook" (dict "hook" "body-end" "context" .) }}
+    {{ partial "_partials/functions/get_hook" (dict "hook" "body-end" "context" .) }}
   </body>
 </html>
