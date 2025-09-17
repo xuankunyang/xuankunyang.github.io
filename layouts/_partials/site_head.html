@@ -5,7 +5,6 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="generator" content="Hugo Blox Builder {{ site.Data.hugoblox.version }}" />
   <link rel="stylesheet" href="/css/custom.css">
-  <script defer src="https://cloud.umami.is/script.js" data-website-id="bbc0f0e0-122c-4b81-9eae-92170fb75208"></script>
 
   {{- if .Site.Params.busuanzi.enable -}}
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
@@ -249,3 +248,7 @@
   {{/* EXTENSIBILITY HOOK: HEAD-END */}}
   {{ partial "functions/get_hook" (dict "hook" "head-end" "context" .) }}
 </head>
+
+<head>
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="bbc0f0e0-122c-4b81-9eae-92170fb75208"></script>
+</head> 
