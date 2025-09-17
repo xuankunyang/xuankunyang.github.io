@@ -45,9 +45,9 @@ sections:
         
         I am currently working on research about Model Merging. 
         
-        Maybe I will dive into the difussion models and CV in the near feature.
+        Maybe I will dive into the diffusion models, CV and multimodal research in the near feature.
         
-        Please reach out to collaborate! 😃
+        Feel free to reach out to collaborate! 😃
     design:
       columns: '1'
   # - block: collection
