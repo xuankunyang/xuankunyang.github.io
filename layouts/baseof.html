@@ -25,13 +25,13 @@
       {{ block "main" . }}{{ end }}
     </div>
     <div class="page-footer">
-      {{ partial "_partials/site_footer" . }}
+      {{ partial "site_footer" . }}
     </div>
 
     {{/* Notification Container for toasts/alerts */}}
-    {{ partial "_partials/notification-container" . }}
+    {{ partial "notification-container" . }}
 
     {{/* EXTENSIBILITY HOOK: BODY-END */}}
-    {{ partial "_partials/functions/get_hook" (dict "hook" "body-end" "context" .) }}
+    {{ partial "functions/get_hook" (dict "hook" "body-end" "context" .) }}
   </body>
 </html>
