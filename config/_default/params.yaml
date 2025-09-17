@@ -81,3 +81,9 @@ features:
     
 busuanzi:
   enable: true
+
+params:
+  services:
+    umami_analytics:
+      id: bbc0f0e0-122c-4b81-9eae-92170fb75208
+      script_url: https://cloud.umami.is/script.js

@@ -247,8 +247,7 @@
 
   {{/* EXTENSIBILITY HOOK: HEAD-END */}}
   {{ partial "functions/get_hook" (dict "hook" "head-end" "context" .) }}
-</head>
 
-<head>
-  <script defer src="https://cloud.umami.is/script.js" data-website-id="bbc0f0e0-122c-4b81-9eae-92170fb75208"></script>
-</head> 
+  {{/* Umani */}}
+  {{ partialCached "hugomods/umami-analytics/index" . .Params.analyze }}
+</head>
