@@ -57,9 +57,7 @@
   {{ $theme_name := (lower site.Params.appearance.color) | default "blue" }}
   {{ $theme_path := printf "css/themes/%s.css" $theme_name }}
   {{ if not (fileExists (printf "assets/%s" $theme_path)) }}
-  {{ errorf "The specified color theme `%s.css` was not found in `assets/css/themes/`. Either install your custom color
-  theme in the folder or set the `color` theme value in `params.yaml` to an existing theme such as `blue`." $theme_name
-  }}
+  {{ errorf "The specified color theme `%s.css` was not found in `assets/css/themes/`. Either install your custom color theme in the folder or set the `color` theme value in `params.yaml` to an existing theme such as `blue`." $theme_name}}
   {{ else }}
   {{ $theme_css := resources.Get $theme_path | minify }}
   <link rel="stylesheet" href="{{ $theme_css.RelPermalink }}" />
@@ -91,8 +89,7 @@
   {{- if hugo.IsProduction -}}
   {{- $hb_head = $hb_head | fingerprint "sha256" -}}
   {{- end -}}
-  <script src="{{ $hb_head.RelPermalink }}" {{ if hugo.IsProduction }} integrity="{{ $hb_head.Data.Integrity }}"
-    crossorigin="anonymous" {{ end }}></script>
+  <script src="{{ $hb_head.RelPermalink }}" {{ if hugo.IsProduction }} integrity="{{ $hb_head.Data.Integrity }}" crossorigin="anonymous" {{ end }}></script>
 
   {{/* Analytics & Verification */}}
   {{/* !CACHED! All analytics and verification code is at site level */}}
@@ -193,7 +190,6 @@
       font-style: normal;
       font-weight: 100 900;
       font-display: swap;
-
       src: url({{ $font.RelPermalink }}) format({
           {
           $font_type
@@ -218,8 +214,7 @@
     }
   </style>
   {{ else }}
-  {{ errorf "Couldn't find page background `%s` in the `assets/media/` folder - please add it."
-  .Params.design.background.image.filename }}
+  {{ errorf "Couldn't find page background `%s` in the `assets/media/` folder - please add it." .Params.design.background.image.filename }}
   {{ end }}
   {{ end }}
 
@@ -230,30 +225,22 @@
   {{/* Load Third-Party Libraries */}}
   {{ partial "libraries.html" . }}
 
-  {{ $js_license := printf "/*! Hugo Blox Builder Tailwind UI v%s | https://hugoblox.com/ */\n"
-  site.Data.hugoblox.version }}
-  {{ $js_license := $js_license | printf "%s/*! Copyright 2016-present George Cushen (https://georgecushen.com/) */\n"
-  }}
-  {{ $js_license := $js_license | printf "%s/*! License:
-  https://github.com/HugoBlox/hugo-blox-builder/blob/main/LICENSE.md */\n" }}
+  {{ $js_license := printf "/*! Hugo Blox Builder Tailwind UI v%s | https://hugoblox.com/ */\n" site.Data.hugoblox.version }}
+  {{ $js_license := $js_license | printf "%s/*! Copyright 2016-present George Cushen (https://georgecushen.com/) */\n"}}
+  {{ $js_license := $js_license | printf "%s/*! License:https://github.com/HugoBlox/hugo-blox-builder/blob/main/LICENSE.md */\n" }}
   {{ $js_bundle_head := $js_license | resources.FromString "js/bundle-head.js" }}
   {{ $i18n := dict "copy" (i18n "btn_copy") "copied" (i18n "btn_copied" | default "Copied") }}
   {{ $js_params := dict "hugoEnvironment" hugo.Environment "i18n" $i18n }}
-  {{ $js_hugoblox := resources.Get "js/hb-code-copy.js" | js.Build (dict "targetPath" (printf "js/hugoblox-core-%s.js"
-  .Lang ) "params" $js_params) }}
+  {{ $js_hugoblox := resources.Get "js/hb-code-copy.js" | js.Build (dict "targetPath" (printf "js/hugoblox-core-%s.js" .Lang ) "params" $js_params) }}
   {{ $js_hugoblox := $js_hugoblox | resources.Minify }}
   {{- $js_theme := resources.Get "js/hb-theme.js" | resources.Minify -}}
   {{- $js_lang := resources.Get "js/hb-i18n.js" | resources.Minify -}}
   {{- $js_nav := resources.Get "js/hb-nav.js" | resources.Minify -}}
   {{- $js_sidebar := resources.Get "js/hb-sidebar.js" | resources.Minify -}}
-  {{- $js_notifier := resources.Get "js/hb-notifier.js" | js.Build (dict "targetPath" (printf "js/hb-notifier-%s.js"
-  .Lang ) "params" $js_params) | resources.Minify -}}
-  {{- $js_clipboard := resources.Get "js/hb-clipboard.js" | js.Build (dict "targetPath" (printf "js/hb-clipboard-%s.js"
-  .Lang ) "params" $js_params) | resources.Minify -}}
-  {{- $js_citation := resources.Get "js/hb-citation.js" | js.Build (dict "targetPath" (printf "js/hb-citation-%s.js"
-  .Lang ) "params" $js_params) | resources.Minify -}}
-  {{ $js_bundle := slice $js_bundle_head $js_hugoblox $js_theme $js_lang $js_nav $js_sidebar $js_notifier $js_clipboard
-  $js_citation | resources.Concat (printf "js/hugo-blox-%s.min.js" .Lang) }}
+  {{- $js_notifier := resources.Get "js/hb-notifier.js" | js.Build (dict "targetPath" (printf "js/hb-notifier-%s.js" .Lang ) "params" $js_params) | resources.Minify -}}
+  {{- $js_clipboard := resources.Get "js/hb-clipboard.js" | js.Build (dict "targetPath" (printf "js/hb-clipboard-%s.js" .Lang ) "params" $js_params) | resources.Minify -}}
+  {{- $js_citation := resources.Get "js/hb-citation.js" | js.Build (dict "targetPath" (printf "js/hb-citation-%s.js" .Lang ) "params" $js_params) | resources.Minify -}}
+  {{ $js_bundle := slice $js_bundle_head $js_hugoblox $js_theme $js_lang $js_nav $js_sidebar $js_notifier $js_clipboard $js_citation | resources.Concat (printf "js/hugo-blox-%s.min.js" .Lang) }}
   {{- if hugo.IsProduction -}}
   {{ $js_bundle = $js_bundle | fingerprint "sha256" }}
   {{- end -}}
