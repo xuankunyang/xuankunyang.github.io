@@ -29,9 +29,9 @@
     </div>
 
     {{/* Notification Container for toasts/alerts */}}
-    {{ partial "_partials/notification-container" . }}
+    {{ partial "notification-container" . }}
 
     {{/* EXTENSIBILITY HOOK: BODY-END */}}
-    {{ partial "_partials/functions/get_hook" (dict "hook" "body-end" "context" .) }}
+    {{ partial "functions/get_hook" (dict "hook" "body-end" "context" .) }}
   </body>
 </html>
