@@ -119,7 +119,7 @@
 {{- $embedData := dict -}}
 {{- $processedImage := dict -}}
 {{- if $config.apiUrl -}}
-  {{- with try (resources.GetRemote $config.apiUrl) -}}
+  {{- with resources.GetRemote $config.apiUrl -}}
     {{- with .Err -}}
       {{/* Log warning but don't fail - allow graceful fallback */}}
       {{- if not (strings.Contains (string .Err) "rate limit") -}}
@@ -136,13 +136,13 @@
 
 {{/* Process image if image URL or platform image is configured */}}
 {{- if and $config.isImageEmbed $config.imageUrl -}}
-  {{- with try (resources.GetRemote $config.imageUrl) -}}
+  {{- with resources.GetRemote $config.imageUrl -}}
     {{- with .Err -}}
       {{- warnf "embed shortcode: failed to fetch image from %q (continuing without image): %s" $config.imageUrl $.Position -}}
     {{- else with .Value -}}
       {{- $remoteImg := . -}}
       {{- $resizeStr := printf "%dx%d jpg q%d" $config.imageProcessing.width $config.imageProcessing.height $config.imageProcessing.quality -}}
-      {{- with try ($remoteImg.Resize $resizeStr) -}}
+      {{- with $remoteImg.Resize $resizeStr -}}
         {{- with .Err -}}
           {{/* Image resize failed, use original */}}
           {{- $processedImage = dict "fallback" $remoteImg "srcset" $remoteImg.RelPermalink -}}
