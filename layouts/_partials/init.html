@@ -1,0 +1,34 @@
+{{/* Workaround Hugo concurrency issues (e.g. not detecting Page.Store variables) */}}
+{{/* Use cases: Page.Store use within shortcodes, blox, and backlinks. */}}
+{{/* See https://discourse.gohugo.io/t/persisting-data-across-the-build-of-a-site/41114/6 */}}
+
+{{/* Pre-warm only content pages so Page.Store/backlinks are populated deterministically */}}
+{{- range where .Site.Pages "Kind" "page" -}}
+  {{- $ := .Content -}}
+{{- end -}}
+
+{{/* Preload block configs for landing pages */}}
+{{- range where .Site.Pages "Type" "landing" -}}
+  {{ $page := . }}
+  {{ range $index, $block := .Params.sections }}
+    {{/* Do not show sections intended only for the demo site. */}}
+    {{ if or (not $block.demo) ($block.demo | and (eq (os.Getenv "HUGO_BLOX_DEMO") "true")) }}
+      {{- $block_type := partial "hbx/resolve-block-param" (dict "config" $block "context" "content section") | default "markdown" -}}
+      {{ $block_type = lower $block_type }}
+      {{ range $r := .Site.Data.blox_aliases.renames }}
+        {{ $block_type = cond (eq $block_type $r.old) $r.new $block_type }}
+      {{ end }}
+      
+      {{/* Store the block type in the page store for asset bundling */}}
+      {{ $current_blocks := $page.Store.Get "block_types" | default (slice) }}
+      {{ $page.Store.Set "block_types" ($current_blocks | append $block_type) }}
+      
+      {{ $widget_config_file := printf "blox/%s--CONFIG.html" $block_type }}
+      {{ if templates.Exists (printf "_partials/%s" $widget_config_file) }}
+        {{ $hash_id := $block.id | default (printf "section-%s" (replace $block_type "." "-")) }}
+        {{ $widget_args := dict "wcPage" $page "wcBlock" $block "wcIdentifier" $hash_id }}
+        {{ partial $widget_config_file $widget_args }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{- end -}}

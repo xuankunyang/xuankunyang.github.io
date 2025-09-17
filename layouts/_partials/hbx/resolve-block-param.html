@@ -7,15 +7,14 @@
 {{- $using_legacy := false -}}
 
 {{- if $config.block -}}
-{{- $block_id = $config.block -}}
+  {{- $block_id = $config.block -}}
 {{- else if $config.blox -}}
-{{- $block_id = $config.blox -}}
-{{- $using_legacy = true -}}
+  {{- $block_id = $config.blox -}}
+  {{- $using_legacy = true -}}
 {{- end -}}
 
 {{- if $using_legacy -}}
-{{- warnf "HBX: Using legacy 'blox' parameter for %s. Please update to 'block' for consistency. (Found: blox=%s)"
-$context $block_id -}}
+  {{- warnf "HBX: Using legacy 'blox' parameter for %s. Please update to 'block' for consistency. (Found: blox=%s)" $context $block_id -}}
 {{- end -}}
 
 {{- return $block_id -}}
