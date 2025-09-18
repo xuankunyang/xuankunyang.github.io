@@ -10,8 +10,8 @@ imports:
   - path: github.com/mfg92/hugo-shortcode-gallery
   - path: github.com/hugomods/umami-analytics
 
-ignoreFiles:
-  - blox-tailwind/layouts/.*
+# ignoreFiles:
+#   - blox-tailwind/layouts/.*
 
 # Install any Hugo Blox within the `hugo-blox/blox/` folder
 mounts:
