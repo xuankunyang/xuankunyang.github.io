@@ -200,7 +200,7 @@ Using our optimal model, we visualized attention following [Abnar et al., 2020].
 
 ![Attention Map](Figs/Attention_Map.jpg)
 
-Left: Layers 1-4 from top to bottom; attention shifts with depth but focuses on class-relevant areas. Shallow layers focus locally, deeper ones globally, akin to CNN receptive fields. Right: Gradient map shows model outlines objects well, indicating strong discrimination. For a more intuitive look, please see the following animation.
+Left: Layers 1-4 and 5-8 from top to bottom; attention shifts with depth but focuses on class-relevant areas. Shallow layers focus locally, deeper ones globally, akin to CNN receptive fields. Right: Gradient map shows model outlines objects well, indicating strong discrimination. For a more intuitive look, please see the following animation.
 
 ![Attention Map Gif](Figs/attention_maps_1.gif)
 
@@ -232,7 +232,7 @@ Average distance increases and saturates with depth, showing shallow layers capt
 
 #### Position Embedding Similarity
 
-The original paper compared position encodings; we used learnable ones and examined similarities.
+The original paper compared position encodings 1-D, 2-D, Relative and Learnable(default); we used learnable ones and examined similarities.
 
 ![Position Embedding Similarity](Figs/position_embedding_similarity_cropped.jpg)
 
