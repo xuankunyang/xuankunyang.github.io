@@ -105,7 +105,7 @@ Extracted features (total dimension: 69) include:
 
   Indicates the spectral "center of mass"
 
-  $$ \mu_n = \frac{1}{K}\mid X(n, k)\mid $$ 
+  $$ \mu_n = \frac{\sum_{k=1}^K\mid X(n, k)\mid}{K} $$ 
   where $X(n, k)$ is the Fourier transform magnitude at bin $k$ in $n-$th frame, and $K$ is the number of bins.
 
   ![](./spectral_mean.png)
