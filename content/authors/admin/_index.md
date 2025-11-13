@@ -54,7 +54,7 @@ profiles:
 
 interests:
   - Large Language Models
-  - Computer Vision
+  - Multimodal Models
   - Machine Learning
 
 education:
@@ -186,5 +186,5 @@ languages:
 ## About Me
 
 I am currently studying for my undergraduate degree in Shanghai Jiao Tong University, majoring in artificial intelligence.
-I am very interested in many existing large model technologies and have some practical experience. My areas of interest are: computer vision and ML. I am currently working on Model Merging.
+I am very interested in many existing large model technologies and have some practical experience. My areas of interest are: multimodality models and ML. I am currently working on Model Merging and visual token prune for MLLMs.
 If you have the same interests or hobbies, let's be friends!
