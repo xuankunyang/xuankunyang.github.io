@@ -1,0 +1,8 @@
+<script>
+    // Fallback: Check if splash screen exists, if not, try to inject it or warn
+    window.addEventListener('load', function () {
+        if (!document.getElementById('splash-screen')) {
+            console.warn('Splash screen HTML not found in body. Hook injection might have failed.');
+        }
+    });
+</script>

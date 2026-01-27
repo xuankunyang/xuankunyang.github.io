@@ -17,29 +17,38 @@
 
 <script src="/js/particle-avatar.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log('Splash screen init script running...');
         const splashScreen = document.getElementById('splash-screen');
         const enterBtn = document.getElementById('enter-site-btn');
         const moodSelect = document.getElementById('mood-select');
-        
+
+        if (!splashScreen) {
+            console.error('Splash screen element not found!');
+            return;
+        }
+
         // Initialize Particle Avatar
         if (window.ParticleAvatar) {
+            console.log('Initializing ParticleAvatar...');
             const avatar = new window.ParticleAvatar('splash-canvas');
-            
+
             // Handle mood change
             moodSelect.addEventListener('change', (e) => {
                 avatar.setMood(e.target.value);
             });
-            
+
             // Handle enter site
             enterBtn.addEventListener('click', () => {
                 splashScreen.classList.add('splash-hidden');
                 // Optional: Stop animation after transition to save resources
                 setTimeout(() => {
                     avatar.destroy();
-                    splashScreen.style.display = 'none'; 
+                    splashScreen.style.display = 'none';
                 }, 1000);
             });
+        } else {
+            console.error('window.ParticleAvatar is not defined!');
         }
     });
 </script>

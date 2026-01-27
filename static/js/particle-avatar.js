@@ -13,8 +13,12 @@
 
     class ParticleAvatar {
         constructor(canvasId) {
+            console.log('ParticleAvatar constructor called with ID:', canvasId);
             this.canvas = document.getElementById(canvasId);
-            if (!this.canvas) return;
+            if (!this.canvas) {
+                console.error('Canvas element not found:', canvasId);
+                return;
+            }
             
             this.ctx = this.canvas.getContext('2d', { alpha: false });
             this.particles = [];
