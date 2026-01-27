@@ -1,0 +1,45 @@
+<div id="splash-screen">
+    <canvas id="splash-canvas"></canvas>
+    <div class="splash-content">
+        <h1 class="splash-title">Xuankun Yang</h1>
+        <div class="splash-controls">
+            <select id="mood-select" class="mood-selector" aria-label="Select Mood">
+                <option value="neutral">Neutral</option>
+                <option value="happy">Happy</option>
+                <option value="sad">Sad</option>
+                <option value="thinking">Thinking</option>
+                <option value="surprised">Surprised</option>
+            </select>
+            <button id="enter-site-btn" class="splash-btn">Enter Site</button>
+        </div>
+    </div>
+</div>
+
+<script src="/js/particle-avatar.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const splashScreen = document.getElementById('splash-screen');
+        const enterBtn = document.getElementById('enter-site-btn');
+        const moodSelect = document.getElementById('mood-select');
+        
+        // Initialize Particle Avatar
+        if (window.ParticleAvatar) {
+            const avatar = new window.ParticleAvatar('splash-canvas');
+            
+            // Handle mood change
+            moodSelect.addEventListener('change', (e) => {
+                avatar.setMood(e.target.value);
+            });
+            
+            // Handle enter site
+            enterBtn.addEventListener('click', () => {
+                splashScreen.classList.add('splash-hidden');
+                // Optional: Stop animation after transition to save resources
+                setTimeout(() => {
+                    avatar.destroy();
+                    splashScreen.style.display = 'none'; 
+                }, 1000);
+            });
+        }
+    });
+</script>
