@@ -1,16 +1,16 @@
 <div id="splash-screen">
     <canvas id="splash-canvas"></canvas>
     <div class="splash-content">
-        <h1 class="splash-title">Xuankun Yang</h1>
+        <h1 class="splash-title">Welcome to My Website</h1>
         <div class="splash-controls">
-            <select id="mood-select" class="mood-selector" aria-label="Select Mood">
+            <button class="splash-btn" onclick="document.getElementById('splash-screen').classList.add('splash-hidden')">Enter</button>
+            <select class="mood-selector" onchange="particleAvatar.setMood(this.value)">
                 <option value="neutral">Neutral</option>
                 <option value="happy">Happy</option>
                 <option value="sad">Sad</option>
                 <option value="thinking">Thinking</option>
                 <option value="surprised">Surprised</option>
             </select>
-            <button id="enter-site-btn" class="splash-btn">Enter Site</button>
         </div>
     </div>
 </div>
