@@ -4,7 +4,7 @@ summary: This project is a complete implementation of Vision Transformer (ViT) a
 date: 2025-05-31
 authors:
   - admin
-  - collaborator
+  - Junjie-Yu
 tags:
   - Machine Learning
   - Computer Vision
