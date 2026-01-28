@@ -35,7 +35,7 @@ permalinks:
   authors: '/author/:slug/'
 disableAliases: true
 outputs:
-  home: [HTML, RSS, headers, redirects, backlinks]
+  home: ["HTML", "splash"]
   section: [HTML, RSS]
 imaging:
   resampleFilter: lanczos
@@ -57,3 +57,7 @@ sitemap:
 
 cascade:
   commentable: true
+
+# Set splash.html as the default homepage
+homepage:
+  layout: splash

@@ -31,6 +31,7 @@
     align-items: center;
     justify-content: center;
     transition: opacity 1s ease-in-out, visibility 1s;
+    overflow: hidden;
 }
 
 body.dark #splash-screen {
@@ -139,4 +140,9 @@ body.dark .mood-selector option {
     visibility: hidden;
     pointer-events: none;
     transition: opacity 1s ease-in-out, visibility 1s;
+}
+
+/* Prevent scrolling while splash screen is visible */
+body {
+    overflow: hidden;
 }

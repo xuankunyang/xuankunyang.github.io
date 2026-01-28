@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Splash Screen</title>
+    <link rel="stylesheet" href="/css/custom.css">
+    <script src="/js/particle-avatar.js" defer></script>
+</head>
+<body>
+    <div id="splash-screen" data-splash="true">
+        <canvas id="splash-canvas"></canvas>
+        <div class="splash-content">
+            <h1 class="splash-title">Welcome to My Website</h1>
+            <div class="splash-controls">
+                <button class="splash-btn" onclick="enterWebsite()">Enter</button>
+                <select class="mood-selector" onchange="particleAvatar.setMood(this.value)">
+                    <option value="neutral">Neutral</option>
+                    <option value="happy">Happy</option>
+                    <option value="sad">Sad</option>
+                    <option value="thinking">Thinking</option>
+                    <option value="surprised">Surprised</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <script>
+        let particleAvatar;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            particleAvatar = new ParticleAvatar('splash-canvas');
+        });
+
+        function enterWebsite() {
+            const splashScreen = document.getElementById('splash-screen');
+            if (splashScreen) {
+                splashScreen.classList.add('splash-hidden');
+                setTimeout(() => {
+                    splashScreen.remove(); // Remove splash screen from DOM
+                    if (particleAvatar) {
+                        particleAvatar.destroy(); // Stop particle animation
+                    }
+                    window.location.href = '/'; // Redirect to main page
+                }, 1000); // Wait for transition to complete
+            }
+        }
+    </script>
+</body>
+</html>
