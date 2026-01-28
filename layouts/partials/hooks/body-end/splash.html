@@ -1,9 +1,9 @@
-<div id="splash-screen">
+<div id="splash-screen" data-splash="true">
     <canvas id="splash-canvas"></canvas>
     <div class="splash-content">
         <h1 class="splash-title">Welcome to My Website</h1>
         <div class="splash-controls">
-            <button class="splash-btn" onclick="document.getElementById('splash-screen').classList.add('splash-hidden')">Enter</button>
+            <button class="splash-btn" onclick="hideSplashScreen()">Enter</button>
             <select class="mood-selector" onchange="particleAvatar.setMood(this.value)">
                 <option value="neutral">Neutral</option>
                 <option value="happy">Happy</option>
@@ -17,7 +17,9 @@
 
 <script src="/js/particle-avatar.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    let particleAvatar;
+
+    document.addEventListener('DOMContentLoaded', () => {
         console.log('Splash screen init script running...');
         const splashScreen = document.getElementById('splash-screen');
         const enterBtn = document.getElementById('enter-site-btn');
@@ -31,24 +33,34 @@
         // Initialize Particle Avatar
         if (window.ParticleAvatar) {
             console.log('Initializing ParticleAvatar...');
-            const avatar = new window.ParticleAvatar('splash-canvas');
+            particleAvatar = new window.ParticleAvatar('splash-canvas');
 
             // Handle mood change
             moodSelect.addEventListener('change', (e) => {
-                avatar.setMood(e.target.value);
+                particleAvatar.setMood(e.target.value);
             });
 
             // Handle enter site
             enterBtn.addEventListener('click', () => {
-                splashScreen.classList.add('splash-hidden');
-                // Optional: Stop animation after transition to save resources
-                setTimeout(() => {
-                    avatar.destroy();
-                    splashScreen.style.display = 'none';
-                }, 1000);
+                hideSplashScreen();
             });
         } else {
             console.error('window.ParticleAvatar is not defined!');
         }
+
+        // Automatically hide splash screen after 5 seconds
+        setTimeout(() => {
+            hideSplashScreen();
+        }, 5000);
     });
+
+    function hideSplashScreen() {
+        const splashScreen = document.getElementById('splash-screen');
+        if (splashScreen) {
+            splashScreen.classList.add('splash-hidden');
+            if (particleAvatar) {
+                particleAvatar.destroy(); // Stop particle animation
+            }
+        }
+    }
 </script>
