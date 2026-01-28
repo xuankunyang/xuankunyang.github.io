@@ -31,22 +31,17 @@
         }
 
         // Initialize Particle Avatar
-        if (window.ParticleAvatar) {
-            console.log('Initializing ParticleAvatar...');
-            particleAvatar = new window.ParticleAvatar('splash-canvas');
+        particleAvatar = new ParticleAvatar('splash-canvas');
 
-            // Handle mood change
-            moodSelect.addEventListener('change', (e) => {
-                particleAvatar.setMood(e.target.value);
-            });
+        // Handle mood change
+        moodSelect.addEventListener('change', (e) => {
+            particleAvatar.setMood(e.target.value);
+        });
 
-            // Handle enter site
-            enterBtn.addEventListener('click', () => {
-                hideSplashScreen();
-            });
-        } else {
-            console.error('window.ParticleAvatar is not defined!');
-        }
+        // Handle enter site
+        enterBtn.addEventListener('click', () => {
+            hideSplashScreen();
+        });
 
         // Automatically hide splash screen after 5 seconds
         setTimeout(() => {
