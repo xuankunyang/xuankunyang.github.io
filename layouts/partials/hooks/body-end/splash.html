@@ -1,10 +1,10 @@
-<div id="splash-screen" data-splash="true">
+<div id="splash-screen">
     <canvas id="splash-canvas"></canvas>
     <div class="splash-content">
         <h1 class="splash-title">Welcome to My Website</h1>
         <div class="splash-controls">
-            <button class="splash-btn" onclick="enterWebsite()">Enter</button>
-            <select class="mood-selector" onchange="particleAvatar.setMood(this.value)">
+            <button class="splash-btn" id="enter-site-btn">Enter</button>
+            <select class="mood-selector" id="mood-select">
                 <option value="neutral">Neutral</option>
                 <option value="happy">Happy</option>
                 <option value="sad">Sad</option>
@@ -17,67 +17,64 @@
 
 <script src="/js/particle-avatar.js"></script>
 <script>
-    let particleAvatar;
-
-    document.addEventListener('DOMContentLoaded', () => {
-        console.log('Splash screen init script running...');
+    (function () {
         const splashScreen = document.getElementById('splash-screen');
-        const enterBtn = document.getElementById('enter-site-btn');
-        const moodSelect = document.getElementById('mood-select');
+        if (!splashScreen) return;
 
-        if (!splashScreen) {
-            console.error('Splash screen element not found!');
+        // Check if splash has been seen in this session
+        if (sessionStorage.getItem('splashSeen') === 'true') {
+            splashScreen.style.display = 'none';
             return;
         }
 
+        // Prevent scrolling while splash is visible
+        document.body.style.overflow = 'hidden';
+
         // Initialize Particle Avatar
-        particleAvatar = new ParticleAvatar('splash-canvas');
-
-        // Handle mood change
-        moodSelect.addEventListener('change', (e) => {
-            particleAvatar.setMood(e.target.value);
-        });
-
-        // Handle enter site
-        enterBtn.addEventListener('click', () => {
-            hideSplashScreen();
-        });
-
-        // Automatically hide splash screen after 5 seconds
-        setTimeout(() => {
-            hideSplashScreen();
-        }, 5000);
-    });
-
-    function hideSplashScreen() {
-        const splashScreen = document.getElementById('splash-screen');
-        if (splashScreen) {
-            splashScreen.classList.add('splash-hidden');
-            setTimeout(() => {
-                splashScreen.remove(); // Remove splash screen from DOM
-                if (particleAvatar) {
-                    particleAvatar.destroy(); // Stop particle animation
+        let particleAvatar;
+        // Ensure the script is loaded
+        if (window.ParticleAvatar) {
+            particleAvatar = new ParticleAvatar('splash-canvas');
+        } else {
+            // Fallback if script hasn't loaded yet (though it should be sync)
+            window.addEventListener('load', () => {
+                if (window.ParticleAvatar) {
+                    particleAvatar = new ParticleAvatar('splash-canvas');
                 }
-            }, 1000); // Wait for transition to complete
+            });
         }
 
-        // Ensure main content is visible after splash screen
-        document.body.style.overflow = 'auto';
-    }
+        const enterBtn = document.getElementById('enter-site-btn');
+        const moodSelect = document.getElementById('mood-select');
 
-    function enterWebsite() {
-        const splashScreen = document.getElementById('splash-screen');
-        if (splashScreen) {
-            splashScreen.classList.add('splash-hidden');
-            setTimeout(() => {
-                splashScreen.remove(); // Remove splash screen from DOM
+        if (moodSelect) {
+            moodSelect.addEventListener('change', (e) => {
                 if (particleAvatar) {
-                    particleAvatar.destroy(); // Stop particle animation
+                    particleAvatar.setMood(e.target.value);
                 }
-            }, 1000); // Wait for transition to complete
+            });
         }
 
-        // Ensure main content is visible after splash screen
-        document.body.style.overflow = 'auto';
-    }
+        function hideSplash() {
+            if (splashScreen.classList.contains('splash-hidden')) return;
+
+            splashScreen.classList.add('splash-hidden');
+            sessionStorage.setItem('splashSeen', 'true');
+            document.body.style.overflow = ''; // Restore scrolling
+
+            setTimeout(() => {
+                splashScreen.style.display = 'none';
+                if (particleAvatar) {
+                    particleAvatar.destroy();
+                }
+            }, 1000); // Wait for CSS transition (1s)
+        }
+
+        if (enterBtn) {
+            enterBtn.addEventListener('click', hideSplash);
+        }
+
+        // Auto-hide after 60 seconds
+        setTimeout(hideSplash, 60000);
+    })();
 </script>
