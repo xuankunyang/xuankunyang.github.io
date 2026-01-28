@@ -57,7 +57,3 @@ sitemap:
 
 cascade:
   commentable: true
-
-# Set splash.html as the default homepage
-homepage:
-  layout: splash

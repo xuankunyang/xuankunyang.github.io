@@ -18,11 +18,21 @@
 <script src="/js/particle-avatar.js"></script>
 <script>
     (function () {
+        console.log('Splash screen script initializing...');
         const splashScreen = document.getElementById('splash-screen');
-        if (!splashScreen) return;
+        if (!splashScreen) {
+            console.error('Splash screen element not found in DOM');
+            return;
+        }
 
         // Check if splash has been seen in this session
-        if (sessionStorage.getItem('splashSeen') === 'true') {
+        // Using a new key to ensure users see it at least once after this update
+        const sessionKey = 'splashSeen_v2';
+        const splashSeen = sessionStorage.getItem(sessionKey) === 'true';
+        console.log('Splash seen status:', splashSeen);
+
+        if (splashSeen) {
+            console.log('Splash already seen in this session. Hiding splash screen.');
             splashScreen.style.display = 'none';
             return;
         }
@@ -59,7 +69,7 @@
             if (splashScreen.classList.contains('splash-hidden')) return;
 
             splashScreen.classList.add('splash-hidden');
-            sessionStorage.setItem('splashSeen', 'true');
+            sessionStorage.setItem(sessionKey, 'true');
             document.body.style.overflow = ''; // Restore scrolling
 
             setTimeout(() => {
@@ -74,7 +84,7 @@
             enterBtn.addEventListener('click', hideSplash);
         }
 
-        // Auto-hide after 60 seconds
-        setTimeout(hideSplash, 60000);
+        // Auto-hide after 5 seconds
+        setTimeout(hideSplash, 5000);
     })();
 </script>
