@@ -1,5 +1,5 @@
 ---
-title: RL-Project: Comprehensive Reinforcement Learning Framework for Atari and MuJoCo
+title: Comprehensive Reinforcement Learning Framework for Atari and MuJoCo
 summary: This project implements a comprehensive Reinforcement Learning framework capable of solving both discrete control tasks (Atari games using DQN) and continuous control tasks (MuJoCo robotics using PPO). It is designed for modularity, scalability, and ease of experimentation, featuring automated parallel training, configuration-driven evaluation, and robust headless visualization support.
 date: 2026-01-18
 authors:
@@ -25,7 +25,6 @@ design:
 ## Playing Atari and MuJoCo with Deep Reinforcement Learning
 
 ---
-
 
 ### Introduction {#introduction .unnumbered}
 
