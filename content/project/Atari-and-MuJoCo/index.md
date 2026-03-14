@@ -1,5 +1,5 @@
 ---
-title: RAG-TA
+title: RL-Project
 date: 2026-01-18
 external_link: https://github.com/xuankunyang/RL-Project
 tags:
