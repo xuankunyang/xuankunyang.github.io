@@ -1,3 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* your custom css below */
+
 .jg-container .jg-image {
     transition: all 0.3s ease-in-out;
     /* 平滑过渡 */
