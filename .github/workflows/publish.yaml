@@ -39,13 +39,13 @@ jobs:
     - name: Setup Node
       uses: actions/setup-node@v4
       with:
-        node-version: 20
+        node-version: 18
     - name: Install Node dependencies
       run: npm install
     - name: Update browserslist
       run: npx update-browserslist-db@latest
     - name: Install TailwindCSS
-      run: npm install tailwindcss postcss autoprefixer
+      run: npm install tailwindcss@3.4.13 postcss autoprefixer
     - uses: actions/cache@v3
       with:
         path: /tmp/hugo_cache_runner/
