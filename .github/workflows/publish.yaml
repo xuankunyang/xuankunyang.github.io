@@ -41,7 +41,7 @@ jobs:
       with:
         node-version: 20
     - name: Install TailwindCSS
-      run: npm install -g tailwindcss
+      run: npm install tailwindcss postcss autoprefixer
     - uses: actions/cache@v3
       with:
         path: /tmp/hugo_cache_runner/
