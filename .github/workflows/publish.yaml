@@ -40,6 +40,8 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: 20
+    - name: Install Node dependencies
+      run: npm install
     - name: Install TailwindCSS
       run: npm install tailwindcss postcss autoprefixer
     - uses: actions/cache@v3
