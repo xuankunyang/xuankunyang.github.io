@@ -7,6 +7,18 @@
         orange: { h: 30, s: 100, l: 60 },
         rose: { h: 340, s: 95, l: 60 }
     };
+    const PATTERN_PRESETS = [
+        "neutral",
+        "happy",
+        "sad",
+        "thinking",
+        "surprised",
+        "halo",
+        "ripple",
+        "helix",
+        "bloom",
+        "wave"
+    ];
 
     class ParticleAvatar {
         constructor(canvasId, options) {
@@ -22,7 +34,7 @@
             this.animationFrame = null;
             this.time = 0;
             this.mouse = { x: -1000, y: -1000 };
-            this.mood = config.mood || 'neutral';
+            this.mood = PATTERN_PRESETS.includes(config.mood) ? config.mood : 'neutral';
             this.themeColor = COLOR_MAP[config.themeColor] ? config.themeColor : 'cyan';
             this.isDarkMode = Boolean(config.isDarkMode);
             this.reducedMotion = Boolean(config.reducedMotion);
@@ -174,6 +186,33 @@
                         targetRadius = particle.radius + Math.sin(this.time * 0.045 + particle.orbitOffset) * 42;
                         particle.angle += Math.sin(this.time * 0.028) * 0.004;
                         break;
+                    case 'halo':
+                        targetRadius = Math.min(width, height) * 0.24 + Math.sin(this.time * 0.015 + particle.orbitOffset) * 18;
+                        particle.angle += moveSpeed * 1.8;
+                        break;
+                    case 'ripple':
+                        targetRadius = particle.radius * 0.78 + Math.sin(this.time * 0.035 + particle.orbitOffset * 2.4) * 54;
+                        particle.angle += moveSpeed * 0.9;
+                        break;
+                    case 'helix': {
+                        const coil = Math.sin(this.time * 0.02 + particle.orbitOffset * 3.2);
+                        targetRadius = Math.min(width, height) * 0.14 + particle.radius * 0.45 + coil * 48;
+                        particle.angle += moveSpeed * 1.9;
+                        break;
+                    }
+                    case 'bloom': {
+                        const petals = 5 + (Math.floor(particle.orbitOffset * 10) % 4);
+                        targetRadius = Math.min(width, height) * 0.12 +
+                            Math.abs(Math.sin(particle.angle * petals + this.time * 0.012)) * Math.min(width, height) * 0.28;
+                        particle.angle += moveSpeed * 1.15;
+                        break;
+                    }
+                    case 'wave':
+                        targetRadius = particle.radius * 0.58 +
+                            Math.sin(this.time * 0.022 + particle.orbitOffset * 4.5) * 38 +
+                            Math.cos(particle.angle * 3.5 + this.time * 0.01) * 26;
+                        particle.angle += moveSpeed * 0.85;
+                        break;
                     case 'neutral':
                     default:
                         particle.angle += moveSpeed;
@@ -257,7 +296,11 @@
         }
 
         setMood(mood) {
-            this.mood = mood || 'neutral';
+            this.mood = PATTERN_PRESETS.includes(mood) ? mood : 'neutral';
+        }
+
+        setPattern(pattern) {
+            this.setMood(pattern);
         }
 
         setThemeColor(color) {

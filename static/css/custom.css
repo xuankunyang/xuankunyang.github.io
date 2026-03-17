@@ -81,6 +81,64 @@
   transform: translateY(0);
 }
 
+.site-splash__controls {
+  position: absolute;
+  top: clamp(1.15rem, 3vw, 2.2rem);
+  right: clamp(1.15rem, 3vw, 2.2rem);
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.site-splash__theme {
+  display: contents;
+}
+
+.site-splash__pattern-toggle,
+.site-splash__theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(15, 23, 42, 0.82);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.dark .site-splash__pattern-toggle,
+.dark .site-splash__theme-toggle {
+  color: rgba(226, 232, 240, 0.9);
+  background: rgba(8, 15, 30, 0.18);
+  border-color: rgba(148, 163, 184, 0.16);
+}
+
+.site-splash__pattern-toggle:hover,
+.site-splash__pattern-toggle:focus-visible,
+.site-splash__theme-toggle:hover,
+.site-splash__theme-toggle:focus-visible {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.dark .site-splash__pattern-toggle:hover,
+.dark .site-splash__pattern-toggle:focus-visible,
+.dark .site-splash__theme-toggle:hover,
+.dark .site-splash__theme-toggle:focus-visible {
+  background: rgba(8, 15, 30, 0.28);
+}
+
+.site-splash__pattern-toggle svg,
+.site-splash__theme-toggle svg {
+  display: block;
+}
+
 .site-splash__copy {
   position: absolute;
   top: clamp(1.2rem, 3vw, 2.6rem);
@@ -194,9 +252,29 @@
   outline-offset: 4px;
 }
 
+.theme-toggle [data-theme-role$="icon"] {
+  display: block;
+}
+
+.theme-toggle [data-theme-role$="icon"][hidden] {
+  display: none !important;
+}
+
 @media (max-width: 640px) {
+  .site-splash__controls {
+    top: 0.9rem;
+    right: 0.9rem;
+    gap: 0.55rem;
+  }
+
+  .site-splash__pattern-toggle,
+  .site-splash__theme-toggle {
+    width: 2.55rem;
+    height: 2.55rem;
+  }
+
   .site-splash__copy {
-    top: 1.1rem;
+    top: 4.2rem;
     left: 1rem;
     width: min(84vw, 20rem);
   }

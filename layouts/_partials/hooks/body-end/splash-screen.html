@@ -8,7 +8,6 @@
   {{ $subtitle := $splash.subtitle | default site.Params.description | default "Welcome." }}
   {{ $button := $splash.button_label | default "Enter Site" }}
   {{ $sessionKey := $splash.session_key | default "siteSplashSeen_v1" }}
-  {{ $autoHideMs := $splash.auto_hide_ms | default 8000 }}
   {{ $themeColor := $splash.theme_color | default "cyan" }}
   <div
     id="splash-screen"
@@ -16,11 +15,53 @@
     hidden
     aria-hidden="true"
     data-session-key="{{ $sessionKey }}"
-    data-auto-hide-ms="{{ $autoHideMs }}"
     data-theme-color="{{ $themeColor }}">
     <canvas id="splash-canvas" class="site-splash__canvas"></canvas>
     <div class="site-splash__veil"></div>
     <div class="site-splash__content" role="dialog" aria-modal="true" aria-labelledby="splash-title" aria-describedby="splash-subtitle">
+      <div class="site-splash__controls">
+        <button
+          type="button"
+          class="site-splash__pattern-toggle"
+          id="splash-pattern-toggle"
+          title="Pattern: Random"
+          aria-label="Particle pattern: Random. Click to switch pattern.">
+          <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="1.6"></circle>
+            <path d="M19.4 12c0 3.8-3.3 6.8-7.4 6.8S4.6 15.8 4.6 12 7.9 5.2 12 5.2s7.4 3 7.4 6.8Z"></path>
+            <path d="M15.7 6.2c3.2 2.1 4.6 6.3 3.1 9.4s-5.3 4.1-8.6 2-4.6-6.3-3.1-9.4 5.3-4.1 8.6-2Z"></path>
+            <path d="M8.3 6.2c-3.2 2.1-4.6 6.3-3.1 9.4s5.3 4.1 8.6 2 4.6-6.3 3.1-9.4-5.3-4.1-8.6-2Z"></path>
+          </svg>
+        </button>
+        <div class="site-splash__theme">
+        <button
+          type="button"
+          class="theme-toggle site-splash__theme-toggle"
+          id="splash-theme-toggle"
+          title="Theme: System"
+          aria-label="Theme mode: System. Click to switch mode.">
+          <svg data-theme-role="system-icon" xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="13" rx="2"></rect>
+            <path d="M8 20h8"></path>
+            <path d="M12 17v3"></path>
+          </svg>
+          <svg data-theme-role="light-icon" xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4.5"></circle>
+            <path d="M12 2v2.2"></path>
+            <path d="M12 19.8V22"></path>
+            <path d="M4.93 4.93l1.56 1.56"></path>
+            <path d="M17.51 17.51l1.56 1.56"></path>
+            <path d="M2 12h2.2"></path>
+            <path d="M19.8 12H22"></path>
+            <path d="M4.93 19.07l1.56-1.56"></path>
+            <path d="M17.51 6.49l1.56-1.56"></path>
+          </svg>
+          <svg data-theme-role="dark-icon" xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+      </div>
       <div class="site-splash__copy">
         <p class="site-splash__eyebrow">Welcome</p>
         <h1 id="splash-title" class="site-splash__title">{{ $title }}</h1>
@@ -40,19 +81,50 @@
 
       const root = document.documentElement;
       const enterBtn = document.getElementById('enter-site-btn');
+      const patternBtn = document.getElementById('splash-pattern-toggle');
       const sessionKey = splashScreen.dataset.sessionKey || 'siteSplashSeen_v1';
-      const autoHideMs = Number.parseInt(splashScreen.dataset.autoHideMs || '8000', 10);
       const themeColor = splashScreen.dataset.themeColor || 'cyan';
       const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const motionPatterns = ['neutral', 'happy', 'sad', 'thinking', 'surprised', 'halo', 'ripple', 'helix', 'bloom', 'wave'];
+      const reducedPatterns = ['neutral', 'thinking', 'halo', 'wave'];
+      const availablePatterns = prefersReducedMotion ? reducedPatterns : motionPatterns;
+      let currentPattern = availablePatterns[Math.floor(Math.random() * availablePatterns.length)];
 
       let particleAvatar = null;
-      let autoHideTimer = null;
+
+      function formatPatternLabel(pattern) {
+        const labels = {
+          neutral: 'Orbit',
+          happy: 'Burst',
+          sad: 'Void',
+          thinking: 'Rings',
+          surprised: 'Chaos',
+          halo: 'Halo',
+          ripple: 'Ripple',
+          helix: 'Helix',
+          bloom: 'Bloom',
+          wave: 'Wave'
+        };
+        return labels[pattern] || 'Pattern';
+      }
+
+      function syncPatternButton() {
+        if (!patternBtn) return;
+        const label = formatPatternLabel(currentPattern);
+        patternBtn.title = 'Pattern: ' + label;
+        patternBtn.setAttribute('aria-label', 'Particle pattern: ' + label + '. Click to switch pattern.');
+      }
+
+      function cyclePattern() {
+        const currentIndex = availablePatterns.indexOf(currentPattern);
+        currentPattern = availablePatterns[(currentIndex + 1) % availablePatterns.length];
+        if (particleAvatar) {
+          particleAvatar.setPattern(currentPattern);
+        }
+        syncPatternButton();
+      }
 
       function cleanup() {
-        if (autoHideTimer) {
-          window.clearTimeout(autoHideTimer);
-          autoHideTimer = null;
-        }
         if (particleAvatar) {
           particleAvatar.destroy();
           particleAvatar = null;
@@ -87,15 +159,20 @@
 
       if (window.ParticleAvatar) {
         particleAvatar = new window.ParticleAvatar('splash-canvas', {
-          mood: 'neutral',
+          mood: currentPattern,
           themeColor: themeColor,
           isDarkMode: root.classList.contains('dark'),
           reducedMotion: prefersReducedMotion
         });
       }
+      syncPatternButton();
 
       if (enterBtn) {
         enterBtn.addEventListener('click', hideSplash);
+      }
+
+      if (patternBtn) {
+        patternBtn.addEventListener('click', cyclePattern);
       }
 
       document.addEventListener('keydown', function (event) {
@@ -103,10 +180,6 @@
           hideSplash();
         }
       });
-
-      if (autoHideMs > 0) {
-        autoHideTimer = window.setTimeout(hideSplash, autoHideMs);
-      }
     })();
   </script>
 {{ end }}

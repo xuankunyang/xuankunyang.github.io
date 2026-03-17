@@ -89,7 +89,7 @@ params:
     subtitle: "Research, engineering, and experiments in AI systems, machine learning, and intelligent interaction."
     button_label: "Enter Site"
     session_key: "siteSplashSeen_v1"
-    auto_hide_ms: 8000
+    auto_hide_ms: 0
     theme_color: "cyan"
   services:
     umami_analytics:
