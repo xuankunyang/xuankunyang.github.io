@@ -83,6 +83,14 @@ busuanzi:
   enable: true
 
 params:
+  splash:
+    enable: true
+    title: "Xuankun Yang"
+    subtitle: "Research, engineering, and experiments in AI systems, machine learning, and intelligent interaction."
+    button_label: "Enter Site"
+    session_key: "siteSplashSeen_v1"
+    auto_hide_ms: 8000
+    theme_color: "cyan"
   services:
     umami_analytics:
       id: bbc0f0e0-122c-4b81-9eae-92170fb75208

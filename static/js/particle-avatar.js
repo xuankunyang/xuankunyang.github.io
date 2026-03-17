@@ -1,82 +1,97 @@
-(function() {
-    // Configuration
-    const CONFIG = {
-        particleCount: 5500,
-        colors: {
-            cyan:   { h: 185, s: 100, l: 60 },
-            purple: { h: 270, s: 95,  l: 65 },
-            green:  { h: 150, s: 90,  l: 60 },
-            orange: { h: 30,  s: 100, l: 60 },
-            rose:   { h: 340, s: 95,  l: 60 },
-        }
+(function () {
+    const TWO_PI = Math.PI * 2;
+    const COLOR_MAP = {
+        cyan: { h: 185, s: 100, l: 60 },
+        purple: { h: 270, s: 95, l: 65 },
+        green: { h: 150, s: 90, l: 60 },
+        orange: { h: 30, s: 100, l: 60 },
+        rose: { h: 340, s: 95, l: 60 }
     };
 
     class ParticleAvatar {
-        constructor(canvasId) {
-            console.log('ParticleAvatar constructor called with ID:', canvasId);
+        constructor(canvasId, options) {
             this.canvas = document.getElementById(canvasId);
-            if (!this.canvas) {
-                console.error('Canvas element not found:', canvasId);
-                return;
-            }
-            
+            if (!this.canvas) return;
+
             this.ctx = this.canvas.getContext('2d', { alpha: false });
+            if (!this.ctx) return;
+
+            const config = options || {};
+
             this.particles = [];
             this.animationFrame = null;
-            this.mouse = { x: -1000, y: -1000 };
             this.time = 0;
-            
-            // State
-            this.mood = 'neutral'; // happy, sad, thinking, surprised, neutral
-            this.themeColor = 'cyan';
-            this.isDarkMode = false;
-            
-            // Bind methods
+            this.mouse = { x: -1000, y: -1000 };
+            this.mood = config.mood || 'neutral';
+            this.themeColor = COLOR_MAP[config.themeColor] ? config.themeColor : 'cyan';
+            this.isDarkMode = Boolean(config.isDarkMode);
+            this.reducedMotion = Boolean(config.reducedMotion);
+            this.particleCount = 0;
+            this.interactionRadius = this.reducedMotion ? 140 : 260;
+            this.pushStrength = this.reducedMotion ? 18 : 42;
+
             this.resize = this.resize.bind(this);
             this.handleMouseMove = this.handleMouseMove.bind(this);
             this.handleMouseOut = this.handleMouseOut.bind(this);
+            this.handleThemeChange = this.handleThemeChange.bind(this);
 
+            this.themeObserver = null;
             this.init();
         }
 
         init() {
+            this.syncThemeMode();
             this.resize();
             window.addEventListener('resize', this.resize);
-            window.addEventListener('mousemove', this.handleMouseMove);
+            window.addEventListener('mousemove', this.handleMouseMove, { passive: true });
             window.addEventListener('mouseout', this.handleMouseOut);
-            
-            // Check initial dark mode
-            this.checkDarkMode();
-            
-            // Start loop
+            this.observeThemeMode();
             this.animate();
         }
 
-        handleMouseMove(e) {
-            this.mouse.x = e.clientX;
-            this.mouse.y = e.clientY;
+        observeThemeMode() {
+            if (!window.MutationObserver) return;
+
+            this.themeObserver = new MutationObserver(this.handleThemeChange);
+            this.themeObserver.observe(document.documentElement, {
+                attributes: true,
+                attributeFilter: ['class']
+            });
+            this.themeObserver.observe(document.body, {
+                attributes: true,
+                attributeFilter: ['class']
+            });
         }
 
-        handleMouseOut() {
-            this.mouse.x = -1000;
-            this.mouse.y = -1000;
+        handleThemeChange() {
+            this.syncThemeMode();
         }
-        
-        checkDarkMode() {
-            // Check for 'dark' class on body or html (HugoBlox standard)
-            // Also check for 'dark-mode' just in case
+
+        syncThemeMode() {
             const body = document.body;
             const html = document.documentElement;
-            const isDark = body.classList.contains('dark') || 
-                           html.classList.contains('dark') ||
-                           body.classList.contains('dark-mode');
-            this.isDarkMode = isDark;
+            this.isDarkMode =
+                html.classList.contains('dark') ||
+                body.classList.contains('dark') ||
+                body.classList.contains('dark-mode');
+        }
+
+        getAdaptiveParticleCount(width, height) {
+            const shortestSide = Math.min(width, height);
+            const isTouchDevice = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+
+            if (this.reducedMotion) return 280;
+            if (isTouchDevice || shortestSide < 640) return 1100;
+            if (shortestSide < 960) return 2200;
+            return 3600;
         }
 
         resize() {
             if (!this.canvas) return;
+
             this.canvas.width = window.innerWidth;
             this.canvas.height = window.innerHeight;
+            this.particleCount = this.getAdaptiveParticleCount(this.canvas.width, this.canvas.height);
             this.initParticles();
         }
 
@@ -85,32 +100,44 @@
             const height = this.canvas.height;
             const cx = width / 2;
             const cy = height / 2;
-            const TWO_PI = Math.PI * 2;
-            
+            const maxRadius = Math.min(width, height) * 0.54;
+
             this.particles = [];
-            
-            for (let i = 0; i < CONFIG.particleCount; i++) {
+
+            for (let i = 0; i < this.particleCount; i += 1) {
                 const angle = Math.random() * TWO_PI;
-                const rRandom = Math.random();
-                const radius = rRandom * rRandom * (Math.min(width, height) * 0.55);
-                const size = Math.random() * 1.6 + 0.2;
-                
+                const randomRadius = Math.random();
+                const radius = randomRadius * randomRadius * maxRadius;
+                const size = this.reducedMotion
+                    ? Math.random() * 1.2 + 0.35
+                    : Math.random() * 1.5 + 0.18;
+
                 this.particles.push({
                     x: cx + Math.cos(angle) * radius,
                     y: cy + Math.sin(angle) * radius,
-                    baseX: cx,
-                    baseY: cy,
                     angle: angle,
                     radius: radius,
-                    speed: 0.0005 + Math.random() * 0.002,
+                    speed: this.reducedMotion
+                        ? 0.00025 + Math.random() * 0.0007
+                        : 0.00045 + Math.random() * 0.0017,
                     size: size,
-                    alpha: Math.random() * 0.5 + 0.1,
-                    targetAlpha: Math.random() * 0.8 + 0.2,
-                    hueOffset: Math.random() * 60 - 30,
+                    alpha: Math.random() * 0.45 + 0.08,
+                    targetAlpha: Math.random() * 0.75 + 0.15,
+                    hueOffset: Math.random() * 56 - 28,
                     orbitOffset: Math.random() * TWO_PI,
-                    brightness: size > 1.2 ? 1.3 : 0.7
+                    brightness: size > 1.15 ? 1.2 : 0.75
                 });
             }
+        }
+
+        handleMouseMove(event) {
+            this.mouse.x = event.clientX;
+            this.mouse.y = event.clientY;
+        }
+
+        handleMouseOut() {
+            this.mouse.x = -1000;
+            this.mouse.y = -1000;
         }
 
         update() {
@@ -118,128 +145,139 @@
             const height = this.canvas.height;
             const cx = width / 2;
             const cy = height / 2;
-            const breathSpeed = 0.008;
-            const breathAmplitude = 0.08;
+            const breathSpeed = this.reducedMotion ? 0.003 : 0.008;
+            const breathAmplitude = this.reducedMotion ? 0.03 : 0.08;
             const breathingScale = 1 + Math.sin(this.time * breathSpeed) * breathAmplitude;
-            
-            this.particles.forEach(p => {
-                let targetRadius = p.radius;
-                let moveSpeed = p.speed;
-                
+
+            this.particles.forEach((particle) => {
+                let targetRadius = particle.radius;
+                let moveSpeed = particle.speed;
+
                 switch (this.mood) {
                     case 'happy':
-                        targetRadius = p.radius * 1.5;
-                        moveSpeed = p.speed * 3.0;
-                        p.angle += moveSpeed * 0.5;
+                        targetRadius = particle.radius * 1.35;
+                        moveSpeed = particle.speed * 2.2;
+                        particle.angle += moveSpeed * 0.45;
                         break;
                     case 'sad':
-                        targetRadius = p.radius * 0.3;
-                        moveSpeed = p.speed * 0.5;
-                        p.angle += moveSpeed * 3.0;
+                        targetRadius = particle.radius * 0.45;
+                        moveSpeed = particle.speed * 0.65;
+                        particle.angle += moveSpeed * 1.8;
                         break;
-                    case 'thinking':
-                        const ring = (Math.floor(p.orbitOffset * 10) % 4) + 1;
-                        targetRadius = 90 * ring * (1 + Math.sin(this.time * 0.02 + p.orbitOffset) * 0.15);
-                        p.angle += moveSpeed * (ring % 2 === 0 ? 1 : -1) * 1.5;
+                    case 'thinking': {
+                        const ring = (Math.floor(particle.orbitOffset * 10) % 4) + 1;
+                        targetRadius = 78 * ring * (1 + Math.sin(this.time * 0.018 + particle.orbitOffset) * 0.12);
+                        particle.angle += moveSpeed * (ring % 2 === 0 ? 1 : -1) * 1.25;
                         break;
+                    }
                     case 'surprised':
-                        targetRadius = p.radius + Math.sin(this.time * 0.05 + p.orbitOffset) * 60;
-                        p.angle += Math.sin(this.time * 0.03) * 0.005;
+                        targetRadius = particle.radius + Math.sin(this.time * 0.045 + particle.orbitOffset) * 42;
+                        particle.angle += Math.sin(this.time * 0.028) * 0.004;
                         break;
                     case 'neutral':
                     default:
-                        p.angle += moveSpeed;
+                        particle.angle += moveSpeed;
                         break;
                 }
-                
-                const r = targetRadius * breathingScale;
-                
-                let mx = cx + Math.cos(p.angle) * r;
-                let my = cy + Math.sin(p.angle) * r;
-                
-                const dx = this.mouse.x - mx;
-                const dy = this.mouse.y - my;
-                const dist = Math.sqrt(dx*dx + dy*dy);
-                const interactRadius = 300;
-                
+
+                const effectiveRadius = targetRadius * breathingScale;
+                const orbitX = cx + Math.cos(particle.angle) * effectiveRadius;
+                const orbitY = cy + Math.sin(particle.angle) * effectiveRadius;
+
+                const dx = this.mouse.x - orbitX;
+                const dy = this.mouse.y - orbitY;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
                 let pushX = 0;
                 let pushY = 0;
-                
-                if (dist < interactRadius) {
-                    const force = (interactRadius - dist) / interactRadius;
+
+                if (dist < this.interactionRadius) {
+                    const force = (this.interactionRadius - dist) / this.interactionRadius;
                     const angleToMouse = Math.atan2(dy, dx);
-                    const pushStrength = 50;
-                    pushX = -Math.cos(angleToMouse) * force * pushStrength;
-                    pushY = -Math.sin(angleToMouse) * force * pushStrength;
+                    pushX = -Math.cos(angleToMouse) * force * this.pushStrength;
+                    pushY = -Math.sin(angleToMouse) * force * this.pushStrength;
                 }
-                
-                const desiredX = cx + Math.cos(p.angle) * r + pushX;
-                const desiredY = cy + Math.sin(p.angle) * r + pushY;
-                
-                p.x += (desiredX - p.x) * 0.035;
-                p.y += (desiredY - p.y) * 0.035;
-                
-                p.alpha += (p.targetAlpha - p.alpha) * 0.03;
-                if (Math.random() > 0.99) {
-                    p.targetAlpha = Math.random() * 0.8 + 0.1;
+
+                const desiredX = orbitX + pushX;
+                const desiredY = orbitY + pushY;
+                const easing = this.reducedMotion ? 0.02 : 0.035;
+
+                particle.x += (desiredX - particle.x) * easing;
+                particle.y += (desiredY - particle.y) * easing;
+
+                particle.alpha += (particle.targetAlpha - particle.alpha) * 0.03;
+                if (Math.random() > (this.reducedMotion ? 0.997 : 0.99)) {
+                    particle.targetAlpha = Math.random() * 0.7 + 0.12;
                 }
             });
-            
+
             this.time += 1;
         }
 
         draw() {
-            if (!this.ctx) return;
             const width = this.canvas.width;
             const height = this.canvas.height;
-            const theme = CONFIG.colors[this.themeColor];
-            
-            this.checkDarkMode();
-            
-            this.ctx.fillStyle = this.isDarkMode ? 'rgba(0, 0, 5, 0.2)' : 'rgba(255, 255, 255, 0.2)';
+            const theme = COLOR_MAP[this.themeColor] || COLOR_MAP.cyan;
+
+            this.ctx.fillStyle = this.isDarkMode ? 'rgba(2, 5, 15, 0.22)' : 'rgba(248, 250, 252, 0.22)';
             this.ctx.fillRect(0, 0, width, height);
-            
+
             this.ctx.globalCompositeOperation = this.isDarkMode ? 'lighter' : 'source-over';
-            
-            this.particles.forEach(p => {
+
+            this.particles.forEach((particle) => {
+                const brightnessBoost = particle.brightness * 14;
+                const lightness = this.isDarkMode
+                    ? theme.l + brightnessBoost + particle.alpha * 5
+                    : theme.l - 18;
+                const alpha = this.isDarkMode ? particle.alpha * 0.58 : particle.alpha * 0.66;
+
                 this.ctx.beginPath();
-                const brightnessBoost = p.brightness * 15;
-                const l = this.isDarkMode 
-                    ? theme.l + brightnessBoost + (p.alpha * 5)
-                    : theme.l - 25;
-                const a = this.isDarkMode
-                    ? p.alpha * 0.6
-                    : p.alpha * 0.7;
-                    
-                this.ctx.fillStyle = `hsla(${Math.floor(theme.h + p.hueOffset)}, ${theme.s}%, ${Math.floor(l)}%, ${a.toFixed(2)})`;
-                this.ctx.arc(p.x, p.y, p.size * (this.isDarkMode ? 1.3 : 1.1), 0, Math.PI * 2);
+                this.ctx.fillStyle = 'hsla(' +
+                    Math.floor(theme.h + particle.hueOffset) + ', ' +
+                    theme.s + '%, ' +
+                    Math.floor(lightness) + '%, ' +
+                    alpha.toFixed(2) + ')';
+                this.ctx.arc(
+                    particle.x,
+                    particle.y,
+                    particle.size * (this.isDarkMode ? 1.28 : 1.08),
+                    0,
+                    TWO_PI
+                );
                 this.ctx.fill();
             });
-            
+
             this.ctx.globalCompositeOperation = 'source-over';
         }
 
         animate() {
             this.update();
             this.draw();
-            this.animationFrame = requestAnimationFrame(() => this.animate());
+            this.animationFrame = window.requestAnimationFrame(this.animate.bind(this));
         }
 
         setMood(mood) {
-            this.mood = mood;
+            this.mood = mood || 'neutral';
         }
-        
+
         setThemeColor(color) {
-            if (CONFIG.colors[color]) {
+            if (COLOR_MAP[color]) {
                 this.themeColor = color;
             }
         }
-        
+
         destroy() {
-             if (this.animationFrame) cancelAnimationFrame(this.animationFrame);
-             window.removeEventListener('resize', this.resize);
-             window.removeEventListener('mousemove', this.handleMouseMove);
-             window.removeEventListener('mouseout', this.handleMouseOut);
+            if (this.animationFrame) {
+                window.cancelAnimationFrame(this.animationFrame);
+                this.animationFrame = null;
+            }
+            window.removeEventListener('resize', this.resize);
+            window.removeEventListener('mousemove', this.handleMouseMove);
+            window.removeEventListener('mouseout', this.handleMouseOut);
+            if (this.themeObserver) {
+                this.themeObserver.disconnect();
+                this.themeObserver = null;
+            }
         }
     }
 

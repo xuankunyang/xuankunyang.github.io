@@ -1,0 +1,112 @@
+{{ $splash := site.Params.splash | default dict }}
+{{ $enabled := true }}
+{{ with $splash.enable }}
+  {{ $enabled = . }}
+{{ end }}
+{{ if $enabled }}
+  {{ $title := $splash.title | default site.Title }}
+  {{ $subtitle := $splash.subtitle | default site.Params.description | default "Welcome." }}
+  {{ $button := $splash.button_label | default "Enter Site" }}
+  {{ $sessionKey := $splash.session_key | default "siteSplashSeen_v1" }}
+  {{ $autoHideMs := $splash.auto_hide_ms | default 8000 }}
+  {{ $themeColor := $splash.theme_color | default "cyan" }}
+  <div
+    id="splash-screen"
+    class="site-splash"
+    hidden
+    aria-hidden="true"
+    data-session-key="{{ $sessionKey }}"
+    data-auto-hide-ms="{{ $autoHideMs }}"
+    data-theme-color="{{ $themeColor }}">
+    <canvas id="splash-canvas" class="site-splash__canvas"></canvas>
+    <div class="site-splash__veil"></div>
+    <div class="site-splash__content" role="dialog" aria-modal="true" aria-labelledby="splash-title" aria-describedby="splash-subtitle">
+      <div class="site-splash__copy">
+        <p class="site-splash__eyebrow">Welcome</p>
+        <h1 id="splash-title" class="site-splash__title">{{ $title }}</h1>
+        <p id="splash-subtitle" class="site-splash__subtitle">{{ $subtitle }}</p>
+      </div>
+      <div class="site-splash__actions">
+        <button type="button" class="site-splash__button" id="enter-site-btn">{{ $button }}</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/particle-avatar.js"></script>
+  <script>
+    (function () {
+      const splashScreen = document.getElementById('splash-screen');
+      if (!splashScreen) return;
+
+      const root = document.documentElement;
+      const enterBtn = document.getElementById('enter-site-btn');
+      const sessionKey = splashScreen.dataset.sessionKey || 'siteSplashSeen_v1';
+      const autoHideMs = Number.parseInt(splashScreen.dataset.autoHideMs || '8000', 10);
+      const themeColor = splashScreen.dataset.themeColor || 'cyan';
+      const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      let particleAvatar = null;
+      let autoHideTimer = null;
+
+      function cleanup() {
+        if (autoHideTimer) {
+          window.clearTimeout(autoHideTimer);
+          autoHideTimer = null;
+        }
+        if (particleAvatar) {
+          particleAvatar.destroy();
+          particleAvatar = null;
+        }
+      }
+
+      function hideSplash() {
+        if (!root.classList.contains('splash-active')) return;
+
+        root.classList.remove('splash-active');
+        root.classList.add('splash-complete');
+        splashScreen.setAttribute('aria-hidden', 'true');
+        sessionStorage.setItem(sessionKey, 'true');
+        document.body.style.overflow = '';
+
+        window.setTimeout(function () {
+          splashScreen.hidden = true;
+          cleanup();
+        }, 900);
+      }
+
+      if (sessionStorage.getItem(sessionKey) === 'true') {
+        root.classList.add('splash-complete');
+        splashScreen.hidden = true;
+        return;
+      }
+
+      root.classList.add('splash-ready', 'splash-active');
+      splashScreen.hidden = false;
+      splashScreen.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+
+      if (window.ParticleAvatar) {
+        particleAvatar = new window.ParticleAvatar('splash-canvas', {
+          mood: 'neutral',
+          themeColor: themeColor,
+          isDarkMode: root.classList.contains('dark'),
+          reducedMotion: prefersReducedMotion
+        });
+      }
+
+      if (enterBtn) {
+        enterBtn.addEventListener('click', hideSplash);
+      }
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && root.classList.contains('splash-active')) {
+          hideSplash();
+        }
+      });
+
+      if (autoHideMs > 0) {
+        autoHideTimer = window.setTimeout(hideSplash, autoHideMs);
+      }
+    })();
+  </script>
+{{ end }}
