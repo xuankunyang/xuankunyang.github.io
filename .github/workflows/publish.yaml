@@ -40,8 +40,11 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: 18
+        cache: npm
     - name: Install Node dependencies
-      run: npm install
+      run: npm ci --include=optional
+    - name: Verify Tailwind native binding
+      run: node -e "require('@tailwindcss/oxide')"
     - uses: actions/cache@v3
       with:
         path: /tmp/hugo_cache_runner/
