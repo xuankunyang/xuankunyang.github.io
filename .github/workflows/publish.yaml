@@ -1,7 +1,7 @@
 name: Deploy website to GitHub Pages
 
 env:
-  WC_HUGO_VERSION: '0.156.0'
+  WC_HUGO_VERSION: '0.158.0'
 
 on:
   # Trigger the workflow every time you push to the `main` branch
@@ -42,10 +42,6 @@ jobs:
         node-version: 18
     - name: Install Node dependencies
       run: npm install
-    - name: Update browserslist
-      run: npx update-browserslist-db@latest
-    - name: Install TailwindCSS
-      run: npm install tailwindcss@3.4.13 postcss autoprefixer
     - uses: actions/cache@v3
       with:
         path: /tmp/hugo_cache_runner/

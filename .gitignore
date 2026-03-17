@@ -1,0 +1,14 @@
+# Node
+node_modules/
+
+# Hugo build outputs and caches
+public/
+resources/
+.hugo_build.lock
+
+# Hugo/Tailwind generated metadata
+hugo_stats.json
+assets/jsconfig.json
+
+# OS/editor noise
+.DS_Store
