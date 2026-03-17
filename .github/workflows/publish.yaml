@@ -43,8 +43,10 @@ jobs:
         cache: npm
     - name: Install Node dependencies
       run: npm ci --include=optional
+    - name: Install Tailwind Linux native binding
+      run: npm install --no-save @tailwindcss/oxide-linux-x64-gnu@4.2.1
     - name: Verify Tailwind native binding
-      run: node -e "require('@tailwindcss/oxide')"
+      run: node -e "require('@tailwindcss/oxide-linux-x64-gnu'); require('@tailwindcss/oxide')"
     - uses: actions/cache@v3
       with:
         path: /tmp/hugo_cache_runner/
