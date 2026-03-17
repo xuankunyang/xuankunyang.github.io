@@ -85,8 +85,8 @@
       const sessionKey = splashScreen.dataset.sessionKey || 'siteSplashSeen_v1';
       const themeColor = splashScreen.dataset.themeColor || 'cyan';
       const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const motionPatterns = ['neutral', 'happy', 'sad', 'thinking', 'surprised', 'halo', 'ripple', 'helix', 'bloom', 'wave'];
-      const reducedPatterns = ['neutral', 'thinking', 'halo', 'wave'];
+      const motionPatterns = ['neutral', 'happy', 'sad', 'thinking', 'surprised', 'halo', 'ripple', 'helix', 'bloom', 'wave', 'nebula', 'binary', 'pulse'];
+      const reducedPatterns = ['neutral', 'thinking', 'halo', 'wave', 'pulse'];
       const availablePatterns = prefersReducedMotion ? reducedPatterns : motionPatterns;
       let currentPattern = availablePatterns[Math.floor(Math.random() * availablePatterns.length)];
 
@@ -103,7 +103,10 @@
           ripple: 'Ripple',
           helix: 'Helix',
           bloom: 'Bloom',
-          wave: 'Wave'
+          wave: 'Wave',
+          nebula: 'Nebula',
+          binary: 'Binary',
+          pulse: 'Pulse'
         };
         return labels[pattern] || 'Pattern';
       }

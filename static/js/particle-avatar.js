@@ -17,7 +17,10 @@
         "ripple",
         "helix",
         "bloom",
-        "wave"
+        "wave",
+        "nebula",
+        "binary",
+        "pulse"
     ];
 
     class ParticleAvatar {
@@ -213,6 +216,41 @@
                             Math.cos(particle.angle * 3.5 + this.time * 0.01) * 26;
                         particle.angle += moveSpeed * 0.85;
                         break;
+                    case 'nebula': {
+                        const armCount = 3;
+                        const swirl = particle.radius * 0.42;
+                        const armPhase = (particle.orbitOffset % 1) * armCount * TWO_PI;
+                        const spiralWave = Math.sin(this.time * 0.012 + armPhase + particle.radius * 0.025);
+                        targetRadius = Math.min(width, height) * 0.08 + swirl + spiralWave * 54;
+                        particle.angle += moveSpeed * (1.5 + particle.radius / Math.max(Math.min(width, height), 1)) + 0.0018;
+                        break;
+                    }
+                    case 'binary': {
+                        const pivot = Math.sin(this.time * 0.01 + particle.orbitOffset);
+                        const lobe = particle.orbitOffset > Math.PI ? 1 : -1;
+                        const coreOffset = Math.min(width, height) * 0.16;
+                        const coreX = cx + lobe * coreOffset * Math.cos(this.time * 0.008);
+                        const coreY = cy + coreOffset * 0.36 * Math.sin(this.time * 0.014 + lobe);
+                        const localRadius = Math.min(width, height) * 0.045 + particle.radius * 0.28 + Math.abs(pivot) * 24;
+                        const localAngle = particle.angle + (lobe * 0.018);
+                        const desiredX = coreX + Math.cos(localAngle) * localRadius;
+                        const desiredY = coreY + Math.sin(localAngle) * localRadius;
+                        particle.angle += moveSpeed * (1.55 + lobe * 0.08);
+                        particle.x += (desiredX - particle.x) * (this.reducedMotion ? 0.018 : 0.032);
+                        particle.y += (desiredY - particle.y) * (this.reducedMotion ? 0.018 : 0.032);
+                        particle.alpha += (particle.targetAlpha - particle.alpha) * 0.03;
+                        if (Math.random() > (this.reducedMotion ? 0.997 : 0.99)) {
+                            particle.targetAlpha = Math.random() * 0.7 + 0.12;
+                        }
+                        return;
+                    }
+                    case 'pulse': {
+                        const beat = Math.abs(Math.sin(this.time * 0.035));
+                        const shell = Math.floor((particle.orbitOffset / TWO_PI) * 5) + 1;
+                        targetRadius = 18 * shell + beat * (20 + shell * 14) + Math.sin(this.time * 0.018 + particle.orbitOffset * 6) * 8;
+                        particle.angle += moveSpeed * (0.75 + shell * 0.08);
+                        break;
+                    }
                     case 'neutral':
                     default:
                         particle.angle += moveSpeed;
