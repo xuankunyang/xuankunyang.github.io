@@ -25,6 +25,8 @@ design:
 ## Playing Atari and MuJoCo with Deep Reinforcement Learning
 
 ---
+### Preface
+This blog was directly converted from the corresponding PDF, for a better reading experience, please read the [PDF](/uploads/RL_report.pdf).
 
 ### Introduction {#introduction .unnumbered}
 
