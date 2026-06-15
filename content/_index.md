@@ -41,11 +41,9 @@ sections:
       title: '📚 My Research'
       subtitle: ''
       text: |-
-        I have previously worked on PEFT(parameter-efficient fine-tuning).
+        I have previously worked on PEFT(parameter-efficient fine-tuning), Model Merging and visual token prune for MLLMs. 
         
-        I am currently working on research about Model Merging and visual token prune for MLLMs. 
-        
-        Maybe I will dive into the diffusion models, CV or AI4S research in the near feature.
+        I will dive into Generative AI and Embodied Intelligence research in the near feature.
         
         Feel free to reach out to collaborate! 😃
     design:

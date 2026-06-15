@@ -55,7 +55,7 @@ profiles:
 interests:
   - Large Language Models
   - Multimodal Models
-  - Machine Learning
+  - Generative AI
 
 education:
   - area: BEng Artificial Intelligence
@@ -105,11 +105,12 @@ work:
     company_url: ''
     company_logo: ''
     date_start: 2024-10-01
-    date_end: ''
+    date_end: 2026-07-01
     summary: |
       Responsibilities include:
-      - PEFT(Parameter-Efficient-Fine-Tuning) Research
-      - Model Merging Related Research
+      - Research on PEFT(Parameter-Efficient-Fine-Tuning)
+      - Research on Model Merging
+      - Research on Visual Token Prune for MLLMs
 
 # Skills
 # Add your own SVG icons to `assets/media/icons/`
@@ -186,5 +187,7 @@ languages:
 ## About Me
 
 I am currently studying for my undergraduate degree in Shanghai Jiao Tong University, majoring in artificial intelligence.
-I am very interested in many existing large model technologies and have some practical experience. My areas of interest are: multimodality models and ML. I am currently working on Model Merging and visual token prune for MLLMs.
+I am very interested in many existing large model technologies and have some practical experience. 
+My areas of interest are: multimodality models and generative AI. 
+<!-- I am currently working on Model Merging and visual token prune for MLLMs. -->
 If you have the same interests or hobbies, let's be friends!
