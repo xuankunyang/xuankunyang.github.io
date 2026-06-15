@@ -1,0 +1,10 @@
+{{- $umami := site.Params.services.umami_analytics | default dict -}}
+{{- with $umami.id -}}
+  {{- if hugo.IsProduction -}}
+    <script
+      defer
+      src="{{ $umami.script_url | default "https://cloud.umami.is/script.js" }}"
+      data-website-id="{{ . }}">
+    </script>
+  {{- end -}}
+{{- end -}}
