@@ -1,0 +1,14 @@
+.prose figure.eadp-figure {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose figure.eadp-figure img {
+  display: block;
+  margin: 0 auto;
+}
+
+.prose figure.eadp-figure + p,
+.prose figure.eadp-figure + h4 {
+  margin-top: 0.75rem;
+}
