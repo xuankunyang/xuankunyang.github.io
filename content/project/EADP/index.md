@@ -3,6 +3,8 @@ title: EADP
 date: 2026-06-18
 url: /project/EADP/
 summary: Entropy-aware dense visual token pruning for efficient vision-language models.
+authors:
+  - admin
 tags:
   - Visual Token Pruning
   - Vision-Language Models
@@ -19,11 +21,13 @@ image:
 
 **ECCV 2026**
 
-**Authors:** Author A, Xuankun Yang, Author C, Author D, Author E
+**Authors:** Xuehui Wang<sup>1,*</sup>, Xuankun Yang<sup>1,*</sup>, Wei Shen<sup>1,†</sup>
 
-**Affiliations:** Institution A, Institution B, Institution C
+**Affiliations:** <sup>1</sup>[Shanghai Jiao Tong University](https://www.sjtu.edu.cn/), China
 
-[Paper](#resources) | [Code](#resources) | [BibTeX](#citation)
+<sup>*</sup> Equal contribution. <sup>†</sup> Corresponding author.
+
+[Code](https://github.com/SJTU-DeepVisionLab/EADP) | [BibTeX](#citation)
 
 > **TL;DR:** EADP is a plug-and-play visual token pruning framework for VLMs/MLLMs. It combines entropy-aware dense scoring with submodular token selection to preserve fine-grained visual cues under strict token budgets.
 
@@ -81,11 +85,11 @@ After scoring, EADP refines the relevance map with spatial smoothing and score p
 ### Citation
 
 ```bibtex
-@inproceedings{eadp2026,
-  title     = {Combating Textual Noise and Redundancy: Entropy-Aware Dense Visual Token Pruning},
-  author    = {Author A and Xuankun Yang and Author C and Author D and Author E},
-  booktitle = {European Conference on Computer Vision (ECCV)},
-  year      = {2026},
-  note      = {Placeholder citation. Replace with the official camera-ready metadata.}
+@inproceedings{wang2026eadp,
+    title     = {Combating Textual Noise and Redundancy: Entropy-Aware Dense Visual Token Pruning},
+    author    = {Wang, Xuehui and Yang, Xuankun and Shen, Wei},
+    booktitle = {Proceedings of the European Conference on Computer Vision (ECCV)},
+    year      = {2026},
+    url       = {https://github.com/SJTU-DeepVisionLab/EADP}
 }
 ```

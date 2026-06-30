@@ -5,16 +5,15 @@ title: 'Combating Textual Noise and Redundancy: Entropy-Aware Dense Visual Token
 # Replace placeholder names with the final camera-ready author list.
 # Use `admin` for Xuankun Yang to link this publication to the local author profile.
 authors:
-  - Author A
+  - Xuehui Wang
   - admin
-  - Author C
-  - Author D
-  - Author E
+  - Wei Shen
 
 # Author notes (optional)
-# author_notes:
-#   - 'Equal contribution'
-#   - 'Equal contribution'
+author_notes:
+  - 'Equal contribution'
+  - 'Equal contribution'
+  - 'Corresponding author'
 
 date: '2026-06-18T00:00:00Z'
 
@@ -29,7 +28,7 @@ publishDate: '2026-06-18T00:00:00Z'
 publication_types: ["paper-conference"]
 
 # Publication name and optional abbreviated publication name.
-publication: In *European Conference on Computer Vision (ECCV), 2026*
+publication: In Proceedings of the *European Conference on Computer Vision (ECCV), 2026*
 publication_short: In *ECCV 2026*
 
 abstract: Visual token pruning is a crucial strategy for accelerating Vision-Language Models by compressing redundant image patches, yet existing methods often fail to preserve critical cues under dense instructions and fine-grained queries. In this work, we investigate this failure and identify two underlying bottlenecks, the widespread dispersion of textual noise that corrupts dense cross-modal scoring and the feature fragmentation inherent to standard token selection. To address these issues, we propose Entropy-Aware Dense Pruning (EADP), a framework that reformulates pruning as a structured compression problem. EADP first leverages statistical entropy to quantify and filter out textual noise, yielding a robust, fine-grained instruction relevance score. Subsequently, instead of naive Top-K selection, EADP casts token selection as a submodular maximization problem with a spatial prior, explicitly encouraging a holistic and non-redundant visual representation. Extensive experiments show that EADP improves the accuracy-efficiency trade-off of VLMs, preserving fine-grained visual cues under strict token budgets on challenging multimodal benchmarks.
@@ -54,8 +53,8 @@ links:
     url: /project/EADP/
 # - type: pdf
 #   url: ''
-# - type: code
-#   url: ''
+  - type: code
+    url: 'https://github.com/SJTU-DeepVisionLab/EADP'
 
 # Featured image
 # To use, add an image named `featured.jpg/png` to this page's folder.
