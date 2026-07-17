@@ -6,7 +6,7 @@ codex_bin="${HOME}/.local/bin/codex"
 
 if [[ ! -x "${codex_bin}" ]]; then
   echo "Installing the official standalone Codex CLI..."
-  if ! curl -fsSL https://chatgpt.com/codex/install.sh | sh; then
+  if ! curl -fsSL https://chatgpt.com/codex/install.sh | CODEX_NON_INTERACTIVE=1 sh; then
     echo "Codex installation failed; remote control was not started." >&2
     exit 0
   fi
