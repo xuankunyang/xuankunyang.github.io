@@ -17,7 +17,16 @@ if ! "${codex_bin}" login status >/dev/null 2>&1; then
   exit 0
 fi
 
-if ! "${codex_bin}" remote-control start; then
-  echo "Codex remote control could not be started." >&2
-  exit 0
-fi
+for attempt in 1 2 3; do
+  if "${codex_bin}" remote-control start; then
+    exit 0
+  fi
+
+  if [[ "${attempt}" -lt 3 ]]; then
+    echo "Codex remote control is not ready yet; retrying..." >&2
+    sleep 5
+  fi
+done
+
+echo "Codex remote control could not be started after 3 attempts." >&2
+exit 0
