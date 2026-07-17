@@ -1,0 +1,4 @@
+{
+  "name": "HugoBlox Codespace",
+  "postStartCommand": "bash .devcontainer/start-codex-remote.sh"
+}
