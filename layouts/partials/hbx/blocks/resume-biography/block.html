@@ -1,0 +1,95 @@
+{{/* Local editorial override for the HugoBlox resume biography block. */}}
+{{ $page := .wcPage }}
+{{ $block := .wcBlock }}
+{{ $author := $block.content.username | default "admin" }}
+{{ $person_page_path := printf "/authors/%s" $author }}
+{{ $person_page := site.GetPage $person_page_path }}
+{{ if not $person_page }}
+  {{ errorf "Could not find an author page at `%s`." $person_page_path }}
+{{ end }}
+{{ $person := $person_page.Params }}
+{{ $avatar := ($person_page.Resources.ByType "image").GetMatch "*avatar*" }}
+
+<div id="profile" class="resume-biography profile-editorial">
+  <div class="profile-copy">
+    <div class="profile-name-lockup">
+      <h1 class="profile-name">{{ $person_page.Title }}</h1>
+      {{ with $person.chinese_name }}
+        <p class="profile-name-zh" lang="zh-CN">{{ . }}</p>
+      {{ end }}
+    </div>
+
+    {{ with $person.role }}
+      <p class="profile-role">{{ . | markdownify | emojify }}</p>
+    {{ end }}
+
+    {{ range $person.organizations }}
+      <p class="profile-organization">
+        {{ with .url }}<a href="{{ . }}" target="_blank" rel="noopener">{{ end }}
+        {{ .name }}
+        {{ if .url }}</a>{{ end }}
+      </p>
+    {{ end }}
+
+    <ul class="profile-social" aria-label="Profiles">
+      {{ range $person.profiles }}
+        {{ $link := .url | default .link }}
+        {{ $scheme := (urls.Parse $link).Scheme }}
+        {{ $target := "" }}
+        {{ if not $scheme }}
+          {{ $link = $link | relLangURL }}
+          {{ if eq (path.Ext $link) ".pdf" }}
+            {{ $target = "target=\"_blank\" rel=\"noopener\"" }}
+          {{ end }}
+        {{ else if in (slice "http" "https") $scheme }}
+          {{ $target = "target=\"_blank\" rel=\"noopener\"" }}
+        {{ end }}
+        <li>
+          <a href="{{ $link | safeURL }}" {{ $target | safeHTMLAttr }} aria-label="{{ .label | default .icon }}"
+             {{ with .label }}title="{{ . }}"{{ end }}>
+            {{ partial "functions/get_icon" (dict "name" .icon "attributes" "aria-hidden=\"true\"") }}
+          </a>
+        </li>
+      {{ end }}
+    </ul>
+  </div>
+
+  {{ with $avatar }}
+    {{ $avatar_small := .Fit "640x900 webp q82" }}
+    {{ $avatar_large := .Fit "1200x1600 webp q86" }}
+    <figure class="profile-visual">
+      <img
+        src="{{ $avatar_large.RelPermalink }}"
+        srcset="{{ $avatar_small.RelPermalink }} {{ $avatar_small.Width }}w, {{ $avatar_large.RelPermalink }} {{ $avatar_large.Width }}w"
+        sizes="(max-width: 899px) 10rem, 18rem"
+        width="{{ $avatar_large.Width }}"
+        height="{{ $avatar_large.Height }}"
+        alt="{{ $person_page.Title }}"
+        fetchpriority="high"
+        decoding="async">
+    </figure>
+  {{ end }}
+
+  <div class="profile-details">
+    {{ with ($block.content.text | emojify | $page.RenderString) | default $person_page.Content }}
+      <div class="profile-bio prose dark:prose-invert">
+        {{ . }}
+      </div>
+    {{ end }}
+
+    {{ with $person.interests }}
+      <aside class="profile-interests">
+        <h2>Research interests</h2>
+        <ul>
+          {{ range . }}<li>{{ . }}</li>{{ end }}
+        </ul>
+      </aside>
+    {{ end }}
+
+    {{ with $block.content.button }}
+      <div class="profile-action">
+        <a href="{{ .url }}" target="_blank" rel="noopener">{{ .text }}</a>
+      </div>
+    {{ end }}
+  </div>
+</div>

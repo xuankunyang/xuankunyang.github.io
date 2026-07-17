@@ -18,7 +18,8 @@ sections:
     design:
       view: article-grid
       fill_image: false
-      columns: 2
+      columns: 1
+      css_class: publications-index
 #   - block: collection
 #     content:
 #       title: Recent Publications

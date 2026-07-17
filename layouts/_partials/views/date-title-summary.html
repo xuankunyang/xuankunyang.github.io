@@ -1,0 +1,15 @@
+{{ $item := .item }}
+{{ $summary := $item.Params.summary | default $item.Params.description | default $item.Summary }}
+<article class="news-item">
+  <time datetime="{{ time.Format "2006-01-02" $item.Date }}">
+    <span>{{ time.Format "2006" $item.Date }}</span>
+    {{ time.Format "01.02" $item.Date }}
+  </time>
+  <div>
+    <h2><a href="{{ $item.RelPermalink }}">{{ $item.Title }}</a></h2>
+    <p>{{ $summary | page.RenderString }}</p>
+  </div>
+  <svg aria-hidden="true" viewBox="0 0 20 20">
+    <path d="M4 10h11M11 6l4 4-4 4"/>
+  </svg>
+</article>

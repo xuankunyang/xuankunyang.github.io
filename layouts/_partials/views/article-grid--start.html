@@ -1,4 +1,3 @@
 {{ $columns := .config.columns | default 2 }}
-{{/* NOTE: dynamic `md:grid-cols-{{$columns}}` class requires Tailwind exception */}}
-<div class="container px-8 mx-auto xl:px-5 py-5 lg:py-8 max-w-screen-lg">
-  <div class="grid gap-10 md:grid-cols-{{$columns}} lg:gap-10">
+<div class="portfolio-grid-shell">
+  <div class="portfolio-grid portfolio-grid--{{$columns}}">

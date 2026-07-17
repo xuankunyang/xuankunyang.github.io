@@ -1,6 +1,7 @@
 ---
 # Display name
 title: Xuankun Yang
+chinese_name: 杨炫锟
 
 # Name pronunciation (optional)
 # name_pronunciation: Chien Shiung Wu

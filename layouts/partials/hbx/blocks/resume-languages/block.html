@@ -1,0 +1,18 @@
+{{/* Local data-table override for technical skills. */}}
+{{ $block := .wcBlock }}
+{{ $author := $block.content.username | default "admin" }}
+{{ $person_page := site.GetPage (printf "/authors/%s" $author) }}
+{{ if not $person_page }}{{ errorf "Could not find author `%s`." $author }}{{ end }}
+
+<div class="resume-metrics">
+  <h2>{{ $block.content.title | markdownify | emojify }}</h2>
+  {{ with $block.content.text }}<p>{{ . | markdownify | emojify }}</p>{{ end }}
+  <ul>
+    {{ range $person_page.Params.languages }}
+      <li>
+        <span>{{ .name }}</span>
+        <strong>{{ .percent }}%</strong>
+      </li>
+    {{ end }}
+  </ul>
+</div>

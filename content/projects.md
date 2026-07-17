@@ -14,7 +14,7 @@ sections:
     content:
       title: Selected Projects
       text: I enjoy making things. Here are a selection of projects that I have worked on over the years.
-      count: 4
+      count: 5
       filters:
         folders:
           - project
@@ -22,4 +22,5 @@ sections:
       view: article-grid
       fill_image: false
       columns: 2
+      css_class: projects-index
 ---

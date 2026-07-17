@@ -19,23 +19,7 @@ sections:
       #   text: Download CV
       #   url: uploads/pesudoresume.pdf
     design:
-      css_class: dark
-      background:
-        color: black
-        # image:
-        #   # Add your image background to `assets/media/`.
-        #   filename: background.JPG
-        #   filters:
-        #     brightness: 0.75
-        #   size: cover
-        #   position: center
-        #   parallax: true
-        #   text_color_light: true
-        video:
-            # Name of video in `assets/media/`.
-            filename: background_video.mp4
-            # Post-processing: flip the video horizontally?
-            flip: false
+      css_class: research-hero
   - block: markdown
     content:
       title: '📚 My Research'
@@ -48,6 +32,7 @@ sections:
         Feel free to reach out to collaborate! 😃
     design:
       columns: '1'
+      css_class: research-overview
   # - block: collection
   #   id: papers
   #   content:
@@ -105,6 +90,7 @@ sections:
     design:
       # Choose a layout view
       view: date-title-summary
+      css_class: research-news
       # Reduce spacing
       spacing:
         padding: [0, 0, 0, 0]

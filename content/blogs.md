@@ -22,4 +22,5 @@ sections:
       view: article-grid
       fill_image: false
       columns: 2
+      css_class: blogs-index
 ---

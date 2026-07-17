@@ -1,0 +1,18 @@
+{{/* Local markdown override: content stays intact while decorative title emoji can be omitted visually. */}}
+{{ $page := .wcPage }}
+{{ $block := .wcBlock }}
+{{ $title_source := $block.content.title }}
+{{ if eq $block.design.css_class "research-overview" }}
+  {{ $title_source = replace $title_source "📚 " "" }}
+{{ end }}
+{{ $title := $title_source | emojify | $page.RenderString }}
+{{ $text := $block.content.text | emojify | $page.RenderString | safeHTML }}
+
+<div class="flex flex-col items-center max-w-prose mx-auto gap-3 justify-center px-6">
+  <div class="mb-6 text-3xl font-bold text-gray-900 dark:text-white">
+    {{ $title }}
+  </div>
+  {{ with $text }}
+    <div class="prose prose-slate lg:prose-xl dark:prose-invert max-w-prose">{{ . }}</div>
+  {{ end }}
+</div>

@@ -83,7 +83,7 @@ busuanzi:
   enable: true
 
 splash:
-  enable: true
+  enable: false
   title: "Xuankun Yang"
   subtitle: "Research, engineering, and experiments in AI systems, machine learning, and intelligent interaction."
   button_label: "Enter Site"

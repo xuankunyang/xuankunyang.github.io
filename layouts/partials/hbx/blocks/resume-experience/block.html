@@ -1,0 +1,52 @@
+{{/* Local ledger-style override for education and experience. */}}
+{{ $page := .wcPage }}
+{{ $block := .wcBlock }}
+{{ $author := $block.content.username | default "admin" }}
+{{ $person_page := site.GetPage (printf "/authors/%s" $author) }}
+{{ if not $person_page }}{{ errorf "Could not find author `%s`." $author }}{{ end }}
+{{ $person := $person_page.Params }}
+{{ $date_format := $block.design.date_format | default "January 2006" }}
+
+<div class="resume-ledger {{ if $block.design.is_education_first }}resume-ledger--education-first{{ end }}">
+  {{ with $person.work }}
+    <section class="resume-ledger__group resume-ledger__work">
+      <h2>{{ i18n "experience" | default "Experience" }}</h2>
+      <div class="resume-ledger__entries">
+        {{ range . }}
+          <article class="resume-entry">
+            <p class="resume-entry__date">
+              {{ if .date_start }}{{ (time .date_start) | time.Format $date_format }}{{ end }}
+              <span aria-hidden="true">/</span>
+              {{ if .date_end }}{{ (time .date_end) | time.Format $date_format }}{{ else }}{{ i18n "present" | default "Present" }}{{ end }}
+            </p>
+            <h3>{{ .position }}</h3>
+            <p class="resume-entry__place">{{ .company_name }}</p>
+            <div class="resume-entry__summary prose dark:prose-invert">{{ .summary | $page.RenderString }}</div>
+            {{ with .button }}<a class="resume-entry__link" href="{{ .url }}" target="_blank" rel="noopener">{{ .text }}</a>{{ end }}
+          </article>
+        {{ end }}
+      </div>
+    </section>
+  {{ end }}
+
+  {{ with $person.education }}
+    <section class="resume-ledger__group resume-ledger__education">
+      <h2>{{ i18n "education" | default "Education" }}</h2>
+      <div class="resume-ledger__entries">
+        {{ range . }}
+          <article class="resume-entry">
+            <p class="resume-entry__date">
+              {{ if .date_start }}{{ (time .date_start) | time.Format $date_format }}{{ end }}
+              <span aria-hidden="true">/</span>
+              {{ if .date_end }}{{ (time .date_end) | time.Format $date_format }}{{ else }}{{ i18n "present" | default "Present" }}{{ end }}
+            </p>
+            <h3>{{ .area }}</h3>
+            <p class="resume-entry__place">{{ .institution }}</p>
+            <div class="resume-entry__summary prose dark:prose-invert">{{ .summary | $page.RenderString }}</div>
+            {{ with .button }}<a class="resume-entry__link" href="{{ .url }}" target="_blank" rel="noopener">{{ .text }}</a>{{ end }}
+          </article>
+        {{ end }}
+      </div>
+    </section>
+  {{ end }}
+</div>

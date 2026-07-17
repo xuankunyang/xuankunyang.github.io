@@ -1,9 +1,5 @@
 {{ $splash := site.Params.splash | default dict }}
-{{ $enabled := true }}
-{{ with $splash.enable }}
-  {{ $enabled = . }}
-{{ end }}
-{{ if $enabled }}
+{{ if $splash.enable }}
   {{ $title := $splash.title | default site.Title }}
   {{ $subtitle := $splash.subtitle | default site.Params.description | default "Welcome." }}
   {{ $button := $splash.button_label | default "Enter Site" }}

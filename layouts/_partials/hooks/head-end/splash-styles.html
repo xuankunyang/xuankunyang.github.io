@@ -1,8 +1,4 @@
 {{ $splash := site.Params.splash | default dict }}
-{{ $enabled := true }}
-{{ with $splash.enable }}
-  {{ $enabled = . }}
-{{ end }}
-{{ if $enabled }}
+{{ if $splash.enable }}
   <link rel="stylesheet" href="/css/custom.css">
 {{ end }}

@@ -1,0 +1,81 @@
+{{ $item := .item }}
+{{ $link := $item.RelPermalink }}
+{{ $target := "" }}
+{{ if $item.Params.external_link }}
+  {{ $link = $item.Params.external_link }}
+  {{ $target = "target=\"_blank\" rel=\"noopener\"" }}
+{{ end }}
+
+{{ $resource := partial "functions/get_featured_image.html" $item }}
+{{ if not $resource }}
+  {{ with $item.Resources.ByType "image" }}
+    {{ $resource = index . 0 }}
+  {{ end }}
+{{ end }}
+
+{{ $section := $item.Section | default $item.Type }}
+{{ $anchor := $item.Params.image.focal_point | default "Center" }}
+{{ $fill_image := .config.fill_image | default true }}
+{{ $cta := i18n "read_more" | default "Read more" }}
+{{ if eq $section "project" }}{{ $cta = "View project" }}{{ end }}
+{{ if eq $section "publication" }}{{ $cta = "View publication" }}{{ end }}
+{{ if eq $section "photos" }}{{ $cta = "Open album" }}{{ end }}
+
+<article class="portfolio-card portfolio-card--{{ $section }}" aria-labelledby="card-title-{{ $item.File.UniqueID }}">
+  <a class="portfolio-card__media" href="{{ $link }}" {{ $target | safeHTMLAttr }} tabindex="-1" aria-hidden="true">
+    {{ with $resource }}
+      {{ $original_image := . }}
+      {{ if $fill_image }}
+        {{ $original_image = .Fill (printf "1200x800 %s" $anchor) }}
+      {{ else }}
+        {{ $original_image = .Fit "1200x800" }}
+      {{ end }}
+      {{ $responsive := partial "functions/process_responsive_image.html" (dict
+          "image" $original_image
+          "mode" "responsive"
+          "sizes" (slice 480 800 1200)
+          "formats" (slice "avif" "webp" "jpg")
+      ) }}
+      <img
+        srcset="{{ $responsive.srcset }}"
+        sizes="(max-width: 767px) 100vw, 50vw"
+        src="{{ $responsive.fallback.RelPermalink }}"
+        width="{{ $original_image.Width }}"
+        height="{{ $original_image.Height }}"
+        loading="{{ if eq $section "photos" }}eager{{ else }}lazy{{ end }}"
+        decoding="async"
+        alt="">
+    {{ else }}
+      <span class="portfolio-card__fallback" aria-hidden="true">{{ $item.Title }}</span>
+    {{ end }}
+  </a>
+
+  <div class="portfolio-card__body">
+    <time datetime="{{ $item.Date.Format "2006-01-02" }}">{{ $item.Date.Format "2006" }}</time>
+    <h2 id="card-title-{{ $item.File.UniqueID }}">
+      <a href="{{ $link }}" {{ $target | safeHTMLAttr }}>{{ $item.Title }}</a>
+    </h2>
+
+    {{ if eq $section "publication" }}
+      {{ with $item.Params.authors }}
+        <p class="portfolio-card__authors">
+          {{ range $index, $author := . }}{{ if $index }}, {{ end }}{{ if eq $author "admin" }}{{ (site.GetPage "/authors/admin").Title }}{{ else }}{{ $author }}{{ end }}{{ end }}
+        </p>
+      {{ end }}
+      {{ with $item.Params.publication_short | default $item.Params.publication }}
+        <p class="portfolio-card__venue">{{ . | markdownify }}</p>
+      {{ end }}
+    {{ end }}
+
+    {{ with $item.Params.summary | default $item.Summary }}
+      <p class="portfolio-card__summary">{{ . | plainify | htmlUnescape | truncate 190 }}</p>
+    {{ end }}
+
+    <span class="portfolio-card__cta" aria-hidden="true">
+      {{ $cta }}
+      <svg viewBox="0 0 20 20">
+        <path d="M4 10h11M11 6l4 4-4 4"/>
+      </svg>
+    </span>
+  </div>
+</article>

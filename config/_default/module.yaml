@@ -19,6 +19,12 @@ mounts:
     target: layouts
   - source: assets
     target: assets
+  - source: static
+    target: static
+  - source: node_modules/@fontsource-variable/geist/files
+    target: static/fonts/geist
+  - source: node_modules/@fontsource-variable/geist-mono/files
+    target: static/fonts/geist-mono
   - source: hugo-blox/blox/community
     target: layouts/partials/blox/community/
     includeFiles: '**.html'
@@ -28,4 +34,3 @@ mounts:
   - source: hugo-blox/blox
     target: assets/dist/community/blox/
     includeFiles: '**.css'
-    

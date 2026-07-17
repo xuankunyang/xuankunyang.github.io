@@ -1,0 +1,29 @@
+{{/* Local compact matrix override for hobbies and skills. */}}
+{{ $block := .wcBlock }}
+{{ $author := $block.content.username | default "admin" }}
+{{ $person_page := site.GetPage (printf "/authors/%s" $author) }}
+{{ if not $person_page }}{{ errorf "Could not find author `%s`." $author }}{{ end }}
+{{ $show_percentage := $block.design.show_skill_percentage | default true }}
+
+<div class="resume-matrix">
+  <h2>{{ $block.content.title | markdownify | emojify }}</h2>
+  {{ with $block.content.text }}<p>{{ . | markdownify | emojify }}</p>{{ end }}
+  <div class="resume-matrix__groups">
+    {{ range $person_page.Params.skills }}
+      <section>
+        {{ with .name }}<h3>{{ . | markdownify | emojify }}</h3>{{ end }}
+        <ul>
+          {{ range .items }}
+            <li>
+              <span class="resume-matrix__name">
+                {{ with .icon }}{{ partial "functions/get_icon" (dict "name" . "attributes" "aria-hidden=\"true\"") }}{{ end }}
+                {{ .name | markdownify | emojify }}
+              </span>
+              {{ if and .percent $show_percentage }}<strong>{{ .percent }}%</strong>{{ end }}
+            </li>
+          {{ end }}
+        </ul>
+      </section>
+    {{ end }}
+  </div>
+</div>
