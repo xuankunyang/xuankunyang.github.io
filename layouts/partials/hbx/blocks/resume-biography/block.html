@@ -44,9 +44,16 @@
         {{ else if in (slice "http" "https") $scheme }}
           {{ $target = "target=\"_blank\" rel=\"noopener\"" }}
         {{ end }}
+        {{/* Without a label the old fallback announced the icon's file path,
+             e.g. "brands/xhs" or "academicons/google-scholar". Derive a
+             readable name from the icon basename instead. */}}
+        {{ $label := .label }}
+        {{ if not $label }}
+          {{ $label = .icon | path.Base | replaceRE "[-_]" " " | title }}
+        {{ end }}
         <li>
-          <a href="{{ $link | safeURL }}" {{ $target | safeHTMLAttr }} aria-label="{{ .label | default .icon }}"
-             {{ with .label }}title="{{ . }}"{{ end }}>
+          <a href="{{ $link | safeURL }}" {{ $target | safeHTMLAttr }} aria-label="{{ $label }}"
+             title="{{ $label }}">
             {{ partial "functions/get_icon" (dict "name" .icon "attributes" "aria-hidden=\"true\"") }}
           </a>
         </li>

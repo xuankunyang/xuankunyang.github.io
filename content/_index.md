@@ -25,10 +25,10 @@ sections:
       title: '📚 My Research'
       subtitle: ''
       text: |-
-        I have previously worked on PEFT(parameter-efficient fine-tuning), Model Merging and visual token prune for MLLMs. 
-        
-        I will dive into Generative AI and Embodied Intelligence research in the near feature.
-        
+        I have previously worked on PEFT (parameter-efficient fine-tuning), model merging, and visual token pruning for MLLMs.
+
+        I am now moving toward foundation models and embodied intelligence, and I am equally interested in the deep learning theory that underpins them.
+
         Feel free to reach out to collaborate! 😃
     design:
       columns: '1'
@@ -94,6 +94,22 @@ sections:
       # Reduce spacing
       spacing:
         padding: [0, 0, 0, 0]
+  # Education and Experience used to live on their own `/experience/` page. They
+  # are short enough that a separate page was mostly navigation overhead, so the
+  # block now runs inline here, straight after the news. The nav item still says
+  # "Experience" and points at `/#experience`, which is the id on the Experience
+  # group inside the block (see `resume-experience/block.html`) -- not on the
+  # section wrapper, so the jump skips past Education and lands where it says.
+  - block: resume-experience
+    id: resume
+    content:
+      username: admin
+    design:
+      # Hugo date format
+      date_format: 'January 2006'
+      # Education or Experience section first?
+      is_education_first: true
+      css_class: research-resume
   # - block: cta-card
   #   demo: true # Only display this section in the Hugo Blox Builder demo site
   #   content:

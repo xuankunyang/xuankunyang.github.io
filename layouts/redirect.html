@@ -1,0 +1,22 @@
+{{- /*
+  Minimal redirect page, selected with `layout: redirect` in front matter.
+  Same shape Hugo uses for `aliases`: a meta refresh plus a canonical link, so
+  crawlers follow it and readers who land on the old URL are not left staring at
+  a blank page. `redirect_to` may include a fragment, which `aliases` cannot.
+*/ -}}
+{{- $target := .Params.redirect_to | default "/" -}}
+{{- $url := cond (hasPrefix $target "http") $target ($target | absURL) -}}
+<!DOCTYPE html>
+<html lang="{{ site.LanguageCode | default "en" }}">
+  <head>
+    <meta charset="utf-8" />
+    <title>{{ .Title }}</title>
+    <link rel="canonical" href="{{ $url }}" />
+    <meta name="robots" content="noindex, follow" />
+    <meta http-equiv="refresh" content="0; url={{ $target }}" />
+  </head>
+  <body>
+    <p>This page has moved to <a href="{{ $target }}">{{ $target }}</a>.</p>
+    <script>window.location.replace({{ $target }});</script>
+  </body>
+</html>

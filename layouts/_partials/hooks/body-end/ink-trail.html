@@ -1,0 +1,8 @@
+{{/* Pointer ink trail. Loaded with `defer` so it never blocks rendering; the
+     script itself exits before touching the DOM on touch or coarse-pointer
+     devices, so phones pay only the (cached) request. Set
+     `params.features.ink_trail.enable: false` to switch it off. */}}
+{{- $cfg := site.Params.features.ink_trail | default dict -}}
+{{- if ne $cfg.enable false -}}
+  <script defer src="{{ "js/ink-trail.js" | relURL }}"></script>
+{{- end -}}

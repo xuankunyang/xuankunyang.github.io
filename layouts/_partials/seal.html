@@ -1,0 +1,23 @@
+{{- /*
+  Personal name seal, inlined so it can take `currentColor` and follow the
+  theme. Bai-wen (intaglio): the red field is the ink and the characters are
+  carved out of it, so the strokes are transparent and show the page through.
+  Traditional characters 楊炫錕.
+
+  Two cuts, not one scaled asset:
+    lg -- 52-76px, strokes as drawn, full ink voids, worn edge
+    sm -- 36-44px, carved strokes opened hard and voids eased. This face is
+          thin; at footer size a hairline groove fills with ink and the whole
+          seal collapses into a red chip.
+
+  Regenerate with `.claude/design-verify/seal4.js`; do not hand-edit the SVGs.
+  Callers are responsible for the accessible name -- both current placements sit
+  beside the name in text, so the SVGs carry `aria-hidden`.
+*/ -}}
+{{- $cut := .cut | default "lg" -}}
+{{- $path := printf "media/seal-%s.svg" $cut -}}
+{{- with resources.Get $path -}}
+  {{- .Content | safeHTML -}}
+{{- else -}}
+  {{- warnf "seal.html: missing assets/%s" $path -}}
+{{- end -}}

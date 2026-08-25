@@ -1,0 +1,11 @@
+{{- define "main" -}}
+  {{/* Landing pages are assembled purely from blocks, and no block emits a
+       page-level heading, so /projects/, /publications/, /blogs/ and /gallery/
+       all shipped with zero h1. The homepage does not reach this template (it
+       is kind `home`, see `landing/home.html`), and would not need one anyway
+       because the biography block renders the name as its h1. */}}
+  {{ if not .IsHome }}
+    {{ with .Title }}<h1 class="visually-hidden">{{ . }}</h1>{{ end }}
+  {{ end }}
+  {{ partial "landing_page.html" . }}
+{{- end -}}

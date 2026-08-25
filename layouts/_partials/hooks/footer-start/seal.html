@@ -1,0 +1,9 @@
+{{- /* Small cut of the name seal, above the copyright line.
+       Skipped on the homepage, where the colophon already carries the full-size
+       cut about 200px further up -- two impressions of the same mark that close
+       together read as a repeated asset rather than a signature.
+       Uses the theme's `footer-start` hook rather than overriding
+       `site_footer.html`, so a theme upgrade does not need merging. */ -}}
+{{- if not .IsHome -}}
+  <div class="footer-seal">{{ partial "seal.html" (dict "cut" "sm") }}</div>
+{{- end -}}

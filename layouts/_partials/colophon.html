@@ -1,0 +1,14 @@
+{{- /*
+  Colophon. A seal marks where a document ends and who signed it, which is the
+  one place on this site where that argument holds -- so it runs on the homepage
+  only; anywhere else it would be furniture. The small cut in the footer carries
+  the mark on every other page.
+  The name is read from the author profile rather than written into the layout.
+*/ -}}
+{{- $author := site.GetPage "/authors/admin" -}}
+<div class="page-colophon">
+  {{- with $author }}{{ with .Params.chinese_name }}
+    <span class="page-colophon__name">{{ . }}</span>
+  {{ end }}{{ end -}}
+  <span class="page-colophon__seal">{{ partial "seal.html" (dict "cut" "lg") }}</span>
+</div>

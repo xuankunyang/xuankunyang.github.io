@@ -1,0 +1,11 @@
+{{- /*
+  The homepage is kind `home`, so it never reaches `landing/single.html` -- it
+  falls through to the theme's `layouts/home.html`, which is nothing but a call
+  to `landing_page.html`. Override it here purely to append the colophon; there
+  is no `content-end` hook to use instead, and `body-end` fires after the
+  footer.
+*/ -}}
+{{- define "main" -}}
+  {{ partial "landing_page.html" . }}
+  {{ partial "colophon.html" . }}
+{{- end -}}
