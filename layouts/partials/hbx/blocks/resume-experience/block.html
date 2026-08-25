@@ -7,46 +7,53 @@
 {{ $person := $person_page.Params }}
 {{ $date_format := $block.design.date_format | default "January 2006" }}
 
-<div class="resume-ledger {{ if $block.design.is_education_first }}resume-ledger--education-first{{ end }}">
-  {{ with $person.work }}
-    <section class="resume-ledger__group resume-ledger__work">
-      <h2>{{ i18n "experience" | default "Experience" }}</h2>
-      <div class="resume-ledger__entries">
-        {{ range . }}
-          <article class="resume-entry">
-            <p class="resume-entry__date">
-              {{ if .date_start }}{{ (time .date_start) | time.Format $date_format }}{{ end }}
-              <span aria-hidden="true">/</span>
-              {{ if .date_end }}{{ (time .date_end) | time.Format $date_format }}{{ else }}{{ i18n "present" | default "Present" }}{{ end }}
-            </p>
-            <h3>{{ .position }}</h3>
-            <p class="resume-entry__place">{{ .company_name }}</p>
-            <div class="resume-entry__summary prose dark:prose-invert">{{ .summary | $page.RenderString }}</div>
-            {{ with .button }}<a class="resume-entry__link" href="{{ .url }}" target="_blank" rel="noopener">{{ .text }}</a>{{ end }}
-          </article>
-        {{ end }}
-      </div>
-    </section>
-  {{ end }}
+{{/* Groups are ordered in the DOM rather than with a CSS `order` property, so
+     the sequence a screen reader announces matches the visual one
+     (WCAG 1.3.2 Meaningful Sequence). Work and education entries use different
+     field names, so each group carries the keys to read them by. */}}
+{{/* `anchor` is the id, `slug` is the class hook. They differ for work: the
+     heading and the nav item both read "Experience", so that is what the URL
+     fragment has to be, but the class has said `work` since this override was
+     written and renaming it would silently detach any selector using it. */}}
+{{ $work := false }}
+{{ with $person.work }}
+  {{ $work = dict "slug" "work" "anchor" "experience" "label" (i18n "experience" | default "Experience") "items" . "title_key" "position" "place_key" "company_name" }}
+{{ end }}
+{{ $education := false }}
+{{ with $person.education }}
+  {{ $education = dict "slug" "education" "anchor" "education" "label" (i18n "education" | default "Education") "items" . "title_key" "area" "place_key" "institution" }}
+{{ end }}
 
-  {{ with $person.education }}
-    <section class="resume-ledger__group resume-ledger__education">
-      <h2>{{ i18n "education" | default "Education" }}</h2>
-      <div class="resume-ledger__entries">
-        {{ range . }}
-          <article class="resume-entry">
-            <p class="resume-entry__date">
-              {{ if .date_start }}{{ (time .date_start) | time.Format $date_format }}{{ end }}
-              <span aria-hidden="true">/</span>
-              {{ if .date_end }}{{ (time .date_end) | time.Format $date_format }}{{ else }}{{ i18n "present" | default "Present" }}{{ end }}
-            </p>
-            <h3>{{ .area }}</h3>
-            <p class="resume-entry__place">{{ .institution }}</p>
-            <div class="resume-entry__summary prose dark:prose-invert">{{ .summary | $page.RenderString }}</div>
-            {{ with .button }}<a class="resume-entry__link" href="{{ .url }}" target="_blank" rel="noopener">{{ .text }}</a>{{ end }}
-          </article>
-        {{ end }}
-      </div>
-    </section>
+{{ $groups := slice $work $education }}
+{{ if $block.design.is_education_first }}
+  {{ $groups = slice $education $work }}
+{{ end }}
+
+<div class="resume-ledger">
+  {{ range $groups }}
+    {{ with . }}
+      {{ $group := . }}
+      {{/* The group carries the anchor, not the block wrapper: the nav links to
+           "Experience" but the block also renders Education, so an id on the
+           wrapper would drop the reader at the wrong heading. */}}
+      <section id="{{ $group.anchor }}" class="resume-ledger__group resume-ledger__{{ $group.slug }}">
+        <h2>{{ $group.label }}</h2>
+        <div class="resume-ledger__entries">
+          {{ range $group.items }}
+            <article class="resume-entry">
+              <p class="resume-entry__date">
+                {{ if .date_start }}{{ (time .date_start) | time.Format $date_format }}{{ end }}
+                <span aria-hidden="true">/</span>
+                {{ if .date_end }}{{ (time .date_end) | time.Format $date_format }}{{ else }}{{ i18n "present" | default "Present" }}{{ end }}
+              </p>
+              <h3>{{ index . $group.title_key }}</h3>
+              <p class="resume-entry__place">{{ index . $group.place_key }}</p>
+              <div class="resume-entry__summary prose dark:prose-invert">{{ .summary | $page.RenderString }}</div>
+              {{ with .button }}<a class="resume-entry__link" href="{{ .url }}" target="_blank" rel="noopener">{{ .text }}</a>{{ end }}
+            </article>
+          {{ end }}
+        </div>
+      </section>
+    {{ end }}
   {{ end }}
 </div>

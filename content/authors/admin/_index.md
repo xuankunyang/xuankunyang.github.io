@@ -54,9 +54,9 @@ profiles:
     url: https://orcid.org/my-orcid?emailVerified=true&orcid=0009-0001-0763-5776
 
 interests:
-  - Large Language Models
-  - Multimodal Models
-  - Generative AI
+  - Foundation Models
+  - Embodied Intelligence
+  - Deep Learning Theory
 
 education:
   - area: BEng Artificial Intelligence
@@ -90,17 +90,19 @@ education:
   #     - lorem ipsum dolor sit amet, consectetur adipiscing elit
   #     - lorem ipsum dolor sit amet, consectetur adipiscing elit
   #     - lorem ipsum dolor sit amet, consectetur adipiscing elit
+# Reverse chronological: the resume block renders these in the order written
+# and does not sort, so new entries go at the TOP, not the bottom.
 work:
-  - position: Summer Research Internship
-    company_name: SJTU-Artificial Intelligence Institute DeepVision Lab
+  - position: Research Assistant
+    company_name: M³ Lab, SJTU School of Artificial Intelligence
     company_url: ''
     company_logo: ''
-    date_start: 2024-07-01
-    date_end: 2024-09-01
+    date_start: 2026-06-01
+    date_end: ''
     summary: |
       Responsibilities include:
-      - Computer Vision
-      - Learned to read papers and reproduced basic computer vision algorithms
+      - Research on World Action Models, and their deployment on real robots
+      - Research on foundation video generation models
   - position: Research Internship
     company_name: SJTU-Artificial Intelligence Institute DeepVision Lab
     company_url: ''
@@ -112,6 +114,16 @@ work:
       - Research on PEFT(Parameter-Efficient-Fine-Tuning)
       - Research on Model Merging
       - Research on Visual Token Prune for MLLMs
+  - position: Summer Research Internship
+    company_name: SJTU-Artificial Intelligence Institute DeepVision Lab
+    company_url: ''
+    company_logo: ''
+    date_start: 2024-07-01
+    date_end: 2024-09-01
+    summary: |
+      Responsibilities include:
+      - Computer Vision
+      - Learned to read papers and reproduced basic computer vision algorithms
 
 # Skills
 # Add your own SVG icons to `assets/media/icons/`
@@ -188,7 +200,7 @@ languages:
 ## About Me
 
 I am currently studying for my undergraduate degree in Shanghai Jiao Tong University, majoring in artificial intelligence.
-I am very interested in many existing large model technologies and have some practical experience. 
-My areas of interest are: multimodality models and generative AI. 
+I am fortunate to be advised by [Prof. Yanwei Li](https://yanwei-li.com) at the School of Artificial Intelligence.
+My areas of interest are: foundation models, embodied intelligence, and deep learning theory.
 <!-- I am currently working on Model Merging and visual token prune for MLLMs. -->
 If you have the same interests or hobbies, let's be friends!

@@ -2,6 +2,10 @@
 #   To link a homepage widget, specify the URL as a hash `#` followed by the filename of the
   #     desired widget in your `content/home/` folder.
   #   The weight parameter defines the order that the links will appear in.
+#
+# Weights are spaced by 10 so an item can be moved without renumbering the rest.
+# Blogs and Projects previously both sat at 30, which left their relative order
+# up to Hugo's tie-breaking.
 
 main:
   - name: Home
@@ -12,22 +16,25 @@ main:
   #   weight: 12
   - name: News
     url: /#news
-    weight: 11
+    weight: 20
+  # Experience is a section of the homepage, not a page of its own. `#experience`
+  # is the id of the Experience group inside the resume block, so this lands on
+  # the Experience heading rather than the Education one above it.
+  - name: Experience
+    url: /#experience
+    weight: 30
   - name: Publications
     url: publications/
-    weight: 12
-  - name: Experience
-    url: experience/
-    weight: 20
-  - name: Projects
-    url: projects/
-    weight: 30
+    weight: 40
   - name: Blogs
     url: blogs/
-    weight: 30
+    weight: 50
+  - name: Projects
+    url: projects/
+    weight: 60
   - name: Gallery
     url: gallery/
-    weight: 50
+    weight: 70
   # - name: Teaching
   #   url: teaching/
   #   weight: 40

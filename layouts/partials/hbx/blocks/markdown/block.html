@@ -9,9 +9,12 @@
 {{ $text := $block.content.text | emojify | $page.RenderString | safeHTML }}
 
 <div class="flex flex-col items-center max-w-prose mx-auto gap-3 justify-center px-6">
-  <div class="mb-6 text-3xl font-bold text-gray-900 dark:text-white">
+  {{/* A section title is a heading. Rendering it as a div left the homepage
+       with no h2 outline, so screen readers could not tell that the news
+       entries below belong to "Recent News". */}}
+  <h2 class="mb-6 text-3xl font-bold text-gray-900 dark:text-white">
     {{ $title }}
-  </div>
+  </h2>
   {{ with $text }}
     <div class="prose prose-slate lg:prose-xl dark:prose-invert max-w-prose">{{ . }}</div>
   {{ end }}

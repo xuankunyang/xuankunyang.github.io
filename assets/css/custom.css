@@ -31,7 +31,7 @@
 :root {
   --page: #f1f2ef;
   --surface: #fafaf8;
-  --surface-strong: #ffffff;
+  --surface-strong: #fdfdfc;
   --ink: #17191c;
   --muted: #676b70;
   --faint: #92969a;
@@ -41,8 +41,57 @@
   --accent-strong: #a94632;
   --accent-soft: #ead7d1;
   --content-width: 84rem;
-  --text-width: 45rem;
   --header-height: 4rem;
+
+  /* Reading measure. Expressed in em so it tracks whatever --fs-* the element
+     uses: change a font size and the line length stays put. 34em lands at
+     ~51 CSS ch / ~72 rendered characters in Geist, whose "0" glyph is 0.666em
+     (so CSS ch and rendered characters differ by 1.4x here). Apply as
+     `inline-size: min(100%, var(--measure))` on the element that owns the
+     font-size, never on a wrapper with a different one. */
+  --measure: 34em;
+
+  /* Ink trail tuning, read at runtime by static/js/ink-trail.js.
+     Change these and reload; no JS edit needed. Alpha is deliberately low:
+     the stroke passes over body text, so it has to stay under the threshold
+     where it would reduce reading contrast. */
+  --ink-trail-alpha: 0.2;
+  --ink-trail-life: 600;
+  --ink-trail-width: 5;
+
+  /* Type scale.
+     Anchored on the About Me block: body = --fs-body, section heading = --fs-h2.
+     Every font-size in this file resolves to one of these eight steps, except
+     the hero name's narrow-viewport step-down in the 899px media query. */
+  --fs-display: clamp(2.35rem, 3.2vw, 2.8rem);
+  --fs-h1: clamp(1.8rem, 2.35vw, 2.15rem);
+  --fs-h2: clamp(1.5rem, 2vw, 1.8rem);
+  --fs-h3: clamp(1.16rem, 1.5vw, 1.34rem);
+  --fs-lead: clamp(1.02rem, 1.3vw, 1.14rem);
+  --fs-body: clamp(0.98rem, 1.25vw, 1.08rem);
+  --fs-sm: 0.94rem;
+  --fs-xs: 0.75rem;
+
+  /* Spacing scale, on a 4px grid.
+     --space-xl is the section-heading-to-content step: it holds a constant
+     1.5x of --fs-h2 across every viewport, which is what makes headings of
+     equal rank read as equal rank. Every margin/padding/gap below resolves
+     to one of these, except optical hacks flagged inline. */
+  --space-2xs: 0.5rem;                         /*  8px */
+  --space-xs: 0.75rem;                         /* 12px */
+  --space-sm: 1rem;                            /* 16px */
+  --space-md: 1.5rem;                          /* 24px */
+  --space-lg: 2rem;                            /* 32px */
+  --space-xl: clamp(2.25rem, 3.5vw, 2.75rem);  /* 36 -> 44px */
+  --space-2xl: clamp(3.25rem, 6vw, 5rem);      /* 52 -> 80px */
+  --space-3xl: clamp(5.25rem, 10vw, 8.5rem);   /* 84 -> 136px */
+
+  /* Horizontal rhythm, kept separate from the vertical scale. */
+  --space-page: clamp(1.25rem, 5vw, 4.5rem);   /* 20 -> 72px */
+  --space-gutter: clamp(1.75rem, 4vw, 3.5rem); /* 28 -> 56px */
+  --space-gutter-wide: clamp(2.5rem, 7vw, 7rem);
+  --space-indent: clamp(0rem, 9vw, 7.5rem);    /* editorial offset, not rhythm */
+
   --radius-surface: 2px;
   --radius-control: 4px;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -67,6 +116,10 @@ html.dark {
 html {
   background: var(--page);
   scroll-behavior: smooth;
+  /* The navbar is fixed, so an untreated `#news` / `#experience` jump parks the
+     target's first line underneath it. Reserve the navbar plus one step of the
+     spacing scale so the heading arrives with air above it. */
+  scroll-padding-top: calc(var(--header-height) + var(--space-md));
 }
 
 body,
@@ -81,12 +134,41 @@ body,
 
 ::selection {
   background: var(--accent);
-  color: #fff;
+  color: var(--page);
 }
 
 #page-bg {
   display: none;
 }
+
+/* No full-viewport surface texture. Removed deliberately, and this note is here
+   so it does not get reinvented.
+
+   Two builds were measured on the page. Both failed, at opposite ends of the
+   same axis, and the axis is SPATIAL FREQUENCY, not amplitude:
+
+     high frequency (a 160px noise tile, per-pixel speckle)
+       sd 5.0 per pixel, but sd 0.16 after an 8px blur and 0.03 after 32px.
+       All of its energy lives at the pixel scale and nothing survives blurring.
+       That is the signature of dust on a screen, and that is exactly how it
+       read: "like the screen has a layer of dust on it".
+
+     low frequency (a 1400px tile, slow drift)
+       Structure survives blurring (sd 2.1 at 32px, grittiness 0.031, ~24x
+       calmer per pixel) but at a size the eye resolves as SHAPES. On the real
+       page it read as water staining or a bad photocopy.
+
+   In between is the range that reads as JPEG artefacting. There is no window
+   where a flat overlay reads as paper, because paper is a property of a
+   physical sheet at reading distance, not of a backlit plane.
+
+   Warming the page tone instead was measured and dropped too: the useful range
+   before it becomes the AI-default cream palette is a chroma move from 1.6 to
+   2.6, which is below the threshold of noticing.
+
+   The material budget went to the seal instead, where it is motivated: that
+   element genuinely is an ink impression, so uneven ink density is description
+   rather than decoration. See `assets/media/seal-*.svg`. */
 
 a {
   color: inherit;
@@ -108,6 +190,23 @@ button {
   outline-offset: 4px;
 }
 
+/* Note: this file is deliberately unlayered. Tailwind's utilities live in
+   `@layer utilities`, and unlayered rules outrank any layer, which is what lets
+   the focus ring survive the search input's `outline-none` utility. Do not wrap
+   this file in an @layer without re-checking focus visibility. */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 .prose,
 .prose :where(p, li, strong, h1, h2, h3, h4):not(:where([class~="not-prose"] *)) {
   color: var(--ink);
@@ -123,6 +222,16 @@ code,
 kbd,
 pre {
   font-family: "Geist Mono Variable", monospace;
+}
+
+/* Dates, years and figures sit in columns down the news list and the CV, so
+   they get tabular figures: proportional digits make those columns wobble. */
+.news-item > time,
+.portfolio-card__body > time,
+.resume-entry__date,
+.resume-metrics strong,
+.resume-matrix strong {
+  font-variant-numeric: tabular-nums;
 }
 
 /* Header */
@@ -149,8 +258,11 @@ pre {
 }
 
 #site-header .navbar-brand {
+  display: inline-flex;
+  min-height: 2.75rem; /* the brand link rendered only 19px tall on its own */
+  align-items: center;
   color: var(--ink);
-  font-size: 1rem;
+  font-size: var(--fs-sm);
   font-weight: 650;
   letter-spacing: -0.025em;
 }
@@ -163,7 +275,7 @@ pre {
   position: relative;
   color: var(--muted);
   font-family: "Geist Variable", "PingFang SC", sans-serif;
-  font-size: 0.92rem;
+  font-size: var(--fs-sm);
   font-weight: 520;
   letter-spacing: -0.012em;
 }
@@ -188,6 +300,36 @@ pre {
   color: var(--ink) !important;
 }
 
+/* The theme ships the search and theme-toggle controls at ~16-24px tall, under
+   the WCAG 2.2 AA 24px floor. Grow the hit area only; the icons keep their
+   size, and the 64px navbar min-height absorbs it without changing layout. */
+#site-header button,
+#site-header label[for],
+#site-header .theme-toggle {
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+}
+
+#site-header button,
+#site-header .theme-toggle {
+  display: inline-flex;
+}
+
+/* The menu toggle is the one header control with a responsive display: the
+   theme ships it as `flex lg:hidden`, because from `lg` up the navbar shows
+   every link inline and a hamburger would just duplicate them. This file is
+   deliberately outside `@layer` (see the file header), so an unconditional
+   `display` here outranks `lg:hidden` and leaks the toggle onto desktop --
+   where opening it reflows the fixed navbar into a 350px stack. Match the
+   theme's own breakpoint instead of overriding it. */
+@media (width < 64rem) {
+  #site-header label[for] {
+    display: inline-flex;
+  }
+}
+
 /* Shared landing-page structure */
 
 .hbb-section {
@@ -204,6 +346,16 @@ pre {
   color: var(--ink) !important;
 }
 
+/* Fallback for any landing block title without a page-specific rule below
+   (blocks render their title as `.mb-6.text-3xl`). */
+.hbb-section .mb-6.text-3xl {
+  font-size: var(--fs-h2);
+  /* text-3xl also pins line-height: 2.25rem, which is too loose once the size
+     drops to --fs-h2. */
+  line-height: 1.08;
+  margin-bottom: var(--space-xl);
+}
+
 /* Homepage hero */
 
 .research-hero {
@@ -217,11 +369,12 @@ pre {
   width: min(100%, var(--content-width));
   min-height: calc(92dvh - var(--header-height));
   margin-inline: auto;
-  padding: clamp(4rem, 7vw, 5.75rem) clamp(1.25rem, 5vw, 4.5rem);
+  padding: var(--space-2xl) var(--space-page);
   grid-template-columns: repeat(12, minmax(0, 1fr));
   align-items: center;
+  /* 12-column grid gutter: structural, deliberately not on the spacing scale. */
   column-gap: clamp(0.75rem, 1.5vw, 1.5rem);
-  row-gap: clamp(2.2rem, 4vw, 3.25rem);
+  row-gap: var(--space-xl);
 }
 
 .profile-copy {
@@ -238,14 +391,14 @@ pre {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 0.35rem clamp(0.9rem, 1.5vw, 1.25rem);
+  gap: var(--space-2xs) var(--space-md);
 }
 
 .profile-role {
-  margin: 1.2rem 0 0;
+  margin: var(--space-md) 0 0;
   color: var(--accent-strong);
   font-family: "Geist Mono Variable", monospace;
-  font-size: 0.8rem;
+  font-size: var(--fs-xs);
   font-weight: 550;
   letter-spacing: 0.025em;
 }
@@ -253,17 +406,17 @@ pre {
 .profile-name {
   margin: 0;
   color: var(--ink);
-  font-size: clamp(2.75rem, 4vw, 3.35rem);
+  font-size: var(--fs-display);
   font-weight: 650;
   letter-spacing: -0.048em;
-  line-height: 1;
+  line-height: 1.05; /* clears descenders under user line-height overrides */
 }
 
 .profile-name-zh {
   margin: 0;
   color: color-mix(in srgb, var(--ink) 76%, var(--page));
   font-family: "Xuankun Kai", "Kaiti SC", "STKaiti", "KaiTi", "楷体", serif;
-  font-size: clamp(1.75rem, 2.35vw, 2rem);
+  font-size: var(--fs-h2);
   font-weight: 500;
   font-synthesis: none;
   letter-spacing: 0.06em;
@@ -273,9 +426,9 @@ pre {
 
 .profile-organization {
   max-width: 28rem;
-  margin: 0.7rem 0 0;
+  margin: var(--space-xs) 0 0;
   color: var(--muted);
-  font-size: clamp(0.96rem, 1.25vw, 1.06rem);
+  font-size: var(--fs-body);
   letter-spacing: -0.02em;
 }
 
@@ -290,10 +443,10 @@ pre {
 
 .profile-social {
   display: flex;
-  margin: 1.35rem 0 0;
+  margin: var(--space-md) 0 0;
   padding: 0;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  gap: var(--space-2xs);
   list-style: none;
 }
 
@@ -324,7 +477,10 @@ pre {
   height: 1.05rem;
 }
 
-.profile-social svg path[fill="#fff"] {
+/* Brand SVGs ship a hardcoded white fill. Match any literal fill, not just the
+   3-digit form: xhs.svg and zhihu.svg use `#ffffff`, so a `[fill="#fff"]`
+   selector missed them and left both icons at 1.07:1 against the light page. */
+.profile-social svg path[fill]:not([fill="none"]):not([fill="currentColor"]) {
   fill: currentColor;
 }
 
@@ -368,7 +524,7 @@ pre {
 .profile-bio {
   max-width: none;
   margin: 0;
-  padding: clamp(1.6rem, 2.5vw, 2.1rem) 0 0;
+  padding: var(--space-lg) 0 0;
   border-top: 1px solid var(--line);
 }
 
@@ -382,9 +538,9 @@ pre {
 
 .profile-bio h2 {
   max-width: none;
-  margin: 0 0 1.2rem;
+  margin: 0 0 var(--space-xl);
   color: var(--ink);
-  font-size: clamp(1.55rem, 2vw, 1.85rem);
+  font-size: var(--fs-h2);
   font-weight: 620;
   letter-spacing: -0.035em;
   line-height: 1.05;
@@ -393,19 +549,19 @@ pre {
 .profile-bio p {
   max-width: 38rem;
   color: var(--muted);
-  font-size: clamp(0.98rem, 1.25vw, 1.08rem);
+  font-size: var(--fs-body);
   line-height: 1.62;
 }
 
 .profile-interests {
-  margin-top: clamp(1.75rem, 3vw, 2.5rem);
+  margin-top: var(--space-lg);
 }
 
 .profile-interests h2 {
-  margin: 0 0 0.8rem;
+  margin: 0 0 var(--space-xs);
   color: var(--muted);
   font-family: "Geist Mono Variable", monospace;
-  font-size: 0.76rem;
+  font-size: var(--fs-xs);
   font-weight: 560;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -413,35 +569,36 @@ pre {
 
 .profile-interests ul {
   display: flex;
-  margin: 0 -0.75rem 0 0;
+  /* Negative inline-end margin cancels the trailing gap of the last chip. */
+  margin: 0 calc(-1 * var(--space-xs)) 0 0;
   padding: 0;
   flex-wrap: wrap;
   list-style: none;
 }
 
 .profile-interests li {
-  margin: 0.3rem 0.75rem 0.3rem 0;
-  padding: 0 0 0.25rem;
+  margin: 0.3rem var(--space-xs) 0.3rem 0;
+  padding: 0 0 0.25rem; /* optical: sits the underline off the baseline */
   border-bottom: 1px solid var(--line-strong);
   color: var(--ink);
-  font-size: clamp(0.94rem, 1.2vw, 1.04rem);
+  font-size: var(--fs-body);
   letter-spacing: -0.015em;
 }
 
 .profile-action {
-  margin-top: 2rem;
+  margin-top: var(--space-lg);
 }
 
 .profile-action a,
 .resume-entry__link {
   display: inline-flex;
-  min-height: 2.65rem;
-  padding: 0.7rem 1rem;
+  min-height: 2.75rem; /* 44px, platform touch-target guidance */
+  padding: var(--space-xs) var(--space-sm);
   border: 1px solid var(--ink);
   border-radius: var(--radius-control);
   align-items: center;
   font-family: "Geist Mono Variable", monospace;
-  font-size: 0.78rem;
+  font-size: var(--fs-xs);
 }
 
 .profile-action a:hover,
@@ -453,7 +610,7 @@ pre {
 /* Research statement */
 
 .research-overview {
-  padding: clamp(5.5rem, 11vw, 9rem) 0 !important;
+  padding: var(--space-3xl) 0 !important;
   border-bottom: 1px solid var(--line);
   background: var(--surface);
 }
@@ -463,34 +620,37 @@ pre {
   width: min(100%, var(--content-width));
   max-width: none !important;
   margin-inline: auto;
-  padding-inline: clamp(1.25rem, 5vw, 4.5rem) !important;
+  padding-inline: var(--space-page) !important;
 }
 
 .research-overview > div > .mb-6 {
   max-width: 44rem;
-  margin: 0 0 clamp(2rem, 4vw, 3rem) clamp(0rem, 9vw, 7.5rem);
+  margin: 0 0 var(--space-xl) var(--space-indent);
   color: var(--ink);
-  font-size: clamp(2rem, 3.1vw, 2.7rem);
+  font-size: var(--fs-h2);
   font-weight: 625;
-  letter-spacing: -0.048em;
-  line-height: 1;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
   text-align: left;
 }
 
 .research-overview .prose {
   max-width: 44rem;
-  margin: 0 0 0 clamp(0rem, 9vw, 7.5rem);
+  margin: 0 0 0 var(--space-indent);
+  /* Closes the theme's `lg:prose-xl` leak: without this the container sits at
+     20px, so any ul/h4/blockquote here would render off the type scale. */
+  font-size: var(--fs-lead);
 }
 
 .research-overview .prose p {
   margin: 0;
   color: var(--muted);
-  font-size: clamp(1.02rem, 1.35vw, 1.16rem);
+  font-size: var(--fs-lead);
   line-height: 1.62;
 }
 
 .research-overview .prose p + p {
-  margin-top: 1.4rem;
+  margin-top: var(--space-md);
 }
 
 .research-overview .prose p:last-child {
@@ -500,31 +660,31 @@ pre {
 /* News */
 
 .research-news {
-  padding: clamp(5.5rem, 10vw, 8.5rem) 0 !important;
+  padding: var(--space-3xl) 0 !important;
 }
 
 .research-news > .flex.flex-col.items-center.max-w-prose {
   width: min(100%, 76rem);
   max-width: none !important;
   margin-inline: auto;
-  padding-inline: clamp(1.25rem, 5vw, 4.5rem) !important;
+  padding-inline: var(--space-page) !important;
   align-items: flex-start;
 }
 
 .research-news > .flex.flex-col.items-center.max-w-prose > .mb-6 {
-  margin: 0 0 clamp(3rem, 6vw, 5.5rem);
+  margin: 0 0 var(--space-xl);
   color: var(--ink);
-  font-size: clamp(2rem, 3.1vw, 2.7rem);
+  font-size: var(--fs-h2);
   font-weight: 625;
-  letter-spacing: -0.048em;
-  line-height: 1;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
 }
 
 .research-news > .flex.flex-col.items-center.px-6 {
   display: block;
   width: min(100%, 76rem);
   margin-inline: auto;
-  padding-inline: clamp(1.25rem, 5vw, 4.5rem) !important;
+  padding-inline: var(--space-page) !important;
 }
 
 .news-list {
@@ -533,30 +693,31 @@ pre {
 }
 
 .news-item {
+  position: relative;
   display: grid;
-  padding: 1.55rem 0;
+  padding: var(--space-md) 0;
   border-bottom: 1px solid var(--line);
   grid-template-columns: minmax(6.5rem, 0.25fr) minmax(0, 1.75fr) 1.5rem;
   align-items: start;
-  gap: clamp(1.25rem, 4vw, 4rem);
+  gap: var(--space-gutter);
 }
 
 .news-item > time {
   color: var(--faint);
   font-family: "Geist Mono Variable", monospace;
-  font-size: 0.76rem;
+  font-size: var(--fs-xs);
   letter-spacing: 0.02em;
 }
 
 .news-item > time span {
-  margin-right: 0.7rem;
+  margin-right: var(--space-xs);
   color: var(--ink);
 }
 
 .news-item h2 {
   margin: 0;
   color: var(--ink);
-  font-size: clamp(1.12rem, 2vw, 1.43rem);
+  font-size: var(--fs-h3);
   font-weight: 570;
   letter-spacing: -0.03em;
   line-height: 1.25;
@@ -567,10 +728,10 @@ pre {
 }
 
 .news-item p {
-  max-width: 52rem;
-  margin: 0.65rem 0 0;
+  inline-size: min(100%, var(--measure));
+  margin: var(--space-xs) 0 0;
   color: var(--muted);
-  font-size: 0.94rem;
+  font-size: var(--fs-sm);
   line-height: 1.55;
 }
 
@@ -584,7 +745,7 @@ pre {
 }
 
 .news-item > svg {
-  margin-top: 0.15rem;
+  margin-top: 0.15rem; /* optical: aligns the arrow to the title cap-height */
   color: var(--faint);
   transition: transform 180ms var(--ease-out), color 160ms ease;
 }
@@ -599,7 +760,7 @@ pre {
 .publications-index,
 .gallery-index,
 .blogs-index {
-  padding: clamp(4.75rem, 9vw, 8rem) 0 !important;
+  padding: var(--space-3xl) 0 !important;
 }
 
 .projects-index > .flex.flex-col.items-center.max-w-prose,
@@ -609,7 +770,7 @@ pre {
   width: min(100%, var(--content-width));
   max-width: none !important;
   margin-inline: auto;
-  padding-inline: clamp(1.25rem, 5vw, 4.5rem) !important;
+  padding-inline: var(--space-page) !important;
   align-items: flex-start;
 }
 
@@ -617,24 +778,27 @@ pre {
 .publications-index > .flex.flex-col.items-center.max-w-prose > .mb-6,
 .gallery-index > .flex.flex-col.items-center.max-w-prose > .mb-6,
 .blogs-index > .flex.flex-col.items-center.max-w-prose > .mb-6 {
-  max-width: 12ch;
+  max-width: 16ch;
   margin: 0;
   color: var(--ink);
-  font-size: clamp(2.15rem, 3.5vw, 3.05rem);
+  font-size: var(--fs-h2);
   font-weight: 630;
-  letter-spacing: -0.052em;
-  line-height: 0.98;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
   text-align: left;
 }
 
-.projects-index > .flex.flex-col.items-center.max-w-prose > div:not(.mb-6),
-.publications-index > .flex.flex-col.items-center.max-w-prose > div:not(.mb-6),
-.gallery-index > .flex.flex-col.items-center.max-w-prose > div:not(.mb-6),
-.blogs-index > .flex.flex-col.items-center.max-w-prose > div:not(.mb-6) {
-  max-width: 42rem;
-  margin-top: 2rem;
+/* The collection block renders its subtitle as a <p>, not a <div>, so the
+   previous `> div:not(.mb-6)` selector never matched and these intros fell back
+   to the browser default 16px, off the type scale entirely. */
+.projects-index > .flex.flex-col.items-center.max-w-prose > :not(.mb-6),
+.publications-index > .flex.flex-col.items-center.max-w-prose > :not(.mb-6),
+.gallery-index > .flex.flex-col.items-center.max-w-prose > :not(.mb-6),
+.blogs-index > .flex.flex-col.items-center.max-w-prose > :not(.mb-6) {
+  inline-size: min(100%, var(--measure));
+  margin-top: var(--space-lg);
   color: var(--muted);
-  font-size: clamp(1rem, 1.35vw, 1.14rem);
+  font-size: var(--fs-lead);
   line-height: 1.6;
 }
 
@@ -642,14 +806,14 @@ pre {
 
 .portfolio-grid-shell {
   width: min(100%, var(--content-width));
-  margin: clamp(3.5rem, 7vw, 6rem) auto 0;
-  padding-inline: clamp(1.25rem, 5vw, 4.5rem);
+  margin: var(--space-2xl) auto 0;
+  padding-inline: var(--space-page);
 }
 
 .portfolio-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(3.25rem, 6vw, 5.75rem) clamp(1.75rem, 4vw, 3.75rem);
+  gap: var(--space-2xl) var(--space-gutter);
 }
 
 .portfolio-grid--1 {
@@ -686,32 +850,62 @@ pre {
 .portfolio-card__fallback {
   display: flex;
   height: 100%;
-  padding: 2rem;
+  padding: var(--space-lg);
   align-items: flex-end;
   color: var(--muted);
-  font-size: clamp(1.55rem, 3vw, 2.8rem);
+  font-size: var(--fs-h2);
   font-weight: 600;
-  letter-spacing: -0.055em;
-  line-height: 0.95;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
 }
 
 .portfolio-card__body {
-  padding-top: 1.25rem;
+  position: relative;
+  padding-top: var(--space-md);
   border-top: 1px solid var(--line-strong);
+}
+
+/* Hover feedback is a rule being drawn across the card's top hairline rather
+   than the usual image zoom: it reads as ink on a ruled page, and unlike a
+   scale() it cannot make the image resample or nudge neighbouring text. */
+.portfolio-card__body::before,
+.news-item::after,
+.resume-entry::before {
+  position: absolute;
+  height: 1px;
+  background: var(--accent);
+  content: "";
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 320ms var(--ease-out);
+}
+
+.portfolio-card__body::before,
+.resume-entry::before {
+  top: -1px;
+  right: 0;
+  left: 0;
+}
+
+/* The news row is ruled underneath, so its sweep sits on the bottom edge. */
+.news-item::after {
+  right: 0;
+  bottom: -1px;
+  left: 0;
 }
 
 .portfolio-card__body > time {
   display: block;
-  margin-bottom: 0.7rem;
+  margin-bottom: var(--space-xs);
   color: var(--accent-strong);
   font-family: "Geist Mono Variable", monospace;
-  font-size: 0.72rem;
+  font-size: var(--fs-xs);
 }
 
 .portfolio-card h2 {
   margin: 0;
   color: var(--ink);
-  font-size: clamp(1.3rem, 1.8vw, 1.72rem);
+  font-size: var(--fs-h3);
   font-weight: 600;
   letter-spacing: -0.032em;
   line-height: 1.1;
@@ -724,10 +918,11 @@ pre {
 .portfolio-card__summary,
 .portfolio-card__authors,
 .portfolio-card__venue {
-  max-width: 44rem;
-  margin: 0.85rem 0 0;
+  /* No measure cap here: the grid column is already narrower than any cap we
+     would set, so a max-width would be inert and only mislead. */
+  margin: var(--space-xs) 0 0;
   color: var(--muted);
-  font-size: 0.94rem;
+  font-size: var(--fs-sm);
   line-height: 1.58;
 }
 
@@ -736,18 +931,18 @@ pre {
 }
 
 .portfolio-card__venue {
-  margin-top: 0.35rem;
+  margin-top: var(--space-2xs);
   font-style: italic;
 }
 
 .portfolio-card__cta {
   display: inline-flex;
-  margin-top: 1.2rem;
+  margin-top: var(--space-md);
   color: var(--ink);
   align-items: center;
-  gap: 0.45rem;
+  gap: var(--space-2xs);
   font-family: "Geist Mono Variable", monospace;
-  font-size: 0.74rem;
+  font-size: var(--fs-xs);
 }
 
 .portfolio-card__cta svg {
@@ -763,24 +958,20 @@ pre {
   grid-column: 1 / -1;
   grid-template-columns: minmax(0, 2fr) minmax(17rem, 0.9fr);
   align-items: end;
-  gap: clamp(1.75rem, 4vw, 4rem);
+  gap: var(--space-gutter);
 }
 
 .projects-index .portfolio-card:first-child .portfolio-card__media {
   aspect-ratio: 16 / 8;
 }
 
-.projects-index .portfolio-card:first-child h2 {
-  font-size: clamp(1.65rem, 2.5vw, 2rem);
-}
-
 .publications-index .portfolio-card {
   display: grid;
-  padding: 2rem 0;
+  padding: var(--space-lg) 0;
   border-top: 1px solid var(--line);
   grid-template-columns: minmax(18rem, 0.8fr) minmax(0, 1.2fr);
   align-items: center;
-  gap: clamp(2rem, 6vw, 6.5rem);
+  gap: var(--space-gutter-wide);
 }
 
 .publications-index .portfolio-card:last-child {
@@ -790,7 +981,8 @@ pre {
 .publications-index .portfolio-card__media {
   aspect-ratio: 4 / 3;
   border: 0;
-  background: #fff;
+  /* Paper-white plate for figure scans, never pure #fff (taste skill 8.B). */
+  background: var(--surface-strong);
 }
 
 .publications-index .portfolio-card__body {
@@ -798,18 +990,14 @@ pre {
   border-top: 0;
 }
 
-.publications-index .portfolio-card h2 {
-  font-size: clamp(1.5rem, 2.6vw, 2.25rem);
-}
-
 .gallery-index .portfolio-grid {
   display: block;
   columns: 2;
-  column-gap: clamp(1.25rem, 3vw, 2.5rem);
+  column-gap: var(--space-gutter);
 }
 
 .gallery-index .portfolio-card {
-  margin: 0 0 clamp(2.5rem, 5vw, 5rem);
+  margin: 0 0 var(--space-2xl);
   break-inside: avoid;
 }
 
@@ -827,12 +1015,13 @@ pre {
   border-top-color: var(--line);
 }
 
-/* Experience page */
+/* Education / Experience ledger.
+   Lives on the homepage after the news; `/experience/` is now a redirect. */
 
 .blox-resume-experience,
 .blox-resume-languages,
 .blox-resume-skills {
-  padding: clamp(5rem, 9vw, 7.5rem) 0 !important;
+  padding: var(--space-3xl) 0 !important;
   border-bottom: 1px solid var(--line);
 }
 
@@ -841,70 +1030,79 @@ pre {
 .resume-matrix {
   width: min(100%, var(--content-width));
   margin-inline: auto;
-  padding-inline: clamp(1.25rem, 5vw, 4.5rem);
+  padding-inline: var(--space-page);
 }
 
 .resume-ledger {
   display: flex;
   max-width: 64rem;
   flex-direction: column;
-  gap: clamp(5.5rem, 8vw, 6.5rem);
+  gap: var(--space-2xl);
 }
 
-.resume-ledger--education-first .resume-ledger__education {
-  order: -1;
+/* The ledger was measured for a page of its own, where nothing sat above it to
+   line up with. Inline on the homepage it lands directly under the news list,
+   which runs on a 76rem container -- at 1440 that is a 96px step in the left
+   edge and a 96px step in the rule width between two blocks that read as one
+   continuous ledger. Match the news container so the rules carry through.
+   The entries keep their own `--measure`, so only the rules and headings
+   widen; line length does not change. */
+.research-resume .resume-ledger {
+  max-width: 76rem;
 }
 
 .resume-ledger__group > h2,
 .resume-metrics > h2,
 .resume-matrix > h2 {
-  margin: 0 0 clamp(2.5rem, 5vw, 4.5rem);
+  margin: 0 0 var(--space-xl);
   color: var(--ink);
-  font-size: clamp(2rem, 3.2vw, 2.75rem);
+  font-size: var(--fs-h2);
   font-weight: 625;
-  letter-spacing: -0.05em;
-  line-height: 1;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
 }
 
 .resume-entry {
-  padding: 1.35rem 0 clamp(2.75rem, 5vw, 4.25rem);
+  position: relative;
+  padding: var(--space-md) 0 var(--space-2xl);
   border-top: 1px solid var(--line-strong);
 }
 
 .resume-entry__date {
-  margin: 0 0 1rem;
+  margin: 0 0 var(--space-xs);
   color: var(--accent-strong);
   font-family: "Geist Mono Variable", monospace;
-  font-size: 0.72rem;
+  font-size: var(--fs-xs);
   letter-spacing: 0.01em;
 }
 
 .resume-entry__date span {
-  margin-inline: 0.45rem;
+  margin-inline: var(--space-2xs);
   color: var(--faint);
 }
 
 .resume-entry h3 {
   margin: 0;
   color: var(--ink);
-  font-size: clamp(1.22rem, 1.8vw, 1.62rem);
+  font-size: var(--fs-h3);
   font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1.12;
 }
 
 .resume-entry__place {
-  max-width: 52rem;
-  margin: 0.75rem 0 0;
+  inline-size: min(100%, var(--measure));
+  margin: var(--space-xs) 0 0;
   color: var(--muted);
-  line-height: 1.45;
+  font-size: var(--fs-body);
+  line-height: 1.5;
 }
 
 .resume-entry__summary {
-  max-width: 52rem;
-  margin-top: 1.3rem;
+  inline-size: min(100%, var(--measure));
+  margin-top: var(--space-md);
   color: var(--muted);
-  font-size: 0.94rem;
+  font-size: var(--fs-sm);
 }
 
 .resume-entry__summary p {
@@ -912,18 +1110,18 @@ pre {
 }
 
 .resume-entry__summary ul {
-  margin-top: 0.6rem;
-  padding-left: 1.1rem;
+  margin-top: var(--space-xs);
+  padding-left: 1.1em; /* bullet indent tracks the font size, not the scale */
 }
 
 .resume-entry__link {
-  margin-top: 1.25rem;
+  margin-top: var(--space-md);
 }
 
 .resume-metrics {
   display: grid;
   grid-template-columns: minmax(15rem, 0.7fr) minmax(0, 1.3fr);
-  gap: clamp(3rem, 8vw, 8rem);
+  gap: var(--space-gutter-wide);
 }
 
 .resume-metrics > h2 {
@@ -941,11 +1139,11 @@ pre {
 .resume-matrix li {
   display: flex;
   min-height: 4.25rem;
-  padding: 1rem 0;
+  padding: var(--space-sm) 0;
   border-top: 1px solid var(--line);
   align-items: center;
   justify-content: space-between;
-  gap: 1.5rem;
+  gap: var(--space-md);
 }
 
 .resume-metrics li:last-child,
@@ -956,7 +1154,7 @@ pre {
 .resume-metrics li > span,
 .resume-matrix__name {
   color: var(--ink);
-  font-size: clamp(1.08rem, 1.7vw, 1.3rem);
+  font-size: var(--fs-h3);
   letter-spacing: -0.025em;
 }
 
@@ -964,14 +1162,14 @@ pre {
 .resume-matrix strong {
   color: var(--accent-strong);
   font-family: "Geist Mono Variable", monospace;
-  font-size: 0.78rem;
+  font-size: var(--fs-xs);
   font-weight: 560;
 }
 
 .resume-matrix {
   display: grid;
   grid-template-columns: minmax(15rem, 0.7fr) minmax(0, 1.3fr);
-  gap: clamp(3rem, 8vw, 8rem);
+  gap: var(--space-gutter-wide);
 }
 
 .resume-matrix > h2 {
@@ -981,21 +1179,21 @@ pre {
 .resume-matrix__groups {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(1.5rem, 4vw, 3rem);
+  gap: var(--space-gutter);
 }
 
 .resume-matrix__groups h3 {
-  margin: 0 0 1rem;
+  margin: 0 0 var(--space-xs);
   color: var(--muted);
   font-family: "Geist Mono Variable", monospace;
-  font-size: 0.72rem;
+  font-size: var(--fs-xs);
   font-weight: 560;
 }
 
 .resume-matrix__name {
   display: inline-flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: var(--space-2xs);
 }
 
 .resume-matrix__name svg {
@@ -1017,7 +1215,7 @@ pre {
 .blogs-index > .container.max-w-screen-lg {
   width: min(100%, var(--content-width));
   max-width: none;
-  padding-inline: clamp(1.25rem, 5vw, 4.5rem);
+  padding-inline: var(--space-page);
 }
 
 .projects-index > .container.max-w-screen-lg a,
@@ -1028,7 +1226,7 @@ pre {
   background: transparent !important;
   color: var(--ink) !important;
   font-family: "Geist Mono Variable", monospace;
-  font-size: 0.74rem;
+  font-size: var(--fs-xs);
 }
 
 .projects-index > .container.max-w-screen-lg a:hover,
@@ -1043,15 +1241,81 @@ pre {
   color: var(--ink);
 }
 
-.article-container .prose {
-  max-width: 48rem;
+/* The theme hardcodes `text-4xl` on the article title, `lg:prose-xl` on the body
+   and `text-2xl` on publication metadata labels. Pull all three back onto the
+   shared type scale. `.page-wrapper` is only here to outrank those utilities. */
+
+.page-wrapper article > main > h1 {
+  font-size: var(--fs-h1);
+  letter-spacing: -0.04em;
+  line-height: 1.1;
 }
 
-.article-container h1,
-.article-container .article-title {
-  font-size: clamp(2.1rem, 3.6vw, 3.1rem);
-  letter-spacing: -0.045em;
-  line-height: 1.02;
+.page-wrapper article main .prose {
+  font-size: var(--fs-body);
+  line-height: 1.68;
+}
+
+.page-wrapper article main .prose h1 {
+  font-size: var(--fs-h1);
+}
+
+.page-wrapper article main .prose h2 {
+  font-size: var(--fs-h2);
+}
+
+.page-wrapper article main .prose h3 {
+  font-size: var(--fs-h3);
+}
+
+.page-wrapper article main .prose h4 {
+  font-size: var(--fs-lead);
+}
+
+.page-wrapper article main .text-2xl {
+  font-size: var(--fs-h3);
+}
+
+/* The theme's section-list, taxonomy and 404 templates hardcode
+   `h1.lg:text-6xl` inside a `lg:prose-xl` article: 60px heading, 36px h2, 20px
+   body. None of those are on the scale, and they cover 36 pages -- /blog/,
+   /news/, /photos/, every /tags/* term page and the 404. The article rules
+   above never reached them because these templates render no <main>, which is
+   why the first-round audit (which walked the nav pages by hand) missed them.
+   Sizes only: the heading is centred by a `flex justify-center` wrapper, and
+   whether a bare list page wants a centred title is a layout question, not a
+   scale one. */
+
+.page-wrapper h1.lg\:text-6xl {
+  font-size: var(--fs-h1);
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+.page-wrapper article.lg\:prose-xl {
+  font-size: var(--fs-body);
+  line-height: 1.68;
+}
+
+.page-wrapper article.lg\:prose-xl h2 {
+  font-size: var(--fs-h2);
+}
+
+.page-wrapper article.lg\:prose-xl h3 {
+  font-size: var(--fs-h3);
+}
+
+/* Card titles in the theme's `card` view (/blog/, /photos/, taxonomy term and
+   publication-type pages) sit at `text-xl` = 20px, which is 1.4px off --fs-h3
+   -- close enough to look like a mistake rather than a distinct step, and it
+   is a ninth size for no gain. */
+.page-wrapper h3.text-xl {
+  font-size: var(--fs-h3);
+}
+
+/* Same view, the card summary: `text-base` = 16px against --fs-body 17.28px. */
+.page-wrapper p.text-base {
+  font-size: var(--fs-body);
 }
 
 footer,
@@ -1060,14 +1324,84 @@ footer,
   background: var(--page) !important;
   color: var(--muted) !important;
   font-family: "Geist Mono Variable", monospace;
-  font-size: 0.72rem;
+  font-size: var(--fs-xs);
+}
+
+/* Name seal.
+   Two placements, one meaning: this page is signed. The homepage colophon is
+   the full-size cut at the end of the document; the footer carries the small
+   cut on every page. Both sit next to the name in text, so the SVGs are
+   aria-hidden and add nothing for a screen reader to repeat. */
+
+.footer-seal,
+.page-colophon__seal {
+  display: block;
+  color: var(--accent);
+  line-height: 0; /* an inline SVG otherwise inherits a text line-box */
+}
+
+.footer-seal svg,
+.page-colophon__seal svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* 40px rather than the 34px the earlier relief cut used: this face has thin
+   strokes, and the carved (transparent) strokes of an intaglio seal need more
+   room than the inked strokes of a relief one before they read at all. */
+.footer-seal {
+  width: 40px;
+  margin: 0 auto var(--space-sm);
+}
+
+/* Colophon: right-aligned to the same 76rem column the news and the resume
+   ledger use, so the seal hangs off the end of the last rule rather than
+   floating in the middle of the page. */
+.page-colophon {
+  display: flex;
+  width: min(100%, 76rem);
+  align-items: center;
+  justify-content: flex-end;
+  margin-inline: auto;
+  padding-inline: var(--space-page);
+  /* The last ledger entry already carries --space-2xl of its own trailing
+     padding, so the section hands over with none and the signature sits one
+     step below the text rather than two. */
+  padding-bottom: var(--space-2xl);
+  gap: var(--space-md);
+}
+
+.page-colophon__name {
+  color: var(--muted);
+  font-family: "Xuankun Kai", "Kaiti SC", STKaiti, KaiTi, serif;
+  font-size: var(--fs-h3);
+  letter-spacing: 0.34em;
+  /* Tracking is applied after the last glyph too, which would read as a wider
+     gap before the seal than between the characters. Pull it back. */
+  margin-inline-end: -0.34em;
+}
+
+.page-colophon__seal {
+  width: 58px;
+  flex: none;
+}
+
+/* The ledger normally closes the page with its own rule and bottom padding.
+   With the colophon after it, that rule would land above the signature and
+   then repeat 1px from the footer's own top border. Hand both off to the
+   colophon. Unsupported `:has()` degrades to the pre-colophon spacing, which
+   is loose rather than broken. */
+.hbb-section:has(+ .page-colophon) {
+  padding-bottom: 0 !important;
+  border-bottom: 0;
 }
 
 /* Existing publication figure spacing */
 
 .prose figure.eadp-figure {
-  margin-top: 0.75rem;
-  margin-bottom: 0.75rem;
+  margin-top: var(--space-xs);
+  margin-bottom: var(--space-xs);
 }
 
 .prose figure.eadp-figure img {
@@ -1077,15 +1411,15 @@ footer,
 
 .prose figure.eadp-figure + p,
 .prose figure.eadp-figure + h4 {
-  margin-top: 0.75rem;
+  margin-top: var(--space-xs);
 }
 
 @media (max-width: 899px) {
   .profile-editorial {
     grid-template-columns: minmax(0, 1fr);
     min-height: auto;
-    padding: 4.75rem 1.25rem 5.25rem;
-    gap: 2.6rem;
+    padding: var(--space-2xl) var(--space-page);
+    gap: var(--space-lg);
   }
 
   .profile-copy {
@@ -1098,23 +1432,23 @@ footer,
   .profile-name-lockup {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.35rem;
+    gap: var(--space-2xs);
   }
 
   .profile-name {
-    font-size: clamp(2.35rem, 10.5vw, 2.7rem);
-    letter-spacing: -0.043em;
+    font-size: clamp(1.95rem, 9vw, 2.35rem);
+    letter-spacing: -0.038em;
   }
 
   .profile-name-zh {
-    font-size: clamp(1.48rem, 6.8vw, 1.7rem);
+    font-size: clamp(1.3rem, 6vw, 1.55rem);
     transform: none;
   }
 
   .profile-visual {
     width: min(42vw, 9.75rem);
     max-width: none;
-    margin: 0 0.4rem 0 0;
+    margin: 0 var(--space-2xs) 0 0;
     aspect-ratio: 4 / 5;
     grid-column: 1;
     grid-row: 2;
@@ -1147,7 +1481,7 @@ footer,
 
   .publications-index .portfolio-card {
     grid-template-columns: minmax(0, 1fr);
-    gap: 1.5rem;
+    gap: var(--space-md);
   }
 
   .resume-ledger,
@@ -1174,7 +1508,7 @@ footer,
 
   .news-item {
     grid-template-columns: minmax(0, 1fr) 1.25rem;
-    gap: 1.25rem;
+    gap: var(--space-md);
   }
 
   .news-item > time {
@@ -1194,6 +1528,13 @@ footer,
   }
 }
 
+/* Motion.
+   Every animation below answers "what does this communicate?": the hero
+   sequence communicates hierarchy (name, then role, then the rest), the
+   scroll reveal communicates that a list is being read in order, and the
+   hover rules are feedback. Nothing loops, nothing tracks the pointer, and
+   nothing animates a property other than transform or opacity. */
+
 @keyframes profile-enter {
   from {
     opacity: 0;
@@ -1207,18 +1548,65 @@ footer,
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .profile-copy,
+  /* Staggered by line rather than by block, so the eye lands on the name
+     first. 45ms steps: below ~30ms the sequence reads as simultaneous,
+     above ~70ms it starts to feel slow. */
+  .profile-name-lockup,
+  .profile-role,
+  .profile-organization,
+  .profile-social,
   .profile-visual,
   .profile-details {
-    animation: profile-enter 280ms var(--ease-out) both;
+    animation: profile-enter 320ms var(--ease-out) both;
+  }
+
+  .profile-role {
+    animation-delay: 45ms;
+  }
+
+  .profile-organization {
+    animation-delay: 90ms;
+  }
+
+  .profile-social {
+    animation-delay: 135ms;
   }
 
   .profile-visual {
-    animation-delay: 40ms;
+    animation-delay: 90ms;
   }
 
   .profile-details {
-    animation-delay: 80ms;
+    animation-delay: 180ms;
+  }
+}
+
+/* Scroll reveal, driven by a view timeline rather than a scroll listener or an
+   IntersectionObserver. That keeps it off the main thread and, more
+   importantly, keeps the content visible to crawlers and to browsers without
+   support: with no `animation-timeline` the @supports block never applies and
+   every item simply renders. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes item-enter {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .news-item,
+    .portfolio-card,
+    .resume-entry {
+      animation: item-enter 360ms var(--ease-out) both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 60%;
+    }
   }
 }
 
@@ -1232,8 +1620,13 @@ footer,
     transform: translateX(3px);
   }
 
-  .portfolio-card:hover .portfolio-card__media img {
-    transform: scale(1.012);
+  /* The rule sweeps in from the left on hover. This replaces an image
+     scale(1.012), which is the generic card-hover move and made the
+     photography resample on every pointer pass. */
+  .portfolio-card:hover .portfolio-card__body::before,
+  .news-item:hover::after,
+  .resume-entry:hover::before {
+    transform: scaleX(1);
   }
 }
 
