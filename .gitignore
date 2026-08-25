@@ -1,9 +1,15 @@
 # Node
-node_modules/
+# No trailing slash: git treats a symlink as a file, not a directory, so a
+# `node_modules/` pattern does not match the symlinks the build worktrees use
+# and they show up as untracked, one `git add -A` away from being committed.
+node_modules
+
+# Agent scratch: worktrees, verification harness, screenshots. Never ship this.
+.claude/
 
 # Hugo build outputs and caches
 public/
-resources/
+resources
 .hugo_build.lock
 
 # Hugo/Tailwind generated metadata
